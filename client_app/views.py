@@ -101,7 +101,6 @@ def jwt_required(view_func):
 
 
 
-@jwt_required
 def step2(request, client_id):
 
     client = get_object_or_404(
@@ -130,7 +129,8 @@ def step2(request, client_id):
         }
     )
 
-@jwt_required
+
+
 def step3(request, client_id):
 
     client = get_object_or_404(
@@ -167,7 +167,6 @@ def step3(request, client_id):
         }
     )
 
-@jwt_required
 def step4(request, client_id):
 
     client = get_object_or_404(
