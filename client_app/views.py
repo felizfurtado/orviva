@@ -171,7 +171,7 @@ def jwt_required(view_func):
         token = request.GET.get('access') or request.session.get('access_token')
         
         if not token:
-            return redirect('http://localhost:8000/login/')
+            return redirect('/login/')
         
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
@@ -187,13 +187,13 @@ def jwt_required(view_func):
                     request.jwt_user = payload
                 except:
                     request.session.flush()
-                    return redirect('http://localhost:8000/login/')
+                    return redirect('/login/')
             else:
                 request.session.flush()
-                return redirect('http://localhost:8000/login/')
+                return redirect('/login/')
         except jwt.InvalidTokenError:
             request.session.flush()
-            return redirect('http://localhost:8000/login/')
+            return redirect('/login/')
         
         return view_func(request, *args, **kwargs)
     return wrapper
