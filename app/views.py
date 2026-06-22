@@ -29,7 +29,7 @@ def signup(request):
         tenant.save()
 
         domain = Domain(
-            domain=f"{username}.localhost",
+            domain=f"{username}.{BASE_URL}",
             tenant=tenant,
             is_primary=True
         )
