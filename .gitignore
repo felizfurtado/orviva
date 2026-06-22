@@ -7,3 +7,4 @@ echo "frontend/" >> .gitignore
 echo "*.jpg" >> .gitignore
 echo "*.png" >> .gitignore
 echo "db.sqlite3" >> .gitignore
+echo "app/url_links.py" >> .gitignore
