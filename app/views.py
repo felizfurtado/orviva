@@ -33,7 +33,7 @@ def signup(request):
         refresh = RefreshToken.for_user(tenant)
         
         # Redirect with tokens in URL (or use session)
-        return redirect(f"http://{tenant.slug}.localhost:8000/step2/{tenant.id}/?access={str(refresh.access_token)}&refresh={str(refresh)}")
+        return redirect(f"/step2/{tenant.id}/?access={str(refresh.access_token)}&refresh={str(refresh)}")
 
     return render(request, "signup/signup.html")
 
@@ -49,11 +49,7 @@ def login_view(request):
             
             refresh = RefreshToken.for_user(client)
             
-            return redirect(
-                f"http://{client.slug}.localhost:8000/dashboard/"
-                f"?access={str(refresh.access_token)}"
-                f"&refresh={str(refresh)}"
-            )
+            return redirect(f"/dashboard/?access={str(refresh.access_token)}&refresh={str(refresh)}")
 
         except Client.DoesNotExist:
             return render(request, "login/login.html", {"error": "Invalid username or password"})
