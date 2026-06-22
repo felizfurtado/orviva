@@ -1,0 +1,378 @@
+
+<style>
+  .ps-root {
+    font-family: -apple-system, 'Plus Jakarta Sans', sans-serif;
+    background: var(--color-background-tertiary, #faf8f5);
+    color: var(--color-text-primary);
+    max-width: 420px;
+    margin: 0 auto;
+    min-height: 600px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .ps-topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px 10px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    background: var(--color-background-primary);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .ps-back {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 0.5px solid var(--color-border-tertiary);
+    background: var(--color-background-secondary);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+  }
+  .ps-topbar-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    flex: 1;
+  }
+  .ps-topbar-save {
+    font-size: 13px;
+    font-weight: 500;
+    color: #b8753e;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(212,148,92,0.1);
+    border: none;
+  }
+
+  .ps-profile-hero {
+    padding: 24px 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--color-background-primary);
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .ps-avatar {
+    width: 64px; height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #d4945c, #b8753e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    font-weight: 500;
+    color: white;
+    flex-shrink: 0;
+    letter-spacing: -1px;
+    position: relative;
+  }
+  .ps-avatar-badge {
+    position: absolute;
+    bottom: -2px; right: -2px;
+    width: 20px; height: 20px;
+    background: #7db87d;
+    border-radius: 50%;
+    border: 2px solid var(--color-background-primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    color: white;
+  }
+  .ps-profile-info .ps-store-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 3px;
+  }
+  .ps-profile-info .ps-tagline {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-bottom: 6px;
+  }
+  .ps-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(125,184,125,0.12);
+    color: #5a9a5a;
+    border: 0.5px solid rgba(125,184,125,0.3);
+  }
+  .ps-dot { width: 6px; height: 6px; border-radius: 50%; background: #7db87d; }
+
+  .ps-section {
+    margin: 20px 0 0;
+  }
+  .ps-section-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-tertiary, #a89880);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 16px 8px;
+  }
+  .ps-group {
+    background: var(--color-background-primary);
+    border-top: 0.5px solid var(--color-border-tertiary);
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .ps-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .ps-row:last-child { border-bottom: none; }
+  .ps-row:active { background: var(--color-background-secondary); }
+  .ps-row-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .ico-amber { background: rgba(212,148,92,0.12); color: #b8753e; }
+  .ico-green { background: rgba(125,184,125,0.12); color: #5a9a5a; }
+  .ico-blue  { background: rgba(139,172,204,0.12); color: #6a90b8; }
+  .ico-grape { background: rgba(139,92,204,0.12);  color: #8b5ccc; }
+  .ico-gray  { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+
+  .ps-row-body { flex: 1; min-width: 0; }
+  .ps-row-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+  }
+  .ps-row-value {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ps-row-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .ps-chip {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(212,148,92,0.1);
+    color: #b8753e;
+  }
+  .ps-chevron {
+    font-size: 16px;
+    color: var(--color-text-tertiary, #c9bdb0);
+  }
+
+  .ps-cats {
+    padding: 12px 16px 14px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .ps-cats:last-child { border-bottom: none; }
+  .ps-cats-row {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+  }
+  .ps-cat-chip {
+    font-size: 12px;
+    font-weight: 400;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 0.5px solid var(--color-border-tertiary);
+    color: var(--color-text-secondary);
+    background: var(--color-background-secondary);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .ps-cat-chip .ti { font-size: 12px; color: var(--color-text-tertiary, #c9bdb0); }
+  .ps-add-cat {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 0.5px dashed var(--color-border-secondary);
+    color: #b8753e;
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+  }
+
+  .ps-destructive-section {
+    margin: 20px 0 40px;
+  }
+  .ps-row-danger .ps-row-label { color: #c0637a; }
+  .ps-row-danger .ps-row-icon  { background: rgba(192,99,122,0.1); color: #c0637a; }
+
+  .ps-bottom-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--color-text-tertiary, #c9bdb0);
+    padding: 0 16px 32px;
+  }
+</style>
+
+<div class="ps-root">
+
+  <div class="ps-topbar">
+    <div class="ps-back" aria-label="Go back"><i class="ti ti-arrow-left"></i></div>
+    <span class="ps-topbar-label">Store Settings</span>
+    <button class="ps-topbar-save">Save</button>
+  </div>
+
+  <div class="ps-profile-hero">
+    <div class="ps-avatar">
+      GC
+      <div class="ps-avatar-badge"><i class="ti ti-check" style="font-size:9px"></i></div>
+    </div>
+    <div class="ps-profile-info">
+      <div class="ps-store-name">Gâteau Céleste</div>
+      <div class="ps-tagline">Artisan cake boutique, UAE</div>
+      <div class="ps-status-pill">
+        <div class="ps-dot"></div>
+        Active store
+      </div>
+    </div>
+  </div>
+
+  <div class="ps-section">
+    <div class="ps-section-label">Store Identity</div>
+    <div class="ps-group">
+      <div class="ps-row" onclick="sendPrompt('Edit the store name setting')">
+        <div class="ps-row-icon ico-amber"><i class="ti ti-building-store"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Store name</div>
+          <div class="ps-row-value">Gâteau Céleste</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+      <div class="ps-row" onclick="sendPrompt('Edit the store tagline')">
+        <div class="ps-row-icon ico-amber"><i class="ti ti-quote"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Tagline</div>
+          <div class="ps-row-value">Crafted with love, baked to perfection</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+      <div class="ps-row" onclick="sendPrompt('Edit the store logo')">
+        <div class="ps-row-icon ico-amber"><i class="ti ti-photo"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Logo</div>
+          <div class="ps-row-value">gateau-logo.png · uploaded</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+      <div class="ps-row" onclick="sendPrompt('Edit the store slug / URL')">
+        <div class="ps-row-icon ico-gray"><i class="ti ti-link"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Store URL slug</div>
+          <div class="ps-row-value">gateau-celeste</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ps-section">
+    <div class="ps-section-label">Appearance</div>
+    <div class="ps-group">
+      <div class="ps-row" onclick="sendPrompt('Change the store theme')">
+        <div class="ps-row-icon ico-grape"><i class="ti ti-palette"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Theme</div>
+        </div>
+        <div class="ps-row-right">
+          <span class="ps-chip">Rose Blush</span>
+          <i class="ti ti-chevron-right ps-chevron"></i>
+        </div>
+      </div>
+      <div class="ps-row" onclick="sendPrompt('Edit the search bar tagline')">
+        <div class="ps-row-icon ico-gray"><i class="ti ti-search"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Search bar tagline</div>
+          <div class="ps-row-value">What are you craving today?</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ps-section">
+    <div class="ps-section-label">Contact & Ordering</div>
+    <div class="ps-group">
+      <div class="ps-row" onclick="sendPrompt('Edit the WhatsApp number')">
+        <div class="ps-row-icon ico-green"><i class="ti ti-brand-whatsapp"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">WhatsApp</div>
+          <div class="ps-row-value">+971 50 000 0000</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+      <div class="ps-row" onclick="sendPrompt('Edit the order note message')">
+        <div class="ps-row-icon ico-blue"><i class="ti ti-note"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Order note</div>
+          <div class="ps-row-value">Minimum order 24hrs in advance</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+      <div class="ps-row" onclick="sendPrompt('Edit the sub-note')">
+        <div class="ps-row-icon ico-blue"><i class="ti ti-note"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Sub-note</div>
+          <div class="ps-row-value">Delivery within Dubai only</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+      <div class="ps-row" onclick="sendPrompt('Edit the other note and sub-note')">
+        <div class="ps-row-icon ico-gray"><i class="ti ti-info-circle"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Other notes</div>
+          <div class="ps-row-value">2 notes configured</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ps-section">
+    <div class="ps-section-label">Categories</div>
+    <div class="ps-group">
+      <div class="ps-cats">
+        <div class="ps-row-label" style="font-size:14px">Product categories</div>
+        <div class="ps-cats-row">
+          <div class="ps-cat-chip">Cakes <i class="ti ti-x"></i></div>
+          <div class="ps-cat-chip">Cupcakes <i class="ti ti-x"></i></div>
+          <div class="ps-cat-chip">Pastries <i class="ti ti-x"></i></div>
+          <div class="ps-cat-chip">Seasonal <i class="ti ti-x"></i></div>
+          <div class="ps-add-cat"><i class="ti ti-plus" style="font-size:12px"></i> Add</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ps-destructive-section">
+    <div class="ps-section-label">Danger zone</div>
+    <div class="ps-group">
+      <div class="ps-row ps-row-danger">
+        <div class="ps-row-icon"><i class="ti ti-trash"></i></div>
+        <div class="ps-row-body">
+          <div class="ps-row-label">Delete store</div>
+          <div class="ps-row-value" style="color:var(--color-text-tertiary)">Permanently remove this store</div>
+        </div>
+        <div class="ps-row-right"><i class="ti ti-chevron-right ps-chevron"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ps-bottom-note">Vision Vibe · Store v1.0</div>
+</div>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Fresh Fruit Cake — She Who Bakes</title>
+  <!-- Font Awesome 6 for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Dancing+Script:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cream-bg: #fbf1e8;
+      --card-bg: #fff8f3;
+      --chocolate: #2f1a10;
+      --chocolate-dark: #3d2417;
+      --pink: #f7b3bc;
+      --pink-strong: #f4a6af;
+      --yellow: #f6c54a;
+      --yellow-dark: #f4a800;
+      --yellow-light: #ffd66b;
+      --beige: #f5d6a9;
+      --beige-dark: #e9c79b;
+      --green-accent: #8ebe3b;
+      --white: #ffffff;
+      --light-text: #9b8e8a;
+      --border: #f0e3d7;
+    }
+
+    html,
+    body {
+      min-height: 100vh;
+      background: var(--cream-bg);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      font-family: "Poppins", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(246, 197, 74, 0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .phone {
+      width: 390px;
+      min-height: 100vh;
+      background: var(--card-bg);
+      border-radius: 45px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(47, 26, 16, 0.12);
+      margin: 24px auto;
+      z-index: 1;
+    }
+
+    /* ── IMAGE GALLERY ── */
+    .image-gallery {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      overflow: hidden;
+      border-radius: 0 0 30px 30px;
+    }
+
+    .main-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-dots {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .gallery-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .gallery-dot.active {
+      background: white;
+      width: 24px;
+      border-radius: 10px;
+    }
+
+    .image-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: var(--yellow);
+      color: var(--chocolate);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 14px;
+      z-index: 2;
+      font-family: "Poppins", sans-serif;
+      box-shadow: 0 3px 10px rgba(47, 26, 16, 0.15);
+    }
+
+    /* ── TRANSPARENT TOP NAV OVERLAY ── */
+    .top-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      z-index: 10;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.05) 100%);
+    }
+
+    .back-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      color: white;
+      transition: all 0.2s;
+    }
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-action-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      color: white;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .nav-action-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+    .nav-action-btn.liked {
+      color: #ff6b7a;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      padding: 20px 20px 100px;
+    }
+
+    .cake-name {
+      font-family: "Baloo 2", cursive;
+      font-size: 28px;
+      color: var(--chocolate);
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .cake-subtitle {
+      font-size: 13px;
+      color: var(--light-text);
+      margin-top: 3px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+    }
+    .rating-stars {
+      color: var(--yellow-dark);
+      font-size: 14px;
+      display: flex;
+      gap: 2px;
+    }
+    .rating-text {
+      font-size: 12px;
+      color: var(--light-text);
+      font-weight: 600;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .current-price {
+      font-family: "Baloo 2", cursive;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--chocolate);
+    }
+    .original-price {
+      font-size: 16px;
+      color: var(--light-text);
+      text-decoration: line-through;
+      font-weight: 500;
+    }
+    .discount-badge {
+      background: #fff3df;
+      color: var(--yellow-dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 8px;
+    }
+
+    /* ── DESCRIPTION ── */
+    .section-title {
+      font-family: "Baloo 2", cursive;
+      font-size: 17px;
+      color: var(--chocolate);
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .description-text {
+      font-size: 13px;
+      color: var(--chocolate);
+      line-height: 1.7;
+      opacity: 0.85;
+      font-weight: 400;
+    }
+
+    /* ── META CARDS ── */
+    .meta-cards {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .meta-card {
+      flex: 1;
+      min-width: 90px;
+      background: #fdf3e8;
+      border-radius: 18px;
+      padding: 14px 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .meta-card i {
+      font-size: 20px;
+      color: var(--yellow-dark);
+    }
+    .meta-card span {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--chocolate);
+      font-family: "Poppins", sans-serif;
+    }
+    .meta-card small {
+      font-size: 9px;
+      color: var(--light-text);
+    }
+
+    /* ── INGREDIENTS ── */
+    .ingredient-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .ingredient-tag {
+      background: #fff3df;
+      color: var(--chocolate);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-family: "Poppins", sans-serif;
+      border: 1px solid rgba(246, 197, 74, 0.3);
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .ingredient-tag:hover {
+      background: var(--yellow);
+      border-color: var(--yellow-dark);
+    }
+
+    /* ── SIZE SELECTOR ── */
+    .size-options {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .size-option {
+      flex: 1;
+      padding: 14px 12px;
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.25s;
+      font-family: "Poppins", sans-serif;
+    }
+    .size-option:hover {
+      border-color: var(--yellow);
+      background: #fffdf7;
+    }
+    .size-option.active {
+      border-color: var(--yellow-dark);
+      background: #fff3df;
+    }
+    .size-option .size-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--chocolate);
+    }
+    .size-option .size-price {
+      font-size: 11px;
+      color: var(--light-text);
+      margin-top: 3px;
+    }
+    .size-option .size-servings {
+      font-size: 9px;
+      color: var(--yellow-dark);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* ── ADDONS ── */
+    .addon-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .addon-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .addon-option:hover {
+      border-color: var(--beige-dark);
+    }
+    .addon-option.selected {
+      border-color: var(--yellow-dark);
+      background: #fffdf7;
+    }
+    .addon-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .addon-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--chocolate);
+    }
+    .addon-price {
+      font-size: 10px;
+      color: var(--light-text);
+    }
+    .addon-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: transparent;
+      transition: all 0.2s;
+    }
+    .addon-option.selected .addon-checkbox {
+      background: var(--yellow-dark);
+      border-color: var(--yellow-dark);
+      color: white;
+    }
+
+    /* ── BOTTOM BAR ── */
+    .bottom-bar {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 350px;
+      background: white;
+      border-radius: 30px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 12px 40px rgba(47, 26, 16, 0.18), 0 2px 8px rgba(0, 0, 0, 0.06);
+      z-index: 100;
+      border: 1px solid rgba(246, 197, 74, 0.25);
+    }
+
+    .qty-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .qty-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #fdf3e8;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--chocolate);
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+    .qty-btn:hover {
+      background: var(--beige);
+    }
+
+    .qty-num {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--chocolate);
+      min-width: 20px;
+      text-align: center;
+      font-family: "Baloo 2", cursive;
+    }
+
+    .whatsapp-btn {
+      flex: 1;
+      height: 48px;
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-family: "Poppins", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+    }
+    .whatsapp-btn:hover {
+      background: #1ebe57;
+      transform: scale(1.02);
+    }
+    .whatsapp-btn:active {
+      transform: scale(0.97);
+    }
+    .whatsapp-btn i {
+      font-size: 18px;
+    }
+
+    @media (max-width: 420px) {
+      .phone {
+        margin: 0;
+        border-radius: 0;
+        width: 100vw;
+      }
+      .bottom-bar {
+        width: calc(100vw - 40px);
+        bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <!-- IMAGE GALLERY -->
+    <div class="image-gallery">
+      <img
+        class="main-image"
+        src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&h=150&fit=crop&auto=format"
+        alt="Fresh Fruit Cake"
+        id="mainImage"
+      />
+      <!-- TRANSPARENT TOP NAV OVERLAY ON IMAGE -->
+      <div class="top-nav">
+        <button class="back-btn" onclick="history.back()">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+       
+      </div>
+      <div class="gallery-dots">
+        <div class="gallery-dot active" onclick="changeImage(0)"></div>
+        <div class="gallery-dot" onclick="changeImage(1)"></div>
+        <div class="gallery-dot" onclick="changeImage(2)"></div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+  <div class="cake-name">Red Velvet Brookies</div>
+  <div class="cake-subtitle">
+    <span>Brownie + Cookie Hybrid · 4 pcs</span>
+    <span style="color: var(--green-accent); font-weight: 600;">● In Stock</span>
+  </div>
+
+  <div class="rating">
+    <div class="rating-stars">
+      <i class="fas fa-star"></i>
+      <i class="fas fa-star"></i>
+      <i class="fas fa-star"></i>
+      <i class="fas fa-star"></i>
+      <i class="fas fa-star"></i>
+    </div>
+    <span class="rating-text">4.9 (86 reviews)</span>
+  </div>
+
+  <div class="price-row">
+    <span class="current-price">₹12.00</span>
+    <span class="original-price">₹15.00</span>
+    <span class="discount-badge">20% OFF</span>
+  </div>
+
+  <div class="section-title">Description</div>
+  <p class="description-text">
+    The perfect marriage of fudgy brownies and chewy cookies! Our Red Velvet Brookies feature 
+    a rich cocoa base with that signature red velvet tang, studded with white chocolate chips 
+    and finished with a crackly top. Each bite delivers the best of both worlds — crispy edges, 
+    soft centers, and that unmistakable cream cheese flavor. Baked fresh daily. 🍪
+  </p>
+
+  <div class="section-title">Pack Size</div>
+  <div class="size-options" id="sizeOptions">
+    <div class="size-option" onclick="selectSize(this, '2 pcs', '₹7.00')">
+      <div class="size-name">2 pcs</div>
+      <div class="size-price">₹7.00</div>
+      <div class="size-servings">Mini Box</div>
+    </div>
+    <div class="size-option active" onclick="selectSize(this, '4 pcs', '₹12.00')">
+      <div class="size-name">4 pcs</div>
+      <div class="size-price">₹12.00</div>
+      <div class="size-servings">Standard Box</div>
+    </div>
+    <div class="size-option" onclick="selectSize(this, '8 pcs', '₹22.00')">
+      <div class="size-name">8 pcs</div>
+      <div class="size-price">₹22.00</div>
+      <div class="size-servings">Family Box</div>
+    </div>
+  </div>
+
+  <div class="section-title">Ingredients</div>
+  <div class="ingredient-tags">
+    <span class="ingredient-tag">Belgian Cocoa</span>
+    <span class="ingredient-tag">White Chocolate</span>
+    <span class="ingredient-tag">Cream Cheese</span>
+    <span class="ingredient-tag">Butter</span>
+    <span class="ingredient-tag">Organic Flour</span>
+    <span class="ingredient-tag">Free-range Eggs</span>
+    <span class="ingredient-tag">Vanilla Extract</span>
+    <span class="ingredient-tag">Red Velvet</span>
+  </div>
+
+  <div class="section-title">Add-ons</div>
+  <div class="addon-options">
+    <div class="addon-option" onclick="toggleAddon(this)">
+      <div class="addon-info">
+        <span class="addon-name">🎁 Gift Box Packaging</span>
+        <span class="addon-price">+ ₹3.00</span>
+      </div>
+      <div class="addon-checkbox"><i class="fas fa-check"></i></div>
+    </div>
+    <div class="addon-option" onclick="toggleAddon(this)">
+      <div class="addon-info">
+        <span class="addon-name">💌 Personalised Note</span>
+        <span class="addon-price">+ ₹2.00</span>
+      </div>
+      <div class="addon-checkbox"><i class="fas fa-check"></i></div>
+    </div>
+    <div class="addon-option" onclick="toggleAddon(this)">
+      <div class="addon-info">
+        <span class="addon-name">🥛 Pair with Milk</span>
+        <span class="addon-price">+ ₹4.00</span>
+      </div>
+      <div class="addon-checkbox"><i class="fas fa-check"></i></div>
+    </div>
+  </div>
+</div>
+
+    <!-- BOTTOM BAR -->
+    <div class="bottom-bar">
+      <div class="qty-selector">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <span class="qty-num" id="qtyNum">1</span>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+      <button class="whatsapp-btn" onclick="orderOnWhatsApp()">
+        <i class="fab fa-whatsapp"></i> Order via WhatsApp
+      </button>
+    </div>
+  </div>
+
+<script>
+    let selectedSize = "4 pcs";
+    let selectedPrice = "₹12.00";
+
+    // Image gallery
+    const images = [
+      "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=500&h=400&fit=crop&auto=format",
+      "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&h=400&fit=crop&auto=format",
+      "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=500&h=400&fit=crop&auto=format"
+    ];
+
+    function changeImage(index) {
+      document.getElementById("mainImage").src = images[index];
+      document.querySelectorAll(".gallery-dot").forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+    }
+
+    // Favorite toggle
+    function toggleFav() {
+      const btn = document.getElementById("favBtn");
+      const isLiked = btn.classList.toggle("liked");
+      const icon = btn.querySelector("i");
+      icon.className = isLiked ? "fas fa-heart" : "far fa-heart";
+    }
+
+    // Share product
+    function shareProduct() {
+      if (navigator.share) {
+        navigator.share({
+          title: "Red Velvet Brookies",
+          text: "Check out these delicious Red Velvet Brookies from She Who Bakes! 🍪",
+          url: window.location.href
+        }).catch(() => {});
+      } else {
+        alert("Copy this link to share: " + window.location.href);
+      }
+    }
+
+    // Size selector
+    function selectSize(el, size, price) {
+      document.querySelectorAll(".size-option").forEach(opt => opt.classList.remove("active"));
+      el.classList.add("active");
+      selectedSize = size;
+      selectedPrice = price;
+      // Update the displayed price
+      document.querySelector(".current-price").textContent = price;
+    }
+
+    // Addon toggle
+    function toggleAddon(el) {
+      el.classList.toggle("selected");
+    }
+
+    // Quantity
+    function changeQty(delta) {
+      const numEl = document.getElementById("qtyNum");
+      let val = parseInt(numEl.textContent) + delta;
+      if (val < 1) val = 1;
+      if (val > 20) val = 20;
+      numEl.textContent = val;
+    }
+
+    // Order via WhatsApp
+    function orderOnWhatsApp() {
+      const qty = document.getElementById("qtyNum").textContent;
+      const cakeName = "Red Velvet Brookies";
+      
+      // Get selected add-ons
+      const selectedAddons = [];
+      document.querySelectorAll(".addon-option.selected").forEach(addon => {
+        const name = addon.querySelector(".addon-name").textContent.trim();
+        const price = addon.querySelector(".addon-price").textContent.trim();
+        selectedAddons.push(`${name} (${price})`);
+      });
+      
+      const addonsText = selectedAddons.length > 0 
+        ? "%0AAdd-ons:%0A" + selectedAddons.join("%0A") 
+        : "";
+      
+      const message = `✨ New Order! ✨%0A%0A🍪 Item: ${cakeName}%0A📦 Pack: ${selectedSize}%0A💰 Price: ${selectedPrice}%0A🔢 Quantity: ${qty}${addonsText}%0A%0A🧁 From: She Who Bakes%0A%0APlease confirm my order! `;
+      
+      // Replace this number with your WhatsApp business number (with country code, no + or spaces)
+      const phoneNumber = "918762529770"; // <-- CHANGE THIS TO YOUR WHATSAPP NUMBER
+      
+      window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
+    }
+  </script>
+</body>
+</html>

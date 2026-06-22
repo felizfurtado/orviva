@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Choose a theme — Bakery Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e1b18;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 100%;
+            background: #ffffff;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            padding: 14px 24px 6px 24px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 590;
+            color: #1c1c1e;
+            letter-spacing: 0.2px;
+        }
+
+        .main-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 20px 20px 20px;
+            scrollbar-width: thin;
+        }
+
+        .main-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .main-scroll::-webkit-scrollbar-track {
+            background: #f0eeeb;
+            border-radius: 10px;
+        }
+
+        .main-scroll::-webkit-scrollbar-thumb {
+            background: #d4c5b8;
+            border-radius: 10px;
+        }
+
+        .hero-section {
+            padding: 20px 0 16px 0;
+            text-align: center;
+        }
+
+        .icon-wrapper {
+            width: 72px;
+            height: 72px;
+            background: #f7f3ef;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .icon-wrapper i {
+            font-size: 36px;
+            color: #c27e4a;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .subhead {
+            font-size: 14px;
+            color: #8f7e6c;
+            font-weight: 500;
+        }
+
+        .theme-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 24px 0 28px 0;
+        }
+
+        /* Theme card - radio card style (mobile first) */
+        .theme-card {
+            background: #ffffff;
+            border-radius: 28px;
+            border: 1.5px solid #efe5dc;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-card.selected {
+            border-color: #c27e4a;
+            background: #fefaf7;
+            box-shadow: 0 8px 20px rgba(194, 126, 74, 0.12);
+        }
+
+        .theme-radio {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .theme-card-inner {
+            padding: 20px 20px 20px 20px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .theme-preview {
+            width: 64px;
+            height: 64px;
+            background: #f2ece6;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .theme-card.selected .theme-preview {
+            background: #e8dbd0;
+        }
+
+        .theme-preview i {
+            font-size: 32px;
+            transition: transform 0.1s;
+        }
+
+        .theme-info {
+            flex: 1;
+        }
+
+        .theme-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2b241e;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .theme-desc {
+            font-size: 13px;
+            color: #9b8a76;
+            font-weight: 500;
+            line-height: 1.35;
+        }
+
+        .check-badge {
+            width: 26px;
+            height: 26px;
+            background: #e8e2dc;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aa9a88;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .theme-card.selected .check-badge {
+            background: #c27e4a;
+            color: white;
+            box-shadow: 0 2px 6px rgba(194,126,74,0.3);
+        }
+
+        .btn-continue {
+            width: 100%;
+            background: #c27e4a;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            margin-top: 8px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(194, 126, 74, 0.2);
+        }
+
+        .btn-continue:active {
+            transform: scale(0.97);
+            background: #a66c3d;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #aa9a88;
+            padding: 12px 0 18px 0;
+            border-top: 0.5px solid #efebe6;
+            margin-top: 8px;
+            background: #ffffff;
+        }
+
+        .home-indicator {
+            width: 130px;
+            height: 5px;
+            background: #dad3cc;
+            border-radius: 100px;
+            margin: 8px auto 12px auto;
+        }
+
+        .message-container {
+            margin-bottom: 12px;
+        }
+
+        .alert-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff6f0;
+            border-radius: 18px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border-left: 3px solid #cd6b6b;
+            color: #b1624a;
+        }
+
+        .progress-steps {
+            margin-bottom: 24px;
+            padding: 0 4px;
+        }
+
+        .step-circle-active {
+            background: #c27e4a;
+            color: white;
+        }
+
+        .step-circle-inactive {
+            background: #e8e2dc;
+            color: #8f7e6c;
+        }
+
+        .step-label-active {
+            color: #c27e4a;
+            font-weight: 700;
+        }
+
+        .step-label-inactive {
+            color: #aa9a88;
+            font-weight: 500;
+        }
+
+        .progress-bar-bg {
+            height: 2px;
+            background: #efe5dc;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            width: 50%;
+            height: 100%;
+            background: #c27e4a;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .skip-link {
+            text-align: center;
+            margin-top: -4px;
+            margin-bottom: 12px;
+        }
+
+        .skip-link a {
+            font-size: 13px;
+            color: #aa9a88;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f9f7f4;
+            padding: 6px 14px;
+            border-radius: 40px;
+        }
+
+        .skip-link a:active {
+            background: #efebe6;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="status-bar">
+        <!-- empty status placeholder, matches step one style -->
+    </div>
+
+    <div class="main-scroll">
+        <div class="hero-section">
+            <div class="icon-wrapper">
+                <i class="ti ti-palette"></i>
+            </div>
+            <h1>Pick a vibe</h1>
+            <div class="subhead">Choose a theme that reflects your bakery</div>
+        </div>
+
+        <!-- step indicator: step 2 active -->
+        <div class="progress-steps">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <div style="flex: 1; text-align: center;">
+                    <div style="width: 32px; height: 32px; background: #c27e4a; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; margin-bottom: 6px;">1</div>
+                    <div style="font-size: 11px; font-weight: 600; color: #c27e4a;">Account</div>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="width: 32px; height: 32px; background: #c27e4a; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; margin-bottom: 6px;">2</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #c27e4a;">Theme</div>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="width: 32px; height: 32px; background: #e8e2dc; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: #8f7e6c; font-weight: 700; font-size: 14px; margin-bottom: 6px;">3</div>
+                    <div style="font-size: 11px; font-weight: 500; color: #aa9a88;">Profile</div>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="width: 32px; height: 32px; background: #e8e2dc; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: #8f7e6c; font-weight: 700; font-size: 14px; margin-bottom: 6px;">4</div>
+                    <div style="font-size: 11px; font-weight: 500; color: #aa9a88;">Category</div>
+                </div>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-fill" style="width: 50%;"></div>
+            </div>
+        </div>
+
+        <!-- dynamic message area for errors / server feedback -->
+        <div id="messageContainer" class="message-container"></div>
+
+        <form method="post" id="themeForm" novalidate>
+            {% csrf_token %}
+            
+            <!-- theme cards container - only TWO themes, default = theme1 -->
+            <div class="theme-grid" id="themeGrid">
+                <!-- Theme 1: Warm & Artisan (DEFAULT) -->
+                <div class="theme-card selected" data-theme-value="theme1">
+                    <input type="radio" name="theme" value="theme1" id="theme1Radio" class="theme-radio" checked>
+                    <div class="theme-card-inner">
+                        <div class="theme-preview" style="background: #FDEBD8;">
+                            <i class="ti ti-cup" style="color: #c27e4a;"></i>
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">Warm Artisan</div>
+                            <div class="theme-desc">Cozy & rustic • Earthy tones, handmade feel</div>
+                        </div>
+                        <div class="check-badge">
+                            <i class="ti ti-check"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theme 2: Modern Minimal -->
+                <div class="theme-card" data-theme-value="theme2">
+                    <input type="radio" name="theme" value="theme2" id="theme2Radio" class="theme-radio">
+                    <div class="theme-card-inner">
+                        <div class="theme-preview" style="background: #F2F0EC;">
+                            <i class="ti ti-cookie" style="color: #6b5a48;"></i>
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">Modern Minimal</div>
+                            <div class="theme-desc">Clean & modern • Neutral palette, bold typography</div>
+                        </div>
+                        <div class="check-badge">
+                            <i class="ti ti-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-continue" id="continueBtn">
+                <i class="ti ti-arrow-right"></i>
+                Continue to profile
+            </button>
+
+            <div class="skip-link">
+                <a href="#" id="skipThemeLink">
+                    <i class="ti ti-player-skip-forward"></i> Skip & use default theme
+                </a>
+            </div>
+        </form>
+
+        <div class="footer-note">
+            <i class="ti ti-color-swatch" style="font-size: 11px; margin-right: 4px;"></i>
+            You can always change later · Theme 1 is default
+        </div>
+    </div>
+    <div class="home-indicator"></div>
+</div>
+
+<script>
+    // ----- DOM elements -----
+    const themeCards = document.querySelectorAll('.theme-card');
+    const radioButtons = document.querySelectorAll('input[name="theme"]');
+    const themeForm = document.getElementById('themeForm');
+    const messageContainer = document.getElementById('messageContainer');
+    const skipLink = document.getElementById('skipThemeLink');
+    let messageTimeout = null;
+
+    // helper: clear toast message
+    function clearMessage() {
+        if (messageTimeout) {
+            clearTimeout(messageTimeout);
+            messageTimeout = null;
+        }
+        const existingMsg = messageContainer.querySelector('.alert-message');
+        if (existingMsg) existingMsg.remove();
+    }
+
+    function showMessage(text, isError = true) {
+        clearMessage();
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'alert-message';
+        if (!isError) {
+            msgDiv.style.borderLeftColor = '#2b7e4a';
+            msgDiv.style.background = '#f0f9f0';
+            msgDiv.style.color = '#235e3a';
+        }
+        msgDiv.innerHTML = `<i class="ti ${isError ? 'ti-alert-circle' : 'ti-check-circle'}"></i><span>${text}</span>`;
+        messageContainer.appendChild(msgDiv);
+        // auto hide after 3.5s
+        messageTimeout = setTimeout(() => {
+            if (msgDiv) msgDiv.remove();
+            messageTimeout = null;
+        }, 3500);
+    }
+
+    // Update selected theme card UI based on radio value
+    function updateSelectedTheme(selectedValue) {
+        themeCards.forEach(card => {
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio && radio.value === selectedValue) {
+                card.classList.add('selected');
+                radio.checked = true;
+            } else {
+                card.classList.remove('selected');
+            }
+        });
+    }
+
+    // Sync radio click when tapping on card
+    themeCards.forEach(card => {
+        const radioInput = card.querySelector('input[type="radio"]');
+        card.addEventListener('click', (e) => {
+            if (radioInput && !radioInput.checked) {
+                radioInput.checked = true;
+                updateSelectedTheme(radioInput.value);
+                clearMessage();
+            }
+        });
+        
+        // also listen to radio change manually
+        if (radioInput) {
+            radioInput.addEventListener('change', (e) => {
+                if (radioInput.checked) {
+                    updateSelectedTheme(radioInput.value);
+                    clearMessage();
+                }
+            });
+        }
+    });
+
+    // initial selection: "theme1" is checked by default (default theme)
+    // Ensure UI reflects selected state correctly (already class 'selected' on first card, but enforce)
+    const initiallyChecked = document.querySelector('input[name="theme"]:checked');
+    if (initiallyChecked) {
+        updateSelectedTheme(initiallyChecked.value);
+    } else {
+        // fallback: select theme1 as default
+        const theme1Radio = document.getElementById('theme1Radio');
+        if (theme1Radio) {
+            theme1Radio.checked = true;
+            updateSelectedTheme('theme1');
+        }
+    }
+
+    // Handle form submit with validation (ensure a theme is selected)
+    themeForm.addEventListener('submit', (e) => {
+        clearMessage();
+        const selectedRadio = document.querySelector('input[name="theme"]:checked');
+        if (!selectedRadio) {
+            e.preventDefault();
+            showMessage('Please select a theme to continue', true);
+            return;
+        }
+        // Add loading effect on button to indicate processing
+        const btn = document.querySelector('.btn-continue');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="ti ti-loader"></i> Saving...';
+        btn.disabled = true;
+        // Re-enable after 3 seconds in case form doesn't submit (network issues)
+        setTimeout(() => {
+            if (btn.disabled) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }, 3000);
+        // allow form to submit naturally
+    });
+
+    // Skip theme: use default theme (theme1) and submit
+    skipLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        // set theme1 as selected (default theme)
+        const defaultThemeRadio = document.getElementById('theme1Radio');
+        if (defaultThemeRadio) {
+            defaultThemeRadio.checked = true;
+            updateSelectedTheme('theme1');
+            clearMessage();
+            showMessage('Using default Warm Artisan theme. Proceeding...', false);
+            // submit the form after short delay to allow user to see message
+            setTimeout(() => {
+                themeForm.submit();
+            }, 400);
+        } else {
+            showMessage('Could not select default theme. Please pick manually.', true);
+        }
+    });
+
+    // ----- server side message handling (Django style) -----
+    window.addEventListener('DOMContentLoaded', () => {
+        {% if error %}
+            setTimeout(() => {
+                showMessage("{{ error|escapejs }}", true);
+            }, 100);
+        {% endif %}
+        {% if success_msg %}
+            setTimeout(() => {
+                showMessage("{{ success_msg|escapejs }}", false);
+            }, 100);
+        {% endif %}
+        {% if theme_error %}
+            setTimeout(() => {
+                showMessage("{{ theme_error|escapejs }}", true);
+            }, 100);
+        {% endif %}
+    });
+
+    // Accessibility: add keyboard support for theme cards
+    themeCards.forEach(card => {
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const radio = card.querySelector('input[type="radio"]');
+                if (radio && !radio.checked) {
+                    radio.checked = true;
+                    updateSelectedTheme(radio.value);
+                    clearMessage();
+                }
+            }
+        });
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'radio');
+        card.setAttribute('aria-checked', 'false');
+    });
+
+    function updateAria() {
+        themeCards.forEach(card => {
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio && radio.checked) {
+                card.setAttribute('aria-checked', 'true');
+            } else {
+                card.setAttribute('aria-checked', 'false');
+            }
+        });
+    }
+
+    const radios = document.querySelectorAll('input[name="theme"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', updateAria);
+    });
+    updateAria();
+    
+    // ensure progress fill stays at 50% (step 2)
+    const progressFill = document.querySelector('.progress-fill');
+    if (progressFill) progressFill.style.width = '50%';
+    
+    console.log('Step 2 ready — only two themes, default = theme1');
+</script>
+</body>
+</html>

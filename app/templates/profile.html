@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Profile — {{ settings.heading|default:"Bakery" }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1e1b18;
+            padding: 0 0 80px 0;
+        }
+
+        /* Header */
+        .profile-header {
+            background: #ffffff;
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid #efe5dc;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.96);
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-row h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            flex: 1;
+        }
+
+        .preview-link {
+            background: #f0ede8;
+            padding: 8px 14px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            color: #c27e4a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main container */
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: #ffffff;
+            border-radius: 28px;
+            border: 1px solid #efe5dc;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .form-section {
+            padding: 20px;
+            border-bottom: 1px solid #f0ede8;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2b241e;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: #c27e4a;
+            font-size: 18px;
+        }
+
+        .input-group {
+            background: #fbf9f7;
+            border-radius: 20px;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .input-group:focus-within {
+            border-color: #c27e4a;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(194, 126, 74, 0.08);
+        }
+
+        .input-field {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+        }
+
+        .input-field i {
+            font-size: 20px;
+            color: #bb8b64;
+            width: 22px;
+            margin-top: 2px;
+        }
+
+        .input-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-content label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #5e4e3c;
+            letter-spacing: -0.2px;
+        }
+
+        .input-content input,
+        .input-content textarea {
+            border: none;
+            background: transparent;
+            font-family: 'Inter', monospace;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2b241e;
+            outline: none;
+            width: 100%;
+            resize: vertical;
+            padding: 0;
+            margin: 0;
+        }
+
+        .input-content input::placeholder,
+        .input-content textarea::placeholder {
+            color: #cbbcaa;
+            font-weight: 400;
+        }
+
+        .input-content textarea {
+            min-height: 70px;
+            line-height: 1.4;
+        }
+
+        .optional-badge {
+            font-size: 10px;
+            font-weight: 500;
+            background: #f0ede8;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 30px;
+            color: #8f7e6c;
+            margin-left: 8px;
+        }
+
+        .required-star {
+            color: #cd6b6b;
+            margin-left: 4px;
+        }
+
+        .inline-hint {
+            font-size: 11px;
+            color: #aa9a88;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-save {
+            width: 100%;
+            background: #c27e4a;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            margin-top: 12px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(194, 126, 74, 0.2);
+        }
+
+        .btn-save:active {
+            transform: scale(0.97);
+            background: #a66c3d;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            right: 0;
+            background: #ffffff;
+            border-top: 1px solid #efe5dc;
+            display: flex;
+            height: 65px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.04);
+            z-index: 20;
+        }
+
+        .bottom-nav a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #aa9a88;
+            font-size: 11px;
+            font-weight: 600;
+            gap: 4px;
+            transition: color 0.2s;
+        }
+
+        .bottom-nav a i {
+            font-size: 22px;
+        }
+
+        .bottom-nav a.active {
+            color: #c27e4a;
+        }
+
+        .bottom-nav a:active {
+            background: #faf8f5;
+        }
+
+        /* Message Toast */
+        .toast-message {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            right: 20px;
+            max-width: 380px;
+            margin: 0 auto;
+            background: #2b241e;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 60px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .toast-message.show {
+            opacity: 1;
+        }
+
+        .toast-message.error {
+            background: #cd6b6b;
+        }
+
+        .logo-preview {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #fbf9f7;
+            border-radius: 20px;
+        }
+
+        .logo-preview-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f0ede8;
+        }
+
+        .logo-preview-placeholder {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #f0ede8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #cbbcaa;
+        }
+
+        .logo-preview-text {
+            font-size: 12px;
+            color: #8f7e6c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-header">
+        <div class="header-row">
+            <h1>Store Profile</h1>
+            <a href="/dashboard/" class="preview-link">
+                <i class="ti ti-eye"></i>
+                <span>Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <form method="post" id="profileForm" novalidate>
+                {% csrf_token %}
+
+                <!-- Logo Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="ti ti-image"></i>
+                        <span>Branding</span>
+                    </div>
+                    
+                    <div id="logoPreviewContainer" class="logo-preview">
+                        {% if settings.logo_link %}
+                            <img src="{{ settings.logo_link }}" class="logo-preview-img" id="logoPreviewImg" alt="Logo preview" onerror="this.onerror=null; this.style.display='none'; document.getElementById('logoPlaceholder').style.display='flex';">
+                            <div id="logoPlaceholder" style="display: none;" class="logo-preview-placeholder">
+                                <i class="ti ti-building-store"></i>
+                            </div>
+                        {% else %}
+                            <div id="logoPlaceholder" class="logo-preview-placeholder">
+                                <i class="ti ti-building-store"></i>
+                            </div>
+                            <img src="" class="logo-preview-img" id="logoPreviewImg" style="display: none;" alt="Logo preview">
+                        {% endif %}
+                        <div class="logo-preview-text">
+                            <i class="ti ti-info-circle"></i> Square image URL works best
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-link"></i>
+                            <div class="input-content">
+                                <label>Logo URL <span class="optional-badge">Optional</span></label>
+                                <input type="url" name="logo_link" id="logo_link" value="{{ settings.logo_link|default:'' }}" placeholder="https://your-bakery.com/logo.png" autocomplete="off">
+                                <div class="inline-hint"><i class="ti ti-external-link"></i> Paste image link</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-building"></i>
+                            <div class="input-content">
+                                <label>Store name <span class="required-star">*</span></label>
+                                <input type="text" name="heading" id="heading" value="{{ settings.heading|default:'' }}" placeholder="e.g., Butter & Crumb" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-message"></i>
+                            <div class="input-content">
+                                <label>Tagline <span class="optional-badge">Optional</span></label>
+                                <input type="text" name="tagline" id="tagline" value="{{ settings.tagline|default:'' }}" placeholder="Fresh daily pastries & artisan bread">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Store Operations -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="ti ti-settings"></i>
+                        <span>Store Settings</span>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-search"></i>
+                            <div class="input-content">
+                                <label>Search prompt <span class="optional-badge">Optional</span></label>
+                                <input type="text" name="search_bar_tagline" id="search_bar_tagline" value="{{ settings.search_bar_tagline|default:'' }}" placeholder="What are you craving today?">
+                                <div class="inline-hint"><i class="ti ti-magic"></i> Shown in search bar</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-brand-whatsapp"></i>
+                            <div class="input-content">
+                                <label>WhatsApp number <span class="required-star">*</span></label>
+                                <input type="tel" name="whatsapp_number" id="whatsapp_number" value="{{ settings.whatsapp_number|default:'' }}" placeholder="+1234567890" required>
+                                <div class="inline-hint"><i class="ti ti-device-mobile"></i> Include country code (orders go here)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="ti ti-notes"></i>
+                        <span>Notes & Information</span>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-file-description"></i>
+                            <div class="input-content">
+                                <label>Main note</label>
+                                <textarea name="note" id="note" rows="2" placeholder="Welcome message or bakery story...">{{ settings.note|default:'' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-message-circle"></i>
+                            <div class="input-content">
+                                <label>Sub note</label>
+                                <textarea name="sub_note" id="sub_note" rows="2" placeholder="Additional details like opening hours...">{{ settings.sub_note|default:'' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-clipboard"></i>
+                            <div class="input-content">
+                                <label>Other note</label>
+                                <textarea name="other_note" id="other_note" rows="2" placeholder="Delivery info, pickup instructions etc.">{{ settings.other_note|default:'' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-message-2"></i>
+                            <div class="input-content">
+                                <label>Other subnote</label>
+                                <textarea name="other_subnote" id="other_subnote" rows="2" placeholder="Special announcements, thank you message">{{ settings.other_subnote|default:'' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 0 20px 20px 20px;">
+                    <button type="submit" class="btn-save" id="saveBtn">
+                        <i class="ti ti-device-floppy"></i>
+                        Save all changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="/dashboard/">
+            <i class="ti ti-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/products/">
+            <i class="ti ti-pizza"></i>
+            <span>Products</span>
+        </a>
+        <a href="/categories/">
+            <i class="ti ti-category"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/profile/" class="active">
+            <i class="ti ti-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toastMsg" class="toast-message">
+        <i class="ti ti-check-circle"></i>
+        <span id="toastText"></span>
+    </div>
+
+    <script>
+        const profileForm = document.getElementById('profileForm');
+        const headingInput = document.getElementById('heading');
+        const whatsappInput = document.getElementById('whatsapp_number');
+        const logoLinkInput = document.getElementById('logo_link');
+        const logoPreviewImg = document.getElementById('logoPreviewImg');
+        const logoPlaceholder = document.getElementById('logoPlaceholder');
+        const saveBtn = document.getElementById('saveBtn');
+        
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toastMsg');
+            const toastText = document.getElementById('toastText');
+            toastText.innerText = message;
+            toast.classList.add('show');
+            if (isError) {
+                toast.classList.add('error');
+            } else {
+                toast.classList.remove('error');
+            }
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Logo preview on URL change
+        function updateLogoPreview() {
+            const url = logoLinkInput.value.trim();
+            if (url) {
+                logoPreviewImg.src = url;
+                logoPreviewImg.style.display = 'block';
+                logoPlaceholder.style.display = 'none';
+                logoPreviewImg.onerror = function() {
+                    logoPreviewImg.style.display = 'none';
+                    logoPlaceholder.style.display = 'flex';
+                };
+            } else {
+                logoPreviewImg.style.display = 'none';
+                logoPlaceholder.style.display = 'flex';
+            }
+        }
+        
+        logoLinkInput.addEventListener('input', updateLogoPreview);
+        updateLogoPreview();
+        
+        // Validate WhatsApp number
+        function validateWhatsApp(number) {
+            const cleaned = number.replace(/\s/g, '');
+            if (cleaned === '') return false;
+            const digits = cleaned.replace(/[^0-9]/g, '');
+            return digits.length >= 5;
+        }
+        
+        // Auto clear messages on input
+        function attachClearListeners() {
+            const inputs = profileForm.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    // remove any visual error border if needed
+                });
+            });
+        }
+        
+        // Form submit with validation
+        profileForm.addEventListener('submit', (e) => {
+            const storeName = headingInput?.value.trim();
+            const whatsapp = whatsappInput?.value.trim();
+            
+            let errorMsg = null;
+            if (!storeName) {
+                errorMsg = "Store name is required";
+            } else if (storeName.length < 2) {
+                errorMsg = "Store name must be at least 2 characters";
+            } else if (!whatsapp) {
+                errorMsg = "WhatsApp number is required for orders";
+            } else if (!validateWhatsApp(whatsapp)) {
+                errorMsg = "Please enter a valid WhatsApp number (at least 5 digits)";
+            }
+            
+            if (errorMsg) {
+                e.preventDefault();
+                showToast(errorMsg, true);
+                return;
+            }
+            
+            // Show loading state
+            const originalHtml = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="ti ti-loader"></i> Saving...';
+            saveBtn.disabled = true;
+            
+            // Re-enable after 5 seconds (in case of slow network)
+            setTimeout(() => {
+                if (saveBtn.disabled) {
+                    saveBtn.innerHTML = originalHtml;
+                    saveBtn.disabled = false;
+                }
+            }, 6000);
+        });
+        
+        attachClearListeners();
+        
+        // Auto-resize textareas
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(ta => {
+            ta.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+            });
+            setTimeout(() => {
+                ta.style.height = 'auto';
+                ta.style.height = Math.min(ta.scrollHeight, 150) + 'px';
+            }, 10);
+        });
+        
+        // Display server-side messages
+        window.addEventListener('DOMContentLoaded', () => {
+            {% if success_msg %}
+                showToast("{{ success_msg|escapejs }}", false);
+            {% endif %}
+            {% if error %}
+                showToast("{{ error|escapejs }}", true);
+            {% endif %}
+            console.log('Profile page ready — bakery ordering system');
+        });
+        
+        // Touch feedback for buttons
+        saveBtn.addEventListener('touchstart', function() { this.style.opacity = '0.8'; });
+        saveBtn.addEventListener('touchend', function() { this.style.opacity = '1'; });
+        
+        // Optional: mark required fields visually
+        const requiredFields = ['heading', 'whatsapp_number'];
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field && !field.value.trim()) {
+                const parent = field.closest('.input-group');
+                if (parent) parent.style.borderColor = '#cd6b6b';
+                field.addEventListener('input', function() {
+                    const parentGroup = this.closest('.input-group');
+                    if (parentGroup && this.value.trim()) {
+                        parentGroup.style.borderColor = '#efe5dc';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Add Product — {{ settings.heading|default:"Bakery" }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1e1b18;
+            padding: 0 0 20px 0;
+        }
+
+        /* Header */
+        .page-header {
+            background: #ffffff;
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid #efe5dc;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.96);
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            background: #f0ede8;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #5e4e3c;
+            transition: all 0.2s;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: #e8e2dc;
+        }
+
+        .header-row h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            flex: 1;
+        }
+
+        /* Main container */
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: #ffffff;
+            border-radius: 28px;
+            border: 1px solid #efe5dc;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .form-section {
+            padding: 20px;
+            border-bottom: 1px solid #f0ede8;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2b241e;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: #c27e4a;
+            font-size: 18px;
+        }
+
+        .input-group {
+            background: #fbf9f7;
+            border-radius: 20px;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .input-group:focus-within {
+            border-color: #c27e4a;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(194, 126, 74, 0.08);
+        }
+
+        .input-field {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+        }
+
+        .input-field i {
+            font-size: 20px;
+            color: #bb8b64;
+            width: 22px;
+            margin-top: 2px;
+        }
+
+        .input-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-content label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #5e4e3c;
+            letter-spacing: -0.2px;
+        }
+
+        .input-content input,
+        .input-content textarea {
+            border: none;
+            background: transparent;
+            font-family: 'Inter', monospace;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2b241e;
+            outline: none;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .input-content textarea {
+            min-height: 80px;
+            line-height: 1.4;
+            resize: vertical;
+        }
+
+        .input-content input::placeholder,
+        .input-content textarea::placeholder {
+            color: #cbbcaa;
+            font-weight: 400;
+        }
+
+        /* Custom Select Styling */
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-select-wrapper select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-family: 'Inter', monospace;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2b241e;
+            outline: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+        }
+
+        .custom-select-wrapper select option {
+            background: #ffffff;
+            color: #2b241e;
+            padding: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .custom-select-wrapper select:invalid {
+            color: #cbbcaa;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #bb8b64;
+            font-size: 16px;
+        }
+
+        .required-star {
+            color: #cd6b6b;
+            margin-left: 4px;
+        }
+
+        .inline-hint {
+            font-size: 11px;
+            color: #aa9a88;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-save {
+            width: 100%;
+            background: #c27e4a;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            margin-top: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(194, 126, 74, 0.2);
+        }
+
+        .btn-save:active {
+            transform: scale(0.97);
+            background: #a66c3d;
+        }
+
+        /* Empty state for categories */
+        .empty-categories {
+            background: #fff6f0;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            color: #c27e4a;
+            font-size: 13px;
+        }
+
+        .empty-categories i {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .empty-categories a {
+            color: #c27e4a;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Toast message */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            max-width: 380px;
+            margin: 0 auto;
+            background: #2b241e;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 60px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .toast-message.show {
+            opacity: 1;
+        }
+
+        .toast-message.error {
+            background: #cd6b6b;
+        }
+
+        /* Add-on input styles */
+.addon-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.addon-row input {
+    flex: 1;
+    border: 1px solid #efe5dc;
+    background: #fbf9f7;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+}
+
+.addon-row input:focus {
+    border-color: #c27e4a;
+    background: #fff;
+}
+
+.addon-remove-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff6f0;
+    border: 1px solid #fae6de;
+    color: #cd6b6b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.addon-remove-btn:hover {
+    background: #cd6b6b;
+    color: white;
+}
+
+.add-addon-btn {
+    background: #fbf9f7;
+    border: 1px dashed #d4c5b8;
+    border-radius: 14px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    color: #c27e4a;
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+    margin-top: 8px;
+}
+
+.add-addon-btn:hover {
+    background: #fff;
+    border-color: #c27e4a;
+}
+    </style>
+</head>
+<body>
+
+    <div class="page-header">
+        <div class="header-row">
+            <a href="/products/" class="back-btn">
+                <i class="ti ti-arrow-left"></i>
+            </a>
+            <h1>Add Product</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <form method="post" id="addProductForm" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="ti ti-info-circle"></i>
+                        <span>Basic Information</span>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-folder"></i>
+                            <div class="input-content">
+                                <label>Category <span class="required-star">*</span></label>
+                                <div class="custom-select-wrapper">
+                                    <select name="category" id="category" required>
+                                        <option value="" disabled selected>Select a category</option>
+                                        {% for category in categories %}
+                                            <option value="{{ category.id }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <i class="ti ti-chevron-down select-arrow"></i>
+                                </div>
+                                <div class="inline-hint"><i class="ti ti-tag"></i> Choose where this product belongs</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if categories|length == 0 %}
+                    <div class="empty-categories">
+                        <i class="ti ti-alert-circle"></i>
+                        <p>No categories yet. <a href="/add-category/">Create a category</a> first.</p>
+                    </div>
+                    {% endif %}
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-building"></i>
+                            <div class="input-content">
+                                <label>Product Name <span class="required-star">*</span></label>
+                                <input type="text" name="heading" id="heading" placeholder="e.g., Chocolate Croissant" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-message"></i>
+                            <div class="input-content">
+                                <label>Tagline</label>
+                                <input type="text" name="tagline" id="tagline" placeholder="Short catchy phrase">
+                                <div class="inline-hint"><i class="ti ti-info-circle"></i> Brief description shown on product card</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+    <div class="section-title">
+        <i class="ti ti-currency-rupee"></i>
+        <span>Prices & Sizes</span>
+    </div>
+    
+    <div id="optionContainer">
+        <!-- Options will be added here dynamically -->
+    </div>
+    
+    <button type="button" class="add-addon-btn" onclick="addOptionRow()">
+        <i class="ti ti-plus"></i>
+        Add Size/Price
+    </button>
+    
+    <div class="inline-hint" style="margin-top: 8px;">
+        <i class="ti ti-info-circle"></i> 
+        e.g., Small - ₹100, Large - ₹250
+    </div>
+</div>
+
+                    <div class="form-section">
+    <div class="section-title">
+        <i class="ti ti-plus"></i>
+        <span>Add-ons</span>
+    </div>
+    
+    <div id="addonContainer">
+        <!-- Add-ons will be added here dynamically -->
+    </div>
+    
+    <button type="button" class="add-addon-btn" onclick="addAddonRow()">
+        <i class="ti ti-plus"></i>
+        Add Add-on
+    </button>
+    
+    <div class="inline-hint" style="margin-top: 8px;">
+        <i class="ti ti-info-circle"></i> 
+        Optional extras like gift wrapping, personalized messages
+    </div>
+</div>
+                </div>
+
+                <style>
+                    input[type="file"]{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    background:#fff;
+    cursor:pointer;
+}
+
+input[type="file"]::file-selector-button{
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    margin-right:10px;
+    cursor:pointer;
+}
+                </style>
+
+                <div class="form-section">
+    <div class="section-title">
+        <i class="ti ti-photo"></i>
+        <span>Product Images</span>
+    </div>
+
+    <div class="input-group">
+        <div class="input-field">
+            <i class="ti ti-photo"></i>
+            <div class="input-content">
+                <label>Image 1 <span class="required-star">*</span></label>
+                <input type="file" name="image1" accept="image/*" required>
+                <div class="inline-hint">
+                    <i class="ti ti-info-circle"></i>
+                    Main product image
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <div class="input-field">
+            <i class="ti ti-photo"></i>
+            <div class="input-content">
+                <label>Image 2 <span class="required-star">*</span></label>
+                <input type="file" name="image2" accept="image/*" required>
+                <div class="inline-hint">
+                    <i class="ti ti-info-circle"></i>
+                    Second product image
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <div class="input-field">
+            <i class="ti ti-photo"></i>
+            <div class="input-content">
+                <label>Image 3 <span class="required-star">*</span></label>
+                <input type="file" name="image3" accept="image/*" required>
+                <div class="inline-hint">
+                    <i class="ti ti-info-circle"></i>
+                    Third product image
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="ti ti-file-description"></i>
+                        <span>Details</span>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-align-left"></i>
+                            <div class="input-content">
+                                <label>Description</label>
+                                <textarea name="description" id="description" rows="3" placeholder="Full product description, taste notes, serving suggestions..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-salad"></i>
+                            <div class="input-content">
+                                <label>Ingredients</label>
+                                <textarea name="ingredients" id="ingredients" rows="3" placeholder="Flour, butter, sugar, chocolate chips..."></textarea>
+                                <div class="inline-hint"><i class="ti ti-info-circle"></i> List ingredients separated by commas or each on new line</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 0 20px 20px 20px;">
+                    <button type="submit" class="btn-save" id="saveBtn">
+                        <i class="ti ti-device-floppy"></i>
+                        Save Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toastMsg" class="toast-message">
+        <i class="ti ti-check-circle"></i>
+        <span id="toastText"></span>
+    </div>
+
+    <script>
+        const form = document.getElementById('addProductForm');
+        const categorySelect = document.getElementById('category');
+        const headingInput = document.getElementById('heading');
+        const saveBtn = document.getElementById('saveBtn');
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toastMsg');
+            const toastText = document.getElementById('toastText');
+            toastText.innerText = message;
+            toast.classList.add('show');
+            if (isError) {
+                toast.classList.add('error');
+            } else {
+                toast.classList.remove('error');
+            }
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Style the select when value changes
+        function styleSelect() {
+            if (categorySelect.value) {
+                categorySelect.style.color = '#2b241e';
+            } else {
+                categorySelect.style.color = '#cbbcaa';
+            }
+        }
+
+        categorySelect.addEventListener('change', styleSelect);
+        styleSelect();
+
+        // Form validation
+        form.addEventListener('submit', (e) => {
+            const category = categorySelect.value;
+            const heading = headingInput.value.trim();
+
+            let errorMsg = null;
+            if (!category) {
+                errorMsg = "Please select a category";
+            } else if (!heading) {
+                errorMsg = "Product name is required";
+            } else if (heading.length < 2) {
+                errorMsg = "Product name must be at least 2 characters";
+            }
+
+            if (errorMsg) {
+                e.preventDefault();
+                showToast(errorMsg, true);
+                return;
+            }
+
+            // Show loading state
+            const originalHtml = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="ti ti-loader"></i> Saving...';
+            saveBtn.disabled = true;
+
+            setTimeout(() => {
+                if (saveBtn.disabled) {
+                    saveBtn.innerHTML = originalHtml;
+                    saveBtn.disabled = false;
+                }
+            }, 5000);
+        });
+
+        // Display server-side messages
+        window.addEventListener('DOMContentLoaded', () => {
+            {% if success_msg %}
+                showToast("{{ success_msg|escapejs }}", false);
+            {% endif %}
+            {% if error %}
+                showToast("{{ error|escapejs }}", true);
+            {% endif %}
+            console.log('Add Product page ready');
+        });
+
+        // Auto-resize textareas
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(ta => {
+            ta.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+            });
+        });
+
+        // Options (sizes & prices) management
+function addOptionRow(name = '', price = '') {
+    const container = document.getElementById('optionContainer');
+    const row = document.createElement('div');
+    row.className = 'addon-row';
+    row.innerHTML = `
+        <input type="text" name="option_name[]" placeholder="Size (e.g., Small, 1kg)" value="${name}" required>
+        <input type="number" name="option_price[]" placeholder="Price (₹)" value="${price}" style="max-width: 100px;" required>
+        <button type="button" class="addon-remove-btn" onclick="this.parentElement.remove()">
+            <i class="ti ti-x"></i>
+        </button>
+    `;
+    container.appendChild(row);
+}
+
+// Add first option row by default
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('optionContainer') && document.getElementById('optionContainer').children.length === 0) {
+        addOptionRow();
+    }
+});
+
+        // Add-ons management
+function addAddonRow(name = '', price = '') {
+    const container = document.getElementById('addonContainer');
+    const row = document.createElement('div');
+    row.className = 'addon-row';
+    row.innerHTML = `
+        <input type="text" name="addon_name[]" placeholder="Name (e.g., Gift Box)" value="${name}" required>
+        <input type="number" name="addon_price[]" placeholder="Price (₹)" value="${price}" style="max-width: 100px;" required>
+        <button type="button" class="addon-remove-btn" onclick="this.parentElement.remove()">
+            <i class="ti ti-x"></i>
+        </button>
+    `;
+    container.appendChild(row);
+}
+
+// Add first empty row by default
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('addonContainer').children.length === 0) {
+        addAddonRow();
+    }
+});
+    </script>
+</body>
+</html>

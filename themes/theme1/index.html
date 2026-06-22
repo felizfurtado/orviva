@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>{{ settings.heading }} — Artisan Bakery Menu</title>
+  <!-- Font Awesome 6 for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cream-bg: #fbf1e8;
+      --card-bg: #fff8f3;
+      --chocolate: #2f1a10;
+      --chocolate-dark: #3d2417;
+      --pink: #f7b3bc;
+      --pink-strong: #f4a6af;
+      --yellow: #f6c54a;
+      --yellow-dark: #f4a800;
+      --yellow-light: #ffd66b;
+      --beige: #f5d6a9;
+      --beige-dark: #e9c79b;
+      --white: #ffffff;
+      --light-text: #9b8e8a;
+      --border: #f0e3d7;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--cream-bg);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      font-family: "Poppins", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(246, 197, 74, 0.15) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .phone {
+      width: 390px;
+      min-height: 100vh;
+      background: var(--card-bg);
+      border-radius: 45px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(47, 26, 16, 0.12);
+      margin: 24px auto;
+      z-index: 1;
+    }
+
+    /* Preloader */
+    .preloader {
+      position: fixed;
+      inset: 0;
+      background: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .preloader-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 20px;
+      animation: preloaderBounce 1s ease-in-out infinite;
+      background: #f5d6a9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes preloaderBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .preloader-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--beige);
+      border-top-color: var(--yellow-dark);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 15px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .preloader-text {
+      font-family: "Dancing Script", cursive;
+      font-size: 24px;
+      color: var(--chocolate);
+      font-weight: 700;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 340px;
+      background-image: url("https://i.pinimg.com/736x/0c/2f/dd/0c2fdd41b9a5513e5ac3af2ff7eb6d3d.jpg");
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(47, 26, 16, 0.25) 0%, rgba(47, 26, 16, 0.5) 60%, rgba(47, 26, 16, 0.75) 100%);
+      z-index: 1;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 32px;
+      background: var(--card-bg);
+      border-radius: 65% 65% 0 0 / 100% 100% 0 0;
+      z-index: 3;
+    }
+    .hero-glow {
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 214, 107, 0.45) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    
+    .hero-top {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 5;
+    }
+    
+    .btn-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 17px;
+      color: var(--chocolate);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 18px;
+      height: 18px;
+      background: #ff4757;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid white;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .hero-logo {
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      text-align: center;
+      width: 85%;
+    }
+    .logo-icon-wrapper {
+      width: 65px;
+      height: 65px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: var(--yellow-light);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      margin: 0 auto 8px;
+      overflow: hidden;
+    }
+    .logo-icon-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .brand-name {
+      font-family: "Dancing Script", cursive;
+      font-size: 38px;
+      font-weight: 700;
+      text-shadow: 0 4px 15px rgba(47, 26, 16, 0.5);
+      background: linear-gradient(135deg, #ffffff 0%, #ffd66b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .tagline {
+      font-family: "Poppins", sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .hero-badges {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .badge-item {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      font-size: 9px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Search Bar */
+    .search-wrapper {
+      position: relative;
+      z-index: 10;
+      margin-top: -36px;
+      padding: 0 20px;
+    }
+    .search-container {
+      background: white;
+      border-radius: 30px;
+      padding: 6px 6px 6px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(47, 26, 16, 0.12);
+      border: 1.5px solid var(--border);
+    }
+    .search-container:focus-within {
+      border-color: var(--yellow-dark);
+    }
+    .search-container input {
+      border: none;
+      outline: none;
+      font-family: "Poppins", sans-serif;
+      font-size: 14px;
+      color: var(--chocolate);
+      width: 100%;
+      background: transparent;
+      padding: 10px 0;
+    }
+    .search-container input::placeholder {
+      color: var(--light-text);
+    }
+    .search-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--yellow);
+      border: none;
+      color: var(--chocolate);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Pre-order Notice */
+    .preorder-notice {
+      background: #fff3df;
+      margin: 16px 18px 0;
+      padding: 12px 16px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px dashed var(--yellow-dark);
+    }
+    .notice-icon {
+      font-size: 22px;
+      color: var(--yellow-dark);
+      background: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .notice-text strong {
+      font-family: 'Baloo 2', cursive;
+      font-size: 15px;
+      color: var(--chocolate);
+      display: block;
+    }
+    .notice-text span {
+      font-size: 11px;
+      color: #7b6e66;
+    }
+
+    /* Body Scroll */
+    .body-scroll { padding: 18px 18px 110px; }
+    .section-label {
+      font-family: "Baloo 2", cursive;
+      font-size: 19px;
+      color: var(--chocolate);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    /* Categories */
+    .categories {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .categories::-webkit-scrollbar { display: none; }
+    .cat-card {
+      flex-shrink: 0;
+      width: 78px;
+      height: 78px;
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      background: var(--beige);
+      transition: all 0.2s;
+    }
+    .cat-card.active {
+      border-color: var(--yellow-dark);
+      background: #fff3df;
+    }
+    .cat-icon {
+      font-size: 26px;
+      color: var(--chocolate);
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(246, 197, 74, 0.25);
+      border-radius: 14px;
+    }
+    .cat-card.active .cat-icon { background: var(--yellow); }
+    .cat-label {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--chocolate);
+      white-space: nowrap;
+    }
+
+    /* Product Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .product-card {
+      background: var(--white);
+      border-radius: 26px;
+      padding: 14px 12px;
+      box-shadow: 0 4px 18px rgba(47, 26, 16, 0.06);
+      cursor: pointer;
+      transition: transform 0.22s;
+      position: relative;
+      border: 1px solid var(--border);
+    }
+    .product-card:active {
+      transform: translateY(-4px);
+    }
+    .product-card.hide-product {
+      display: none;
+    }
+    .ribbon {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--yellow);
+      color: var(--chocolate);
+      font-size: 8px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+      z-index: 2;
+    }
+    .ribbon-new { background: var(--pink-strong); color: white; }
+    .fav-btn {
+      position: absolute;
+      top: 13px;
+      right: 13px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      color: #d0c0b8;
+    }
+    .fav-btn.liked { color: #f4a6af; }
+    .product-img {
+      width: 100%;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .product-name {
+      font-family: "Baloo 2", cursive;
+      font-size: 15px;
+      color: var(--chocolate);
+      font-weight: 700;
+    }
+    .product-sub {
+      font-size: 10px;
+      color: var(--light-text);
+      margin-top: 3px;
+    }
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .product-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--chocolate);
+      font-family: "Baloo 2", cursive;
+    }
+    .add-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--chocolate);
+      border: none;
+      color: white;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .no-products-message {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--white);
+      border-radius: 26px;
+      color: var(--light-text);
+      grid-column: 1 / -1;
+    }
+    .no-products-message i {
+      font-size: 48px;
+      color: var(--beige-dark);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    @media (max-width: 420px) {
+      .phone { margin: 0; border-radius: 0; width: 100vw; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">
+    {% if settings.logo_link %}
+      <img src="{{ settings.logo_link }}" alt="{{ settings.heading }} logo" />
+    {% else %}
+      <i class="fas fa-birthday-cake"></i>
+    {% endif %}
+  </div>
+  <div class="preloader-spinner"></div>
+  <div class="preloader-text">{{ settings.heading }}</div>
+</div>
+
+<div class="phone">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-top">
+      <button class="btn-circle notification-btn" onclick="alert('You have new offers! 🎂')">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge">3</span>
+      </button>
+    </div>
+    <div class="hero-logo">
+      <div class="logo-icon-wrapper">
+        {% if settings.logo_link %}
+          <img src="{{ settings.logo_link }}" alt="{{ settings.heading }} logo" />
+        {% else %}
+          <i class="fas fa-cake-candles"></i>
+        {% endif %}
+      </div>
+      <div class="brand-name">{{ settings.heading }}</div>
+      <div class="tagline">{{ settings.tagline }}</div>
+      <div class="hero-badges">
+        <span class="badge-item"><i class="fas fa-star"></i> Artisan</span>
+        <span class="badge-item"><i class="fas fa-leaf"></i> Fresh Daily</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-wrapper">
+    <div class="search-container">
+      <span class="search-icon-left"><i class="fas fa-search"></i></span>
+      <input type="text" id="searchInput" placeholder="Search our delicious menu…" />
+      <button class="search-btn" id="searchSubmitBtn">
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="preorder-notice">
+    <div class="notice-icon"><i class="fas fa-clock"></i></div>
+    <div class="notice-text">
+      <strong>Order 1 Day in Advance</strong>
+      <span>We bake fresh after you order · Not instant</span>
+    </div>
+  </div>
+
+  <div class="body-scroll">
+    <div class="section-label">Our Menu</div>
+    
+    <div class="categories" id="cats">
+      <!-- ALL Category at the beginning -->
+      <div class="cat-card active" data-category-id="all" data-category-name="All" onclick="filterByCategory(this)">
+        <div class="cat-icon"><i class="fas fa-utensils"></i></div>
+        <span class="cat-label">All</span>
+      </div>
+      {% for category in categories %}
+        <div class="cat-card" data-category-id="{{ category.id }}" data-category-name="{{ category.name }}" onclick="filterByCategory(this)">
+          <div class="cat-icon">
+            {% if category.name == 'Cookies' %}<i class="fas fa-cookie-bite"></i>
+            {% elif category.name == 'Cupcakes' %}<i class="fas fa-candy-cane"></i>
+            {% elif category.name == 'Cakes' %}<i class="fas fa-birthday-cake"></i>
+            {% elif category.name == 'Cheesecakes' %}<i class="fas fa-cheese"></i>
+            {% elif category.name == 'Dessert Cups' %}<i class="fas fa-wine-glass-alt"></i>
+            {% elif category.name == 'Pastries' %}<i class="fas fa-bread-slice"></i>
+            {% elif category.name == 'Brownies' %}<i class="fas fa-chocolate-bar"></i>
+            {% else %}<i class="fas fa-bread-slice"></i>
+            {% endif %}
+          </div>
+          <span class="cat-label">{{ category.name }}</span>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="grid" id="productsGrid">
+      {% for product in products %}
+        <div class="product-card" data-category-id="{{ product.category.id }}" data-product-name="{{ product.heading|lower }}" onclick="window.location.href='/product/{{ product.slug }}/'">
+          {% if forloop.first %}
+            <div class="ribbon">⭐ Best Seller</div>
+          {% elif forloop.counter == 4 %}
+            <div class="ribbon ribbon-new">NEW</div>
+          {% endif %}
+          <button class="fav-btn {% if forloop.counter == 1 or forloop.counter == 3 %}liked{% endif %}" onclick="event.stopPropagation(); toggleFav(this);">
+            <i class="{% if forloop.counter == 1 or forloop.counter == 3 %}fas{% else %}far{% endif %} fa-heart"></i>
+          </button>
+          <div class="product-img">
+            {% if product.image1 %}
+  <img src="/{{ product.image1 }}" alt="{{ product.heading }}">
+{% else %}
+  <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&h=150&fit=crop&auto=format" alt="{{ product.heading }}">
+{% endif %}
+          </div>
+          <div class="product-name">{{ product.heading }}</div>
+          <div class="product-sub">{{ product.tagline }}</div>
+          <div class="product-footer">
+            <span class="product-price">
+    {% if product.options %}
+        {% for size, price in product.options.items %}
+            {% if forloop.first %}₹{{ price }}{% endif %}
+        {% endfor %}
+    {% else %}
+        ₹{{ product.id }}.00
+    {% endif %}
+</span>
+            <button class="add-btn" onclick="event.stopPropagation(); window.location.href='/product/{{ product.slug }}/';">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+      {% empty %}
+        <div class="no-products-message">
+          <i class="fas fa-cake"></i>
+          No products available yet.
+        </div>
+      {% endfor %}
+    </div>
+
+    <div style="text-align: center; margin-top: 24px; padding: 16px; background: #fff3df; border-radius: 20px; border: 1px dashed var(--yellow);">
+      <p style="font-family: 'Baloo 2', cursive; font-size: 14px; color: var(--chocolate);">🌸 <strong>Seasonal Options Available!</strong> 🌸</p>
+      <p style="font-size: 11px; color: var(--light-text); margin-top: 4px;">Ask us about our seasonal specials & custom orders</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Preloader
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      document.getElementById("preloader").classList.add("hidden");
+    }, 1500);
+  });
+
+  let activeCategoryId = "all";
+
+  function filterByCategory(categoryElement) {
+    document.querySelectorAll(".cat-card").forEach((c) => c.classList.remove("active"));
+    categoryElement.classList.add("active");
+    
+    activeCategoryId = categoryElement.getAttribute("data-category-id");
+    const categoryName = categoryElement.getAttribute("data-category-name");
+    
+    const allProducts = document.querySelectorAll(".product-card");
+    let visibleCount = 0;
+    
+    allProducts.forEach(product => {
+      const productCategoryId = product.getAttribute("data-category-id");
+      if (activeCategoryId === "all" || productCategoryId === activeCategoryId) {
+        product.classList.remove("hide-product");
+        visibleCount++;
+      } else {
+        product.classList.add("hide-product");
+      }
+    });
+    
+    let noProductsMsg = document.getElementById("noProductsMessage");
+    if (visibleCount === 0 && allProducts.length > 0) {
+      if (!noProductsMsg) {
+        const grid = document.getElementById("productsGrid");
+        const msgDiv = document.createElement("div");
+        msgDiv.id = "noProductsMessage";
+        msgDiv.className = "no-products-message";
+        msgDiv.innerHTML = '<i class="fas fa-search"></i>No products in this category.';
+        grid.appendChild(msgDiv);
+      }
+    } else if (noProductsMsg) {
+      noProductsMsg.remove();
+    }
+    
+    // Reset search when changing category
+    document.getElementById("searchInput").value = "";
+    resetSearch();
+  }
+  
+  function performSearch() {
+    const query = document.getElementById("searchInput").value.trim().toLowerCase();
+    const visibleProducts = document.querySelectorAll(".product-card:not(.hide-product)");
+    
+    visibleProducts.forEach(product => {
+      const productName = product.getAttribute("data-product-name") || "";
+      if (query === "" || productName.includes(query)) {
+        product.style.display = "";
+      } else {
+        product.style.display = "none";
+      }
+    });
+  }
+  
+  function resetSearch() {
+    document.querySelectorAll(".product-card").forEach(product => {
+      product.style.display = "";
+    });
+  }
+  
+  document.getElementById("searchSubmitBtn").addEventListener("click", performSearch);
+  document.getElementById("searchInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") performSearch();
+  });
+  document.getElementById("searchInput").addEventListener("input", function() {
+    if (this.value.trim() === "") resetSearch();
+  });
+
+  function toggleFav(btn) {
+    const isLiked = btn.classList.toggle("liked");
+    const icon = btn.querySelector("i");
+    if (icon) icon.className = isLiked ? "fas fa-heart" : "far fa-heart";
+    btn.classList.add("pop");
+    setTimeout(() => btn.classList.remove("pop"), 320);
+  }
+</script>
+</body>
+</html>

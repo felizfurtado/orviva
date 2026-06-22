@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Create Store — Bakery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e1b18;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 100%;
+           
+            background: #ffffff;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            padding: 14px 24px 6px 24px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 590;
+            color: #1c1c1e;
+            letter-spacing: 0.2px;
+        }
+
+        .main-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 20px 20px 20px;
+            scrollbar-width: thin;
+        }
+
+        .main-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .main-scroll::-webkit-scrollbar-track {
+            background: #f0eeeb;
+            border-radius: 10px;
+        }
+
+        .main-scroll::-webkit-scrollbar-thumb {
+            background: #d4c5b8;
+            border-radius: 10px;
+        }
+
+        .hero-section {
+            padding: 20px 0 24px 0;
+            text-align: center;
+        }
+
+        .icon-wrapper {
+            width: 72px;
+            height: 72px;
+            background: #f7f3ef;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .icon-wrapper i {
+            font-size: 36px;
+            color: #c27e4a;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .subhead {
+            font-size: 14px;
+            color: #8f7e6c;
+            font-weight: 500;
+        }
+
+        .form-card {
+            background: #ffffff;
+            border-radius: 28px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            background: #fbf9f7;
+            border-radius: 20px;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s ease;
+            margin-bottom: 12px;
+        }
+
+        .input-group:focus-within {
+            border-color: #c27e4a;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(194, 126, 74, 0.08);
+        }
+
+        .input-field {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 16px;
+            height: 56px;
+        }
+
+        .input-field i {
+            font-size: 20px;
+            color: #bb8b64;
+            width: 22px;
+        }
+
+        .input-field input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: 'Inter', monospace;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2b241e;
+            outline: none;
+        }
+
+        .input-field input::placeholder {
+            color: #cbbcaa;
+            font-weight: 400;
+        }
+
+        .eye-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border-radius: 30px;
+            color: #9a8774;
+            transition: color 0.2s;
+        }
+
+        .eye-btn:hover {
+            color: #c27e4a;
+        }
+
+        .validation-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 6px 12px 12px 12px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .match-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 30px;
+            background: #f6f4f1;
+        }
+
+        .match-status i {
+            font-size: 14px;
+        }
+
+        .match-success {
+            color: #2b7e4a;
+        }
+
+        .match-error {
+            color: #cd6b6b;
+        }
+
+        .strength-badge {
+            background: #f0ede8;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #7a6856;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-create {
+            width: 100%;
+            background: #c27e4a;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            margin-top: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(194, 126, 74, 0.2);
+        }
+
+        .btn-create:active {
+            transform: scale(0.97);
+            background: #a66c3d;
+        }
+
+        .message-container {
+            margin-bottom: 16px;
+        }
+
+        .alert-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff6f0;
+            border-radius: 18px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border-left: 3px solid #cd6b6b;
+            color: #b1624a;
+        }
+
+        .alert-success {
+            border-left-color: #2b7e4a;
+            background: #f0f9f0;
+            color: #235e3a;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #aa9a88;
+            padding: 12px 0 18px 0;
+            border-top: 0.5px solid #efebe6;
+            margin-top: 8px;
+            background: #ffffff;
+        }
+
+        .home-indicator {
+            width: 130px;
+            height: 5px;
+            background: #dad3cc;
+            border-radius: 100px;
+            margin: 8px auto 12px auto;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:focus {
+            transition: background-color 0s 600000s, color 0s 600000s;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="status-bar">
+    </div>
+
+    <div class="main-scroll">
+        <div class="hero-section">
+            <div class="icon-wrapper">
+                <i class="ti ti-building-store"></i>
+            </div>
+            <h1>Create store</h1>
+            <div class="subhead">Launch your bakery storefront</div>
+        </div>
+
+        <div class="progress-steps" style="margin-bottom: 24px; padding: 0 4px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+        <div style="flex: 1; text-align: center;">
+            <div style="width: 32px; height: 32px; background: #c27e4a; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; margin-bottom: 6px;">1</div>
+            <div style="font-size: 11px; font-weight: 600; color: #c27e4a;">Account</div>
+        </div>
+        <div style="flex: 1; text-align: center;">
+            <div style="width: 32px; height: 32px; background: #e8e2dc; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: #8f7e6c; font-weight: 700; font-size: 14px; margin-bottom: 6px;">2</div>
+            <div style="font-size: 11px; font-weight: 500; color: #aa9a88;">Store</div>
+        </div>
+        <div style="flex: 1; text-align: center;">
+            <div style="width: 32px; height: 32px; background: #e8e2dc; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: #8f7e6c; font-weight: 700; font-size: 14px; margin-bottom: 6px;">3</div>
+            <div style="font-size: 11px; font-weight: 500; color: #aa9a88;">Products</div>
+        </div>
+        <div style="flex: 1; text-align: center;">
+            <div style="width: 32px; height: 32px; background: #e8e2dc; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: #8f7e6c; font-weight: 700; font-size: 14px; margin-bottom: 6px;">4</div>
+            <div style="font-size: 11px; font-weight: 500; color: #aa9a88;">Launch</div>
+        </div>
+    </div>
+    <div style="height: 2px; background: #efe5dc; margin-top: 12px; border-radius: 2px; overflow: hidden;">
+        <div style="width: 25%; height: 100%; background: #c27e4a; border-radius: 2px;"></div>
+    </div>
+</div>
+
+        <div class="form-card">
+            <div id="dynamicMessage" class="message-container"></div>
+
+            <form method="post" id="storeForm" novalidate>
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-user"></i>
+                        <input type="text" name="username" id="username" placeholder="Username" autocomplete="username" autocorrect="off" spellcheck="false">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-lock"></i>
+                        <input type="password" name="password" id="password" placeholder="Password" autocomplete="new-password">
+                        <button type="button" class="eye-btn" onclick="toggleField('password', 'eyePwd')">
+                            <i class="ti ti-eye" id="eyePwd"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-key"></i>
+                        <input type="password" name="confirm_password" id="confirmPwd" placeholder="Retype password" autocomplete="off">
+                        <button type="button" class="eye-btn" onclick="toggleField('confirmPwd', 'eyeConfirm')">
+                            <i class="ti ti-eye" id="eyeConfirm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="validation-row">
+                    <div id="matchIndicator" class="match-status match-success">
+                        <i class="ti ti-check"></i>
+                        <span id="matchText">Passwords match</span>
+                    </div>
+                    <div id="strengthBox" class="strength-badge">
+                        <i class="ti ti-shield"></i>
+                        <span id="strengthLabel">Enter password</span>
+                    </div>
+                </div>
+                <br>
+
+                <button type="submit" class="btn-create">
+                    <i class="ti ti-sparkles"></i>
+                    Create store
+                </button>
+            </form>
+
+            <div class="footer-note">
+                <i class="ti ti-clock-hour-4" style="font-size: 11px; margin-right: 4px;"></i>
+                Instant setup · Secure · Ready to sell
+            </div>
+        </div>
+    </div>
+    <div class="home-indicator"></div>
+</div>
+
+<script>
+    const passwordField = document.getElementById('password');
+    const confirmField = document.getElementById('confirmPwd');
+    const matchTextSpan = document.getElementById('matchText');
+    const matchContainer = document.getElementById('matchIndicator');
+    const strengthLabelSpan = document.getElementById('strengthLabel');
+    const strengthBox = document.getElementById('strengthBox');
+    const form = document.getElementById('storeForm');
+    const usernameInput = document.getElementById('username');
+    const messageContainer = document.getElementById('dynamicMessage');
+
+    let messageTimeout = null;
+    let hasShownServerError = false;
+
+    function toggleField(fieldId, iconId) {
+        const field = document.getElementById(fieldId);
+        const icon = document.getElementById(iconId);
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.className = 'ti ti-eye-off';
+        } else {
+            field.type = 'password';
+            icon.className = 'ti ti-eye';
+        }
+    }
+
+    function evaluateStrength(pwd) {
+        if (!pwd || pwd.length === 0) return { label: 'Enter password', grade: 0 };
+        let score = 0;
+        if (pwd.length >= 6) score++;
+        if (pwd.length >= 10) score++;
+        if (/[A-Z]/.test(pwd)) score++;
+        if (/[0-9]/.test(pwd)) score++;
+        if (/[^A-Za-z0-9]/.test(pwd)) score++;
+        
+        if (score <= 2) return { label: 'Weak', grade: 1 };
+        if (score <= 4) return { label: 'Medium', grade: 2 };
+        return { label: 'Strong', grade: 3 };
+    }
+
+    function updateStrengthMeter() {
+        const pwd = passwordField.value;
+        const strength = evaluateStrength(pwd);
+        strengthLabelSpan.innerText = strength.label;
+        
+        if (strength.label === 'Strong') {
+            strengthBox.style.background = '#e6f4ea';
+            strengthBox.style.color = '#2b7e4a';
+        } else if (strength.label === 'Medium') {
+            strengthBox.style.background = '#fef2e0';
+            strengthBox.style.color = '#c27e4a';
+        } else {
+            strengthBox.style.background = '#f0ede8';
+            strengthBox.style.color = '#7a6856';
+        }
+    }
+
+    function updateMatchFeedback() {
+        const pwd = passwordField.value;
+        const confirm = confirmField.value;
+        
+        if (confirm === "" && pwd === "") {
+            matchTextSpan.innerText = "Passwords match";
+            matchContainer.className = "match-status match-success";
+            matchContainer.querySelector('i').className = "ti ti-check";
+            return;
+        }
+        
+        if (pwd === confirm && pwd !== "") {
+            matchTextSpan.innerText = "Passwords match";
+            matchContainer.className = "match-status match-success";
+            matchContainer.querySelector('i').className = "ti ti-check-circle";
+        } else if (confirm !== "" && pwd !== confirm) {
+            matchTextSpan.innerText = "Passwords do not match";
+            matchContainer.className = "match-status match-error";
+            matchContainer.querySelector('i').className = "ti ti-alert-triangle";
+        } else {
+            matchTextSpan.innerText = "Retype password";
+            matchContainer.className = "match-status";
+            matchContainer.querySelector('i').className = "ti ti-dots";
+        }
+    }
+
+    function clearDynamicMessage() {
+        if (messageTimeout) {
+            clearTimeout(messageTimeout);
+            messageTimeout = null;
+        }
+        const existing = document.querySelector('#dynamicMessage .alert-message');
+        if (existing) existing.remove();
+    }
+
+    function showError(message) {
+        clearDynamicMessage();
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert-message';
+        errorDiv.innerHTML = `<i class="ti ti-alert-circle"></i><span>${message}</span>`;
+        messageContainer.appendChild(errorDiv);
+        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        messageTimeout = setTimeout(() => {
+            if (errorDiv) errorDiv.remove();
+            messageTimeout = null;
+        }, 3000);
+    }
+
+    function showSuccessHint(message) {
+        clearDynamicMessage();
+        const successDiv = document.createElement('div');
+        successDiv.className = 'alert-message alert-success';
+        successDiv.innerHTML = `<i class="ti ti-check-circle"></i><span>${message}</span>`;
+        messageContainer.appendChild(successDiv);
+        messageTimeout = setTimeout(() => {
+            if (successDiv) successDiv.remove();
+            messageTimeout = null;
+        }, 3000);
+    }
+
+    passwordField.addEventListener('input', () => {
+        updateStrengthMeter();
+        updateMatchFeedback();
+        clearDynamicMessage();
+        hasShownServerError = false;
+    });
+    
+    confirmField.addEventListener('input', () => {
+        updateMatchFeedback();
+        clearDynamicMessage();
+        hasShownServerError = false;
+    });
+
+    usernameInput.addEventListener('input', () => {
+        clearDynamicMessage();
+        hasShownServerError = false;
+    });
+
+    form.addEventListener('submit', (e) => {
+        clearDynamicMessage();
+        
+        const username = usernameInput.value.trim();
+        const password = passwordField.value;
+        const confirm = confirmField.value;
+        
+        let errorMsg = null;
+        
+        if (!username) {
+            errorMsg = "Username is required";
+        } else if (username.length < 3) {
+            errorMsg = "Username must be at least 3 characters";
+        } else if (!password) {
+            errorMsg = "Please enter a password";
+        } else if (password !== confirm) {
+            errorMsg = "Passwords do not match";
+        } else if (password.length < 4) {
+            errorMsg = "Password must be at least 4 characters";
+        }
+        
+        if (errorMsg) {
+            e.preventDefault();
+            showError(errorMsg);
+            return;
+        }
+        
+        const strength = evaluateStrength(password);
+        if (strength.grade === 1 && password.length >= 4) {
+            e.preventDefault();
+            showError("Your password is too weak. Use at least 6 characters with letters/numbers.");
+            return;
+        }
+        
+        console.log('Form submitted with:', {
+            username: username,
+            password: '***hidden***',
+            passwordLength: password.length,
+            confirmMatch: password === confirm,
+            timestamp: new Date().toISOString()
+        });
+    });
+
+    updateMatchFeedback();
+    updateStrengthMeter();
+
+    window.addEventListener('DOMContentLoaded', () => {
+        {% if error %}
+        if (!hasShownServerError) {
+            hasShownServerError = true;
+            console.log('Server error present:', "{{ error|escapejs }}");
+            setTimeout(() => {
+                showError("{{ error|escapejs }}");
+            }, 100);
+        }
+        {% endif %}
+        
+        {% if success_msg %}
+        console.log('Success message present:', "{{ success_msg|escapejs }}");
+        setTimeout(() => {
+            showSuccessHint("{{ success_msg|escapejs }}");
+        }, 100);
+        {% endif %}
+    });
+    
+    console.log('Store creation form ready', {
+        formAction: form.action || 'same page',
+        formMethod: form.method,
+        timestamp: new Date().toISOString()
+    });
+</script>
+</body>
+</html>

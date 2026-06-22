@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Categories — {{ settings.heading|default:"Bakery" }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1e1b18;
+            padding: 0 0 80px 0;
+        }
+
+        /* Header */
+        .categories-header {
+            background: #ffffff;
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid #efe5dc;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.96);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-row h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .add-btn {
+            background: #c27e4a;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(194,126,74,0.2);
+        }
+
+        .add-btn:active {
+            transform: scale(0.96);
+            background: #a66c3d;
+        }
+
+        .stats-chip {
+            background: #f0ede8;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #8f7e6c;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        /* Main container */
+        .container {
+            padding: 16px 20px 20px 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Category Cards */
+        .category-card {
+            background: #ffffff;
+            border-radius: 24px;
+            margin-bottom: 16px;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .category-card:active {
+            transform: scale(0.99);
+        }
+
+        .category-content {
+            padding: 18px;
+        }
+
+        .category-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .category-title h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2b241e;
+            letter-spacing: -0.3px;
+        }
+
+        .product-count {
+            background: #fbf9f7;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #c27e4a;
+            border: 0.5px solid #efe5dc;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .product-count i {
+            font-size: 12px;
+        }
+
+        .category-desc {
+            font-size: 13px;
+            color: #9b8a76;
+            margin: 8px 0 4px 0;
+            line-height: 1.4;
+        }
+
+        .divider-light {
+            height: 1px;
+            background: #f0ede8;
+            margin: 14px 0 12px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 6px;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 40px;
+            transition: all 0.2s;
+            background: #fbf9f7;
+            color: #5e4e3c;
+            border: 0.5px solid #efe5dc;
+            cursor: pointer;
+        }
+
+        .action-btn.edit-btn {
+            background: #ffffff;
+            color: #c27e4a;
+            border-color: #f0e2d8;
+        }
+
+        .action-btn.delete-btn {
+            background: #fff6f0;
+            color: #cd6b6b;
+            border-color: #fae6de;
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 24px;
+            background: #ffffff;
+            border-radius: 28px;
+            border: 1px solid #efe5dc;
+        }
+
+        .empty-state i {
+            font-size: 56px;
+            color: #d4c5b8;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            color: #aa9a88;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .empty-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #c27e4a;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            right: 0;
+            background: #ffffff;
+            border-top: 1px solid #efe5dc;
+            display: flex;
+            height: 65px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.04);
+            z-index: 20;
+        }
+
+        .bottom-nav a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #aa9a88;
+            font-size: 11px;
+            font-weight: 600;
+            gap: 4px;
+            transition: color 0.2s;
+        }
+
+        .bottom-nav a i {
+            font-size: 22px;
+        }
+
+        .bottom-nav a.active {
+            color: #c27e4a;
+        }
+
+        .bottom-nav a:active {
+            background: #faf8f5;
+        }
+
+        /* Delete Confirmation Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-card {
+            background: white;
+            max-width: 320px;
+            width: 85%;
+            border-radius: 32px;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+        }
+
+        .modal-card h4 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .warning-text {
+            font-size: 13px;
+            color: #cd6b6b;
+            margin-top: 8px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 60px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .modal-confirm {
+            background: #cd6b6b;
+            color: white;
+        }
+
+        .modal-cancel {
+            background: #f0ede8;
+            color: #2b241e;
+        }
+
+        /* Toast message */
+        .toast-message {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            right: 20px;
+            max-width: 380px;
+            margin: 0 auto;
+            background: #2b241e;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 60px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+        .toast-message.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="categories-header">
+        <div class="header-row">
+            <h1>Categories</h1>
+            <a href="/add-category/" class="add-btn">
+                <i class="ti ti-plus"></i>
+                <span>Add</span>
+            </a>
+        </div>
+        <div class="stats-chip">
+            <i class="ti ti-folders"></i>
+            <span>{{ categories|length }} categor{% if categories|length == 1 %}y{% else %}ies{% endif %}</span>
+        </div>
+    </div>
+
+    <div class="container">
+        {% for category in categories %}
+            <div class="category-card" data-category-id="{{ category.id }}" data-category-name="{{ category.name }}">
+                <div class="category-content">
+                    <div class="category-title">
+                        <h3>{{ category.name }}</h3>
+                        {% if category.product_count %}
+                            <div class="product-count">
+                                <i class="ti ti-cookie"></i>
+                                <span>{{ category.product_count }} products</span>
+                            </div>
+                        {% else %}
+                            <div class="product-count">
+                                <i class="ti ti-pizza"></i>
+                                <span>0 items</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if category.description %}
+                        <p class="category-desc">{{ category.description }}</p>
+                    {% endif %}
+
+                    <div class="divider-light"></div>
+
+                    <div class="action-buttons">
+                        <a href="#" class="action-btn edit-btn" data-edit-id="{{ category.id }}">
+                            <i class="ti ti-edit"></i> Edit
+                        </a>
+                        <button type="button" class="action-btn delete-btn" data-delete-id="{{ category.id }}" data-delete-name="{{ category.name }}" data-product-count="{{ category.product_count|default:"0" }}">
+                            <i class="ti ti-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <i class="ti ti-category"></i>
+                <p>No categories yet<br>Organize your menu with categories</p>
+                <a href="/add-category/" class="empty-btn">
+                    <i class="ti ti-plus"></i> Create first category
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal-card">
+            <i class="ti ti-alert-triangle" style="font-size: 48px; color: #cd6b6b; margin-bottom: 12px;"></i>
+            <h4>Delete category?</h4>
+            <p id="deleteCategoryName" style="color:#6b5a48; margin-top: 4px;">Category name</p>
+            <p id="deleteWarningText" style="font-size: 13px; margin-top: 12px;">This action cannot be undone.</p>
+            <div class="warning-text" id="productWarning"></div>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-cancel" id="cancelDeleteBtn">Cancel</button>
+                <button class="modal-btn modal-confirm" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast for info -->
+    <div id="toastMsg" class="toast-message">
+        <i class="ti ti-info-circle"></i>
+        <span id="toastText"></span>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="/dashboard/">
+            <i class="ti ti-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/products/">
+            <i class="ti ti-pizza"></i>
+            <span>Products</span>
+        </a>
+        <a href="/categories/" class="active">
+            <i class="ti ti-category"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/profile/">
+            <i class="ti ti-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+
+    <!-- Edit Category Modal -->
+<div id="editModal" class="modal-overlay">
+    <div class="modal-card">
+        <i class="ti ti-edit" style="font-size: 48px; color: #c27e4a; margin-bottom: 12px;"></i>
+        <h4>Edit Category</h4>
+        <form id="editCategoryForm" method="POST" action="/edit-category/0/" style="margin-top: 20px;">
+            <input type="hidden" name="csrfmiddlewaretoken" id="editCsrfToken">
+            <input type="text" 
+                   name="name" 
+                   id="editCategoryNameInput" 
+                   placeholder="Category name" 
+                   style="width: 100%; padding: 14px; border-radius: 16px; border: 1px solid #efe5dc; font-size: 16px; font-family: 'Inter'; outline: none;"
+                   required>
+            <div class="modal-buttons" style="margin-top: 20px;">
+                <button type="button" class="modal-btn modal-cancel" id="cancelEditBtn">Cancel</button>
+                <button type="submit" class="modal-btn" style="background: #c27e4a; color: white;">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // ============ UTILITY FUNCTIONS ============
+    
+    function getCsrfToken() {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [key, value] = cookie.trim().split('=');
+            if (key === 'csrftoken') return value;
+        }
+        return '';
+    }
+    
+    function showToast(message, isError = false) {
+        const toast = document.getElementById('toastMsg');
+        const toastText = document.getElementById('toastText');
+        toastText.innerText = message;
+        toast.classList.add('show');
+        if (isError) {
+            toast.style.background = '#cd6b6b';
+        } else {
+            toast.style.background = '#2b241e';
+        }
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.style.background = '#2b241e';
+            }, 300);
+        }, 2500);
+    }
+
+    // ============ EDIT MODAL LOGIC ============
+    
+    const editModal = document.getElementById('editModal');
+    const editForm = document.getElementById('editCategoryForm');
+    const editNameInput = document.getElementById('editCategoryNameInput');
+    const editCsrfInput = document.getElementById('editCsrfToken');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    let editCategoryId = null;
+
+    const editButtons = document.querySelectorAll('.edit-btn');
+    editButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = btn.getAttribute('data-edit-id');
+            const name = btn.closest('.category-card').querySelector('h3').innerText;
+            
+            editCategoryId = id;
+            editNameInput.value = name;
+            editCsrfInput.value = getCsrfToken();
+            editForm.action = `/edit-category/${id}/`;
+            editModal.classList.add('active');
+        });
+    });
+
+    cancelEditBtn.addEventListener('click', () => {
+        editModal.classList.remove('active');
+    });
+
+    editModal.addEventListener('click', (e) => {
+        if (e.target === editModal) {
+            editModal.classList.remove('active');
+        }
+    });
+
+    // ============ DELETE MODAL LOGIC ============
+    
+    let deleteCategoryId = null;
+    
+    const deleteModal = document.getElementById('deleteModal');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    const cancelBtn = document.getElementById('cancelDeleteBtn');
+    const deleteCategoryNameSpan = document.getElementById('deleteCategoryName');
+    const productWarningSpan = document.getElementById('productWarning');
+    
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = btn.getAttribute('data-delete-id');
+            const name = btn.getAttribute('data-delete-name') || 'this category';
+            const productCount = parseInt(btn.getAttribute('data-product-count') || '0');
+            if (id) {
+                deleteCategoryId = id;
+                deleteCategoryNameSpan.innerText = `"${name}"`;
+                
+                if (productCount > 0) {
+                    productWarningSpan.innerHTML = `<i class="ti ti-alert-circle"></i> This category has ${productCount} product(s). Deleting will move them to "Uncategorized" or remove association (based on store settings).`;
+                    productWarningSpan.style.display = 'block';
+                } else {
+                    productWarningSpan.innerHTML = '';
+                    productWarningSpan.style.display = 'none';
+                }
+                deleteModal.classList.add('active');
+            }
+        });
+    });
+    
+    function closeDeleteModal() {
+        deleteModal.classList.remove('active');
+        deleteCategoryId = null;
+    }
+    
+    cancelBtn.addEventListener('click', closeDeleteModal);
+    
+    confirmBtn.addEventListener('click', () => {
+        if (!deleteCategoryId) return;
+        
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/delete-category/${deleteCategoryId}/`;
+        
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = getCsrfToken();
+        form.appendChild(csrfInput);
+        
+        document.body.appendChild(form);
+        
+        const originalText = confirmBtn.innerText;
+        confirmBtn.innerText = 'Deleting...';
+        confirmBtn.disabled = true;
+        
+        form.submit();
+        
+        setTimeout(() => {
+            confirmBtn.innerText = originalText;
+            confirmBtn.disabled = false;
+        }, 3000);
+    });
+    
+    deleteModal.addEventListener('click', (e) => {
+        if (e.target === deleteModal) closeDeleteModal();
+    });
+
+    // ============ TOUCH ENHANCEMENTS ============
+    
+    const allActionBtns = document.querySelectorAll('.action-btn');
+    allActionBtns.forEach(btn => {
+        btn.addEventListener('touchstart', function() { this.style.opacity = '0.7'; });
+        btn.addEventListener('touchend', function() { this.style.opacity = '1'; });
+    });
+
+    // ============ INITIALIZATION ============
+    
+    console.log('Categories page ready — bakery ordering system');
+    
+    window.addEventListener('DOMContentLoaded', () => {
+        {% if success_msg %}
+            showToast("{{ success_msg|escapejs }}", false);
+        {% endif %}
+        {% if error %}
+            showToast("{{ error|escapejs }}", true);
+        {% endif %}
+    });
+</script>
+    
+    <!-- Django template context expected:
+         categories: list of objects with fields: id, name, description, product_count (optional)
+         Edit link: /edit-category/<id>/ , delete via POST to /delete-category/<id>/
+         success_msg and error optional from Django messages framework
+    -->
+</body>
+</html>

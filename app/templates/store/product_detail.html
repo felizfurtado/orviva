@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ product.heading }} — {{ settings.heading|default:"Bakery" }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1e1b18;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .detail-header {
+            background: #ffffff;
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid #efe5dc;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.96);
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            background: #f0ede8;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #5e4e3c;
+            transition: all 0.2s;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: #e8e2dc;
+        }
+
+        .header-row h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #2b241e;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Main container */
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: #ffffff;
+            border-radius: 28px;
+            border: 1px solid #efe5dc;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            background: #f7f3ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #efe5dc;
+        }
+
+        .product-image i {
+            font-size: 80px;
+            color: #d4c5b8;
+        }
+
+        .product-content {
+            padding: 24px;
+        }
+
+        .product-title {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .product-tagline {
+            font-size: 15px;
+            color: #8f7e6c;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0ede8;
+        }
+
+        .info-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2b241e;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: #c27e4a;
+            font-size: 18px;
+        }
+
+        .section-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #5e4e3c;
+            background: #fbf9f7;
+            padding: 16px;
+            border-radius: 20px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f7f3ef;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #8f7e6c;
+            margin-bottom: 20px;
+        }
+
+        .category-badge i {
+            color: #c27e4a;
+            font-size: 12px;
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            background: #25D366;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            text-decoration: none;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+        }
+
+        .whatsapp-btn:active {
+            transform: scale(0.97);
+            background: #20b859;
+        }
+
+        /* Back to menu link */
+        .back-to-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-align: center;
+            font-size: 14px;
+            color: #aa9a88;
+            text-decoration: none;
+            padding: 12px;
+            margin-top: 8px;
+        }
+
+        .back-to-menu:active {
+            color: #c27e4a;
+        }
+
+        /* Empty state for missing data */
+        .empty-content {
+            color: #cbbcaa;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="detail-header">
+        <div class="header-row">
+            <a href="/" class="back-btn">
+                <i class="ti ti-arrow-left"></i>
+            </a>
+            <h1>{{ product.heading|truncatechars:30 }}</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="product-card">
+            <div class="product-image">
+                <i class="ti ti-cake"></i>
+            </div>
+            <div class="product-content">
+                <h1 class="product-title">{{ product.heading }}</h1>
+                
+                {% if product.category %}
+                    <div class="category-badge">
+                        <i class="ti ti-folder"></i>
+                        <span>{{ product.category.name }}</span>
+                    </div>
+                {% endif %}
+
+                {% if product.tagline %}
+                    <div class="product-tagline">
+                        {{ product.tagline }}
+                    </div>
+                {% endif %}
+
+                {% if product.description %}
+                    <div class="info-section">
+                        <div class="section-title">
+                            <i class="ti ti-file-description"></i>
+                            <span>Description</span>
+                        </div>
+                        <div class="section-content">
+                            {{ product.description|linebreaksbr }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if product.ingredients %}
+                    <div class="info-section">
+                        <div class="section-title">
+                            <i class="ti ti-salad"></i>
+                            <span>Ingredients</span>
+                        </div>
+                        <div class="section-content">
+                            {{ product.ingredients|linebreaksbr }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if not product.description and not product.ingredients %}
+                    <div class="info-section">
+                        <div class="section-content empty-content">
+                            <i class="ti ti-info-circle"></i> No additional details available
+                        </div>
+                    </div>
+                {% endif %}
+
+                <a href="https://wa.me/{{ settings.whatsapp_number|cut:'+'|cut:' ' }}?text={{ 'Hi! I would like to order'|urlencode }}%20{{ product.heading|urlencode }}%20{{ 'from your bakery.'|urlencode }}" 
+                   class="whatsapp-btn" target="_blank">
+                    <i class="ti ti-brand-whatsapp"></i>
+                    Order via WhatsApp
+                </a>
+
+                <a href="/" class="back-to-menu">
+                    <i class="ti ti-arrow-back-up"></i>
+                    Browse more items
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Touch feedback for buttons
+        const buttons = document.querySelectorAll('.whatsapp-btn, .back-btn, .back-to-menu');
+        buttons.forEach(btn => {
+            btn.addEventListener('touchstart', function() {
+                this.style.opacity = '0.7';
+            });
+            btn.addEventListener('touchend', function() {
+                this.style.opacity = '1';
+            });
+            btn.addEventListener('touchcancel', function() {
+                this.style.opacity = '1';
+            });
+        });
+
+        console.log('Product detail page ready — {{ product.heading }}');
+    </script>
+</body>
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Store Profile — Bakery Setup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e1b18;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 100%;
+            background: #ffffff;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            padding: 14px 24px 6px 24px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 590;
+            color: #1c1c1e;
+            letter-spacing: 0.2px;
+        }
+
+        .main-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 20px 20px 20px;
+            scrollbar-width: thin;
+        }
+
+        .main-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .main-scroll::-webkit-scrollbar-track {
+            background: #f0eeeb;
+            border-radius: 10px;
+        }
+
+        .main-scroll::-webkit-scrollbar-thumb {
+            background: #d4c5b8;
+            border-radius: 10px;
+        }
+
+        .hero-section {
+            padding: 20px 0 16px 0;
+            text-align: center;
+        }
+
+        .icon-wrapper {
+            width: 72px;
+            height: 72px;
+            background: #f7f3ef;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .icon-wrapper i {
+            font-size: 36px;
+            color: #c27e4a;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .subhead {
+            font-size: 14px;
+            color: #8f7e6c;
+            font-weight: 500;
+        }
+
+        .form-card {
+            background: #ffffff;
+            border-radius: 28px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            background: #fbf9f7;
+            border-radius: 20px;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .input-group:focus-within {
+            border-color: #c27e4a;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(194, 126, 74, 0.08);
+        }
+
+        .input-field {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            flex-direction: row;
+        }
+
+        .input-field i {
+            font-size: 20px;
+            color: #bb8b64;
+            width: 22px;
+            margin-top: 2px;
+        }
+
+        .input-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-content label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #5e4e3c;
+            letter-spacing: -0.2px;
+        }
+
+        .input-content input,
+        .input-content textarea {
+            border: none;
+            background: transparent;
+            font-family: 'Inter', monospace;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2b241e;
+            outline: none;
+            width: 100%;
+            resize: vertical;
+            padding: 0;
+            margin: 0;
+        }
+
+        .input-content input::placeholder,
+        .input-content textarea::placeholder {
+            color: #cbbcaa;
+            font-weight: 400;
+        }
+
+        .input-content textarea {
+            min-height: 70px;
+            line-height: 1.4;
+        }
+
+        .optional-badge {
+            font-size: 10px;
+            font-weight: 500;
+            background: #f0ede8;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 30px;
+            color: #8f7e6c;
+            margin-left: 8px;
+        }
+
+        .required-star {
+            color: #cd6b6b;
+            margin-left: 4px;
+        }
+
+        .btn-continue {
+            width: 100%;
+            background: #c27e4a;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            margin-top: 8px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(194, 126, 74, 0.2);
+        }
+
+        .btn-continue:active {
+            transform: scale(0.97);
+            background: #a66c3d;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #aa9a88;
+            padding: 12px 0 18px 0;
+            border-top: 0.5px solid #efebe6;
+            margin-top: 8px;
+            background: #ffffff;
+        }
+
+        .home-indicator {
+            width: 130px;
+            height: 5px;
+            background: #dad3cc;
+            border-radius: 100px;
+            margin: 8px auto 12px auto;
+        }
+
+        .message-container {
+            margin-bottom: 16px;
+        }
+
+        .alert-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff6f0;
+            border-radius: 18px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border-left: 3px solid #cd6b6b;
+            color: #b1624a;
+        }
+
+        .alert-success {
+            border-left-color: #2b7e4a;
+            background: #f0f9f0;
+            color: #235e3a;
+        }
+
+        .progress-steps {
+            margin-bottom: 24px;
+            padding: 0 4px;
+        }
+
+        .progress-bar-bg {
+            height: 2px;
+            background: #efe5dc;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            width: 75%;
+            height: 100%;
+            background: #c27e4a;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .inline-hint {
+            font-size: 11px;
+            color: #aa9a88;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="status-bar"></div>
+
+    <div class="main-scroll">
+        <div class="hero-section">
+            <div class="icon-wrapper">
+                <i class="ti ti-building-store"></i>
+            </div>
+            <h1>Your bakery profile</h1>
+            <div class="subhead">Tell customers who you are</div>
+        </div>
+
+        <!-- step indicator: step 3 active -->
+        <div class="progress-steps">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <div style="flex: 1; text-align: center;">
+                    <div style="width: 32px; height: 32px; background: #c27e4a; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; margin-bottom: 6px;">1</div>
+                    <div style="font-size: 11px; font-weight: 600; color: #c27e4a;">Account</div>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="width: 32px; height: 32px; background: #c27e4a; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; margin-bottom: 6px;">2</div>
+                    <div style="font-size: 11px; font-weight: 600; color: #c27e4a;">Theme</div>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="width: 32px; height: 32px; background: #c27e4a; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; margin-bottom: 6px;">3</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #c27e4a;">Profile</div>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="width: 32px; height: 32px; background: #e8e2dc; border-radius: 40px; display: inline-flex; align-items: center; justify-content: center; color: #8f7e6c; font-weight: 700; font-size: 14px; margin-bottom: 6px;">4</div>
+                    <div style="font-size: 11px; font-weight: 500; color: #aa9a88;">Category</div>
+                </div>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+
+        <div id="messageContainer" class="message-container"></div>
+
+        <div class="form-card">
+            <form method="post" id="profileForm" novalidate>
+                {% csrf_token %}
+
+                <!-- Logo Link -->
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-link"></i>
+                        <div class="input-content">
+                            <label>Logo URL <span class="optional-badge">Optional</span></label>
+                            <input type="url" name="logo_link" id="logo_link" value="{{ settings.logo_link|default:'' }}" placeholder="https://your-bakery.com/logo.png" autocomplete="off">
+                            <div class="inline-hint"><i class="ti ti-info-circle" style="font-size: 10px;"></i> Square image works best</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Store Name (required) -->
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-building"></i>
+                        <div class="input-content">
+                            <label>Store name <span class="required-star">*</span></label>
+                            <input type="text" name="heading" id="heading" value="{{ settings.heading|default:'' }}" placeholder="e.g., Butter & Crumb" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tagline -->
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-message"></i>
+                        <div class="input-content">
+                            <label>Tagline <span class="optional-badge">Optional</span></label>
+                            <input type="text" name="tagline" id="tagline" value="{{ settings.tagline|default:'' }}" placeholder="Fresh daily pastries & artisan bread">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Bar Tagline -->
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-search"></i>
+                        <div class="input-content">
+                            <label>Search prompt <span class="optional-badge">Optional</span></label>
+                            <input type="text" name="search_bar_tagline" id="search_bar_tagline" value="{{ settings.search_bar_tagline|default:'' }}" placeholder="What are you craving today?">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Number (important for ordering) -->
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-brand-whatsapp"></i>
+                        <div class="input-content">
+                            <label>WhatsApp number <span class="required-star">*</span></label>
+                            <input type="tel" name="whatsapp_number" id="whatsapp_number" value="{{ settings.whatsapp_number|default:'' }}" placeholder="+1234567890" required>
+                            <div class="inline-hint"><i class="ti ti-device-mobile"></i> Include country code</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Note -->
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-notes"></i>
+                        <div class="input-content">
+                            <label>Main note <span class="optional-badge">Optional</span></label>
+                            <textarea name="note" id="note" rows="2" placeholder="Welcome message or bakery story...">{{ settings.note|default:'' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub Note -->
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-file-description"></i>
+                        <div class="input-content">
+                            <label>Sub note <span class="optional-badge">Optional</span></label>
+                            <textarea name="sub_note" id="sub_note" rows="2" placeholder="Additional details like opening hours...">{{ settings.sub_note|default:'' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Note -->
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-clipboard"></i>
+                        <div class="input-content">
+                            <label>Other note <span class="optional-badge">Optional</span></label>
+                            <textarea name="other_note" id="other_note" rows="2" placeholder="Delivery info, pickup instructions etc.">{{ settings.other_note|default:'' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Subnote -->
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-message-circle"></i>
+                        <div class="input-content">
+                            <label>Other subnote <span class="optional-badge">Optional</span></label>
+                            <textarea name="other_subnote" id="other_subnote" rows="2" placeholder="Special announcements, thank you message">{{ settings.other_subnote|default:'' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-continue" id="continueBtn">
+                    <i class="ti ti-arrow-right"></i>
+                    Continue to categories
+                </button>
+            </form>
+
+            <div class="footer-note">
+                <i class="ti ti-device-mobile" style="font-size: 11px; margin-right: 4px;"></i>
+                Customers will see this info · WhatsApp required for orders
+            </div>
+        </div>
+    </div>
+    <div class="home-indicator"></div>
+</div>
+
+<script>
+    const profileForm = document.getElementById('profileForm');
+    const messageContainer = document.getElementById('messageContainer');
+    const headingInput = document.getElementById('heading');
+    const whatsappInput = document.getElementById('whatsapp_number');
+    let messageTimeout = null;
+
+    function clearMessage() {
+        if (messageTimeout) {
+            clearTimeout(messageTimeout);
+            messageTimeout = null;
+        }
+        const existingMsg = messageContainer.querySelector('.alert-message');
+        if (existingMsg) existingMsg.remove();
+    }
+
+    function showMessage(text, isError = true) {
+        clearMessage();
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'alert-message';
+        if (!isError) {
+            msgDiv.classList.add('alert-success');
+        }
+        msgDiv.innerHTML = `<i class="ti ${isError ? 'ti-alert-circle' : 'ti-check-circle'}"></i><span>${text}</span>`;
+        messageContainer.appendChild(msgDiv);
+        messageTimeout = setTimeout(() => {
+            if (msgDiv) msgDiv.remove();
+            messageTimeout = null;
+        }, 4000);
+    }
+
+    // basic WhatsApp number validation (loose but helpful)
+    function validateWhatsApp(number) {
+        const cleaned = number.replace(/\s/g, '');
+        if (cleaned === '') return false;
+        // allow digits, plus, hyphens — basic check: at least 5 digits
+        const digits = cleaned.replace(/[^0-9]/g, '');
+        return digits.length >= 5;
+    }
+
+    // real-time field validation clearing
+    function attachFieldListeners() {
+        headingInput?.addEventListener('input', () => clearMessage());
+        whatsappInput?.addEventListener('input', () => clearMessage());
+        const allInputs = profileForm.querySelectorAll('input, textarea');
+        allInputs.forEach(field => {
+            field.addEventListener('focus', () => clearMessage());
+        });
+    }
+
+    // Form submit handler with validation and loading state
+    profileForm.addEventListener('submit', (e) => {
+        clearMessage();
+
+        const storeName = headingInput?.value.trim();
+        const whatsapp = whatsappInput?.value.trim();
+
+        let errorMsg = null;
+        if (!storeName) {
+            errorMsg = "Store name is required";
+        } else if (storeName.length < 2) {
+            errorMsg = "Store name must be at least 2 characters";
+        } else if (!whatsapp) {
+            errorMsg = "WhatsApp number is required for orders";
+        } else if (!validateWhatsApp(whatsapp)) {
+            errorMsg = "Please enter a valid WhatsApp number (at least 5 digits)";
+        }
+
+        if (errorMsg) {
+            e.preventDefault();
+            showMessage(errorMsg, true);
+            // scroll to message
+            messageContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            return;
+        }
+
+        // Show loading state on button
+        const btn = document.querySelector('.btn-continue');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="ti ti-loader"></i> Saving profile...';
+        btn.disabled = true;
+
+        // If form submits successfully, it will navigate. If there's a network error,
+        // we reset after timeout to allow retry
+        setTimeout(() => {
+            if (btn.disabled) {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }, 5000);
+
+        // allow actual POST
+    });
+
+    // Optional: better formatting for WhatsApp field (remove spaces)
+    whatsappInput?.addEventListener('blur', function() {
+        let val = this.value.trim();
+        if (val && !val.startsWith('+') && /^\d+$/.test(val)) {
+            // optionally add + if not present? but let's not force
+        }
+    });
+
+    // Display server side messages from Django (error / success)
+    window.addEventListener('DOMContentLoaded', () => {
+        attachFieldListeners();
+
+        {% if error %}
+            setTimeout(() => {
+                showMessage("{{ error|escapejs }}", true);
+            }, 100);
+        {% endif %}
+        {% if success_msg %}
+            setTimeout(() => {
+                showMessage("{{ success_msg|escapejs }}", false);
+            }, 100);
+        {% endif %}
+
+        // populate fallback values if any field missing from context
+        console.log('Step 3 profile ready — mobile optimized');
+    });
+
+    // Mark required fields visually (already done, add subtle indicator)
+    const requiredLabels = document.querySelectorAll('.required-star');
+    if (requiredLabels.length) {
+        // additional accessible message
+    }
+
+    // auto-shrink/grow textareas not needed but enhance ux
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(ta => {
+        ta.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+        });
+        // initial trigger
+        setTimeout(() => {
+            ta.style.height = 'auto';
+            ta.style.height = Math.min(ta.scrollHeight, 150) + 'px';
+        }, 10);
+    });
+</script>
+</body>
+</html>

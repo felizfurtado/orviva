@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ settings.heading|default:"Bakery Store" }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1e1b18;
+            padding-bottom: 30px;
+        }
+
+        /* Header Section */
+        .store-header {
+            background: #ffffff;
+            padding: 32px 20px 28px 20px;
+            text-align: center;
+            border-bottom: 1px solid #efe5dc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 16px;
+            border: 3px solid #f7f3ef;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .logo-placeholder {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: #f7f3ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            border: 3px solid #efe5dc;
+        }
+
+        .logo-placeholder i {
+            font-size: 44px;
+            color: #c27e4a;
+        }
+
+        .store-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .store-tagline {
+            font-size: 14px;
+            color: #8f7e6c;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        /* Search Bar */
+        .search-section {
+            padding: 16px 20px;
+            background: #ffffff;
+            border-bottom: 1px solid #efe5dc;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #cbbcaa;
+            font-size: 18px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 16px 14px 48px;
+            border: 1px solid #efe5dc;
+            border-radius: 60px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            background: #fbf9f7;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #c27e4a;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(194, 126, 74, 0.08);
+        }
+
+        .search-input::placeholder {
+            color: #cbbcaa;
+            font-weight: 400;
+        }
+
+        /* Categories Filter */
+        .categories-section {
+            padding: 12px 20px;
+            background: #ffffff;
+            border-bottom: 1px solid #efe5dc;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+        }
+
+        .categories-scroll {
+            display: flex;
+            gap: 10px;
+        }
+
+        .category-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            background: #fbf9f7;
+            border: 1px solid #efe5dc;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b5a48;
+            transition: all 0.2s;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .category-chip i {
+            font-size: 14px;
+            color: #bb8b64;
+        }
+
+        .category-chip.active {
+            background: #c27e4a;
+            border-color: #c27e4a;
+            color: white;
+        }
+
+        .category-chip.active i {
+            color: white;
+        }
+
+        .category-chip:active {
+            transform: scale(0.96);
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2b241e;
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .products-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid #efe5dc;
+            overflow: hidden;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+
+        .product-link {
+            text-decoration: none;
+            display: block;
+            padding: 18px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2b241e;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .product-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #f7f3ef;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #8f7e6c;
+            margin-top: 8px;
+        }
+
+        .product-category i {
+            font-size: 11px;
+            color: #c27e4a;
+        }
+
+        .product-tagline {
+            font-size: 13px;
+            color: #9b8a76;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 24px;
+            background: #ffffff;
+            border-radius: 28px;
+            border: 1px solid #efe5dc;
+        }
+
+        .empty-state i {
+            font-size: 56px;
+            color: #d4c5b8;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            color: #aa9a88;
+            font-weight: 500;
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 100;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:active {
+            transform: scale(0.92);
+        }
+
+        .whatsapp-float i {
+            color: white;
+            font-size: 28px;
+        }
+
+        /* Note Section */
+        .notes-section {
+            padding: 20px;
+            margin-top: 8px;
+        }
+
+        .note-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 16px;
+            border: 1px solid #efe5dc;
+            margin-bottom: 12px;
+        }
+
+        .note-card p {
+            font-size: 13px;
+            color: #6b5a48;
+            line-height: 1.5;
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+            color: #aa9a88;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="store-header">
+        {% if settings.logo_link %}
+            <img src="{{ settings.logo_link }}" class="logo" alt="{{ settings.heading }} logo">
+        {% else %}
+            <div class="logo-placeholder">
+                <i class="ti ti-building-store"></i>
+            </div>
+        {% endif %}
+        <h1>{{ settings.heading|default:"Bakery Store" }}</h1>
+        <p class="store-tagline">{{ settings.tagline|default:"Fresh baked goods daily" }}</p>
+    </div>
+
+    <div class="search-section">
+        <div class="search-container">
+            <i class="ti ti-search"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="{{ settings.search_bar_tagline|default:'Search for your favorite treats...' }}">
+        </div>
+    </div>
+
+    <div class="categories-section">
+        <div class="categories-scroll" id="categoriesFilter">
+            <button class="category-chip active" data-category="all">
+                <i class="ti ti-apps"></i> All
+            </button>
+            {% for category in categories %}
+                <button class="category-chip" data-category="{{ category.id }}" data-category-name="{{ category.name }}">
+                    <i class="ti ti-folder"></i> {{ category.name }}
+                </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="products-section">
+        <div class="section-title">
+            <span>Our Menu</span>
+        </div>
+        <div class="products-grid" id="productsGrid">
+            {% for product in products %}
+                <div class="product-card" data-product-name="{{ product.heading|lower }}" data-category-id="{{ product.category.id }}">
+                    <a href="/product/{{ product.slug }}/" class="product-link">
+                        <div class="product-name">{{ product.heading }}</div>
+                        {% if product.tagline %}
+                            <div class="product-tagline">{{ product.tagline }}</div>
+                        {% endif %}
+                        <div class="product-category">
+                            <i class="ti ti-folder"></i>
+                            <span>{{ product.category.name }}</span>
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <div class="empty-state">
+                    <i class="ti ti-pizza-off"></i>
+                    <p>No products available yet.<br>Check back soon!</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if settings.note or settings.sub_note or settings.other_note %}
+    <div class="notes-section">
+        {% if settings.note %}
+            <div class="note-card">
+                <p><i class="ti ti-info-circle" style="color: #c27e4a; margin-right: 6px;"></i> {{ settings.note }}</p>
+            </div>
+        {% endif %}
+        {% if settings.sub_note %}
+            <div class="note-card">
+                <p><i class="ti ti-message" style="color: #aa9a88; margin-right: 6px;"></i> {{ settings.sub_note }}</p>
+            </div>
+        {% endif %}
+        {% if settings.other_note %}
+            <div class="note-card">
+                <p><i class="ti ti-clipboard" style="color: #bb8b64; margin-right: 6px;"></i> {{ settings.other_note }}</p>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Floating WhatsApp Button -->
+    {% if settings.whatsapp_number %}
+    <a href="https://wa.me/{{ settings.whatsapp_number|cut:'+'|cut:' ' }}" class="whatsapp-float" target="_blank">
+        <i class="ti ti-brand-whatsapp"></i>
+    </a>
+    {% endif %}
+
+    <script>
+        // Filter functionality
+        const searchInput = document.getElementById('searchInput');
+        const categoryChips = document.querySelectorAll('.category-chip');
+        const productCards = document.querySelectorAll('.product-card');
+        
+        let activeCategory = 'all';
+        let searchTerm = '';
+
+        function filterProducts() {
+            productCards.forEach(card => {
+                const productName = card.getAttribute('data-product-name') || '';
+                const categoryId = card.getAttribute('data-category-id');
+                
+                const matchesSearch = productName.includes(searchTerm.toLowerCase());
+                const matchesCategory = activeCategory === 'all' || categoryId === activeCategory;
+                
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Show/hide empty message if no products visible
+            const visibleProducts = Array.from(productCards).filter(card => card.style.display !== 'none');
+            const emptyState = document.querySelector('.empty-state');
+            
+            if (visibleProducts.length === 0 && productCards.length > 0) {
+                if (!document.getElementById('filterEmptyMsg')) {
+                    const emptyMsg = document.createElement('div');
+                    emptyMsg.id = 'filterEmptyMsg';
+                    emptyMsg.className = 'empty-state';
+                    emptyMsg.innerHTML = `
+                        <i class="ti ti-search"></i>
+                        <p>No products match your search.<br>Try different keywords.</p>
+                    `;
+                    document.getElementById('productsGrid').appendChild(emptyMsg);
+                }
+            } else {
+                const filterEmptyMsg = document.getElementById('filterEmptyMsg');
+                if (filterEmptyMsg) filterEmptyMsg.remove();
+            }
+        }
+
+        // Search input listener
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            filterProducts();
+        });
+
+        // Category filter listeners
+        categoryChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                // Update active class
+                categoryChips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                
+                activeCategory = chip.getAttribute('data-category');
+                filterProducts();
+            });
+        });
+
+        // Initial filter setup
+        console.log('Storefront ready — {{ settings.heading }}');
+        
+        // Touch feedback for cards
+        const cards = document.querySelectorAll('.product-card');
+        cards.forEach(card => {
+            card.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+            card.addEventListener('touchcancel', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

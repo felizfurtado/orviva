@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Create username · Céleste</title>
+  <!-- Include simple CSS reset & minimal icons (using Font Awesome for reliable icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* design system: warm, clean, modern */
+    :root {
+      --color-background-primary: #ffffff;
+      --color-background-secondary: #f9f6f2;
+      --color-background-tertiary: #f4efea;
+      --color-text-primary: #261f1a;
+      --color-text-secondary: #6b5a4c;
+      --color-text-tertiary: #b7a690;
+      --color-border-tertiary: #e6ddd4;
+      --color-border-secondary: #d9cec3;
+      --color-accent-soft: rgba(212, 148, 92, 0.08);
+      --color-accent: #b8753e;
+      --color-accent-hover: #a56332;
+      --color-available: #7db87d;
+      --color-taken: #c0637a;
+      --border-radius-lg: 20px;
+      --border-radius-md: 14px;
+    }
+
+    body {
+      background: #e9e0d7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, 'Plus Jakarta Sans', system-ui, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 16px;
+    }
+
+    .un-root {
+      font-family: inherit;
+      background: var(--color-background-tertiary);
+      color: var(--color-text-primary);
+      max-width: 440px;
+      width: 100%;
+      margin: 0 auto;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+    }
+
+    .un-topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px 12px;
+      border-bottom: 0.5px solid var(--color-border-tertiary);
+      background: var(--color-background-primary);
+    }
+
+    .un-back {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 0.5px solid var(--color-border-tertiary);
+      background: var(--color-background-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--color-text-secondary);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .un-back:hover {
+      background: #efe6df;
+    }
+
+    .un-topbar-label {
+      font-size: 17px;
+      font-weight: 600;
+      flex: 1;
+      letter-spacing: -0.3px;
+    }
+
+    .un-save {
+      font-size: 14px;
+      font-weight: 600;
+      color: #b8753e;
+      padding: 8px 18px;
+      border-radius: 40px;
+      background: rgba(212, 148, 92, 0.08);
+      border: 0.5px solid rgba(212, 148, 92, 0.3);
+      cursor: pointer;
+      opacity: 0.5;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .un-save.active {
+      opacity: 1;
+      background: rgba(212, 148, 92, 0.15);
+      border-color: rgba(212, 148, 92, 0.6);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    .un-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 20px 24px;
+      background: var(--color-background-primary);
+      border-bottom: 0.5px solid var(--color-border-tertiary);
+    }
+
+    .un-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 28px;
+      background: rgba(212, 148, 92, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      font-weight: 500;
+      color: #b8753e;
+      margin-bottom: 14px;
+      backdrop-filter: blur(2px);
+    }
+
+    .un-current-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      letter-spacing: -0.2px;
+    }
+
+    .un-handle {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      margin-top: 5px;
+      background: var(--color-background-secondary);
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-family: monospace;
+    }
+
+    .un-body {
+      padding: 28px 20px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .un-field-card {
+      background: var(--color-background-primary);
+      border-radius: var(--border-radius-lg);
+      border: 1px solid var(--color-border-tertiary);
+      overflow: hidden;
+      transition: all 0.1s;
+    }
+
+    .un-field-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+    }
+
+    .un-prefix {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-family: monospace;
+    }
+
+    .un-input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      width: 100%;
+      font-family: inherit;
+      caret-color: #b8753e;
+      letter-spacing: -0.2px;
+    }
+
+    .un-input::placeholder {
+      color: var(--color-text-tertiary);
+      font-weight: 400;
+      font-size: 16px;
+    }
+
+    .un-status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 18px 14px 18px;
+    }
+
+    .un-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .dot-avail {
+      background: #7db87d;
+      box-shadow: 0 0 0 2px rgba(125, 184, 125, 0.2);
+    }
+
+    .dot-taken {
+      background: #c0637a;
+      box-shadow: 0 0 0 2px rgba(192, 99, 122, 0.15);
+    }
+
+    .dot-idle {
+      background: var(--color-border-secondary);
+    }
+
+    .un-status-text {
+      font-size: 12.5px;
+      color: var(--color-text-secondary);
+      font-weight: 450;
+    }
+
+    .un-rules {
+      background: var(--color-background-secondary);
+      border-radius: 20px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border: 0.5px solid var(--color-border-tertiary);
+    }
+
+    .un-rule {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13.5px;
+      color: var(--color-text-secondary);
+    }
+
+    .un-rule-icon {
+      font-size: 15px;
+      width: 20px;
+      text-align: center;
+      color: var(--color-border-secondary);
+      transition: color 0.1s;
+    }
+
+    .un-rule-icon.ok {
+      color: #7db87d;
+    }
+
+    .un-rule-icon.fa-xmark {
+      color: #c0637a;
+    }
+
+    .un-confirm-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 40px;
+      background: rgba(212, 148, 92, 0.08);
+      border: 1px solid rgba(212, 148, 92, 0.25);
+      color: #b8753e;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      transition: all 0.2s;
+      letter-spacing: -0.2px;
+    }
+
+    .un-confirm-btn:not(:disabled):hover {
+      background: rgba(212, 148, 92, 0.18);
+      border-color: #b8753e;
+      transform: scale(0.98);
+    }
+
+    .un-confirm-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* simple fade animation */
+    @keyframes subtlePulse {
+      0% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    .checking {
+      animation: subtlePulse 0.6s infinite alternate;
+    }
+
+    footer {
+      font-size: 11px;
+      text-align: center;
+      color: var(--color-text-tertiary);
+      padding: 12px 20px 20px;
+      border-top: 0.5px solid rgba(0,0,0,0.03);
+      background: var(--color-background-tertiary);
+    }
+  </style>
+</head>
+<body>
+<div class="un-root">
+
+  <div class="un-topbar">
+    <div class="un-back" id="backButton" aria-label="Go back">
+      <i class="fas fa-arrow-left"></i>
+    </div>
+    <span class="un-topbar-label">Create username</span>
+    <button class="un-save" id="saveBtn">Save</button>
+  </div>
+
+  <div class="un-hero">
+    <div class="un-avatar" id="avatarPlaceholder">✨</div>
+    <div class="un-current-name">Set your handle</div>
+    <div class="un-handle" id="handleDisplay">@choose_unique</div>
+  </div>
+
+  <div class="un-body">
+
+    <div class="un-field-card">
+      <div class="un-field-inner">
+        <span class="un-prefix">@</span>
+        <input class="un-input" id="usernameInput" type="text" placeholder="e.g., creative_soul, design_kit" maxlength="30" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      </div>
+      <div class="un-status-row" id="statusRow">
+        <div class="un-status-dot dot-idle" id="statusDot"></div>
+        <span class="un-status-text" id="statusText">Pick a unique username</span>
+      </div>
+    </div>
+
+    <div class="un-rules" id="rulesList">
+      <div class="un-rule">
+        <i class="fas fa-circle un-rule-icon" id="r1icon"></i>
+        <span id="r1text">3–30 characters long</span>
+      </div>
+      <div class="un-rule">
+        <i class="fas fa-circle un-rule-icon" id="r2icon"></i>
+        <span id="r2text">Letters, numbers, and underscores only</span>
+      </div>
+      <div class="un-rule">
+        <i class="fas fa-circle un-rule-icon" id="r3icon"></i>
+        <span id="r3text">No spaces or special characters</span>
+      </div>
+    </div>
+
+    <button class="un-confirm-btn" id="confirmBtn" disabled>
+      <i class="fas fa-check-circle" style="font-size: 15px;"></i> Create username
+    </button>
+
+  </div>
+  <footer>Unique & memorable — claim your identity ✨</footer>
+</div>
+
+<script>
+  // ------------------------------
+  //  CREATE USERNAME PAGE (FULLY FUNCTIONAL)
+  //  Real-time validation + mock availability check
+  //  No external sendPrompt, uses alert + console + UI feedback
+  // ------------------------------
+  
+  // DOM elements
+  const input = document.getElementById('usernameInput');
+  const handleDisplay = document.getElementById('handleDisplay');
+  const statusDot = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+  const saveBtn = document.getElementById('saveBtn');
+  const confirmBtn = document.getElementById('confirmBtn');
+  const r1icon = document.getElementById('r1icon');
+  const r2icon = document.getElementById('r2icon');
+  const r3icon = document.getElementById('r3icon');
+  const backButton = document.getElementById('backButton');
+  const avatarSpan = document.getElementById('avatarPlaceholder');
+
+  // Mock database of reserved/taken usernames (extended for realistic demo)
+  const RESERVED_USERNAMES = [
+    'admin', 'root', 'support', 'moderator', 'gateau', 'celeste', 'shop', 'store',
+    'official', 'user', 'username', 'team', 'cafe', 'bakery', 'baker', 'creator',
+    'design', 'celestial', 'cake', 'patisserie', 'sugar', 'butter'
+  ];
+  
+  // Current original (no initial username -> creation mode)
+  const ORIGINAL_VALUE = '';   // empty because this is "create new username" page
+  let currentOriginalRaw = ''; // no existing username
+  let debounceTimer = null;
+  let lastCheckedValue = '';
+  let availabilityCache = new Map(); // simple cache for taken status per value
+
+  // Helper: validation object
+  function validateUsername(val) {
+    const lenValid = val.length >= 3 && val.length <= 30;
+    const charsValid = /^[a-zA-Z0-9_]+$/.test(val);
+    const noSpace = !/\s/.test(val);
+    // also ensure no empty
+    return { len: lenValid, chars: charsValid, noSpace: noSpace, all: lenValid && charsValid && noSpace };
+  }
+
+  // update rule icons (check / x) using fontawesome dynamic classes
+  function updateRuleIcons(validation) {
+    // r1 length
+    if (validation.len) {
+      r1icon.className = 'fas fa-check-circle un-rule-icon ok';
+    } else {
+      r1icon.className = 'fas fa-times-circle un-rule-icon';
+    }
+    // r2 characters
+    if (validation.chars) {
+      r2icon.className = 'fas fa-check-circle un-rule-icon ok';
+    } else {
+      r2icon.className = 'fas fa-times-circle un-rule-icon';
+    }
+    // r3 spaces/special
+    if (validation.noSpace) {
+      r3icon.className = 'fas fa-check-circle un-rule-icon ok';
+    } else {
+      r3icon.className = 'fas fa-times-circle un-rule-icon';
+    }
+  }
+
+  // Simulate availability check with dynamic delay + taken logic
+  function checkAvailability(username, callback) {
+    // already trimmed and validated (syntax passed)
+    if (!username || username.length === 0) {
+      callback({ available: false, reason: 'empty' });
+      return;
+    }
+    // check cache
+    if (availabilityCache.has(username)) {
+      callback({ available: availabilityCache.get(username), reason: availabilityCache.get(username) ? 'available' : 'taken' });
+      return;
+    }
+    // simulated async network request
+    setTimeout(() => {
+      const lowerUser = username.toLowerCase();
+      // reserved list check (exact match or includes? For realism: if taken contains full match or meaningful)
+      let isTaken = RESERVED_USERNAMES.some(reserved => reserved.toLowerCase() === lowerUser);
+      // additional rule: avoid names that start with "admin" or end with "mod"? not overkill
+      if (!isTaken && (lowerUser.startsWith('admin') || lowerUser === 'rootuser')) isTaken = true;
+      // Also check if username already equals something common like "test"
+      if (!isTaken && lowerUser === 'test123') isTaken = false; // for demo freely available
+      
+      const available = !isTaken;
+      availabilityCache.set(username, available);
+      callback({ available, reason: available ? 'available' : 'taken' });
+    }, 450);
+  }
+
+  // Main validation & availability pipeline
+  let currentState = {
+    syntaxOk: false,
+    isAvailable: false,
+    checkingNow: false,
+    usernameValue: ''
+  };
+
+  function refreshUI(username) {
+    const trimmed = username.trim();
+    const validation = validateUsername(trimmed);
+    const syntaxPass = validation.all;
+    
+    // update rules UI
+    updateRuleIcons(validation);
+    
+    // update handle preview (display @username or default)
+    if (trimmed) {
+      handleDisplay.textContent = `@${trimmed}`;
+      // avatar playful dynamic based on first letter?
+      if (trimmed.length > 0) {
+        const firstChar = trimmed[0].toUpperCase();
+        if (/[A-Z0-9]/.test(firstChar)) avatarSpan.textContent = firstChar;
+        else avatarSpan.textContent = '✨';
+      } else {
+        avatarSpan.textContent = '✨';
+      }
+    } else {
+      handleDisplay.textContent = `@your_username`;
+      avatarSpan.textContent = '✨';
+    }
+    
+    // CASE 1: empty input
+    if (!trimmed) {
+      statusDot.className = 'un-status-dot dot-idle';
+      statusText.textContent = 'Enter a unique username';
+      saveBtn.classList.remove('active');
+      confirmBtn.disabled = true;
+      currentState.syntaxOk = false;
+      currentState.isAvailable = false;
+      return;
+    }
+    
+    // CASE 2: syntax invalid
+    if (!syntaxPass) {
+      statusDot.className = 'un-status-dot dot-taken';
+      statusText.textContent = 'Fix the naming rules above';
+      saveBtn.classList.remove('active');
+      confirmBtn.disabled = true;
+      currentState.syntaxOk = false;
+      currentState.isAvailable = false;
+      return;
+    }
+    
+    // CASE 3: syntax valid -> check availability with debouncing
+    currentState.syntaxOk = true;
+    statusDot.className = 'un-status-dot dot-idle';
+    statusText.textContent = 'Checking availability...';
+    statusText.classList.add('checking');
+    
+    // clear previous timer
+    if (debounceTimer) clearTimeout(debounceTimer);
+    
+    debounceTimer = setTimeout(() => {
+      // if the input changed during debounce, we exit? re-check again with latest
+      const latestVal = input.value.trim();
+      if (latestVal !== trimmed) return;
+      
+      checkAvailability(trimmed, (result) => {
+        statusText.classList.remove('checking');
+        if (input.value.trim() !== latestVal) return; // stale check
+        
+        if (result.available) {
+          statusDot.className = 'un-status-dot dot-avail';
+          statusText.textContent = `@${trimmed} is available ✨`;
+          saveBtn.classList.add('active');
+          confirmBtn.disabled = false;
+          currentState.isAvailable = true;
+        } else {
+          statusDot.className = 'un-status-dot dot-taken';
+          statusText.textContent = `@${trimmed} is already taken`;
+          saveBtn.classList.remove('active');
+          confirmBtn.disabled = true;
+          currentState.isAvailable = false;
+        }
+        currentState.usernameValue = trimmed;
+      });
+    }, 500);
+  }
+  
+  // Event listener for input
+  function onInputChange() {
+    const raw = input.value;
+    refreshUI(raw);
+  }
+
+  input.addEventListener('input', onInputChange);
+  
+  // Simulate initial load: no username, all rules grey/disabled
+  function init() {
+    input.value = '';
+    refreshUI('');
+    // set confirm disabled, save disabled 
+    confirmBtn.disabled = true;
+    saveBtn.classList.remove('active');
+    statusText.textContent = 'Pick a unique username';
+  }
+  
+  // Helper to perform final username creation
+  function performCreate(username) {
+    if (!username || username.trim() === '') return;
+    const trimmed = username.trim();
+    const validation = validateUsername(trimmed);
+    if (!validation.all) {
+      // Fallback safety: re-check
+      alert(`Please respect username rules: 3–30 chars, letters/numbers/underscore only, no spaces.`);
+      return;
+    }
+    // Double-check availability to avoid race condition (sync check local cache)
+    const lower = trimmed.toLowerCase();
+    const isReserved = RESERVED_USERNAMES.some(r => r.toLowerCase() === lower);
+    if (isReserved) {
+      statusDot.className = 'un-status-dot dot-taken';
+      statusText.textContent = `@${trimmed} is already taken (reserved)`;
+      confirmBtn.disabled = true;
+      saveBtn.classList.remove('active');
+      return;
+    }
+    
+    // success simulation
+    const finalMessage = `✨ Username successfully created: @${trimmed} ✨\nWelcome to Céleste! Your handle is now registered.`;
+    alert(finalMessage);
+    console.log(`[USERNAME CREATED] ${trimmed}`);
+    // optional: update UI to reflect success celebration
+    statusDot.className = 'un-status-dot dot-avail';
+    statusText.innerHTML = `🎉 Username created! @${trimmed} is yours.`;
+    confirmBtn.disabled = true;
+    saveBtn.classList.remove('active');
+    // disable further changes after creation? But for demo, user could still type? we reset state but keep created info
+    // But to mimic creation we make input readonly? not necessary, but show success.
+    input.disabled = true;
+    confirmBtn.textContent = '✓ Created!';
+    saveBtn.style.display = 'none';
+    // we can still provide "back" behaviour.
+  }
+  
+  // Save / create actions
+  function handleSaveOrCreate() {
+    const val = input.value.trim();
+    if (!val) return;
+    const validation = validateUsername(val);
+    if (!validation.all) {
+      alert('Please fix the rules before creating username.');
+      return;
+    }
+    // re-check availability instant (from current UI status)
+    if (statusDot.classList.contains('dot-avail') && confirmBtn.disabled === false) {
+      performCreate(val);
+    } else {
+      // double-check availability realtime
+      checkAvailability(val, (res) => {
+        if (res.available) {
+          performCreate(val);
+        } else {
+          alert(`Sorry, @${val} is already taken. Please choose another.`);
+          statusDot.className = 'un-status-dot dot-taken';
+          statusText.textContent = `@${val} is already taken`;
+          confirmBtn.disabled = true;
+          saveBtn.classList.remove('active');
+        }
+      });
+    }
+  }
+  
+  confirmBtn.addEventListener('click', () => {
+    if (confirmBtn.disabled) return;
+    handleSaveOrCreate();
+  });
+  
+  saveBtn.addEventListener('click', () => {
+    if (saveBtn.classList.contains('active')) {
+      handleSaveOrCreate();
+    } else {
+      // if not active, just ignore
+      if (input.value.trim() && !confirmBtn.disabled) {
+        handleSaveOrCreate();
+      } else {
+        alert('Please enter a valid and available username first.');
+      }
+    }
+  });
+  
+  // Back button behavior (just shows a nice message in console, can implement goBack simulation)
+  backButton.addEventListener('click', () => {
+    // For a typical web app, this would navigate back. In demo context, we show a cute toast-like alert.
+    alert('↩️ Go back to profile settings (demo navigation).');
+    console.log('back button clicked — would navigate');
+  });
+  
+  // add extra live reset if user clicks on avatar (just fun)
+  avatarSpan.addEventListener('click', () => {
+    if (input.disabled) {
+      // reset after creation? Provide reset for demo
+      if (confirm('Reset form to create another username? (Demo only)')) {
+        input.disabled = false;
+        input.value = '';
+        confirmBtn.textContent = 'Create username';
+        saveBtn.style.display = 'flex';
+        init();
+        confirmBtn.disabled = true;
+      }
+    }
+  });
+  
+  init();
+</script>
+</body>
+</html>

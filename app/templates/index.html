@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>{{ settings.heading }} | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1e1b18;
+            padding-bottom: 70px;
+        }
+
+        /* Header Section */
+        .header {
+            background: #ffffff;
+            padding: 28px 20px 24px 20px;
+            text-align: center;
+            border-bottom: 1px solid #efe5dc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 14px;
+            border: 3px solid #f7f3ef;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #8f7e6c;
+            font-weight: 500;
+        }
+
+        /* Container */
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Stats Row */
+        .stats {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            flex: 1;
+            background: #ffffff;
+            padding: 20px 12px;
+            border-radius: 24px;
+            text-align: center;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .stat-box:active {
+            transform: scale(0.98);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #c27e4a;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b5a48;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* Cards */
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 18px;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2b241e;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.2px;
+        }
+
+        .card h3 i {
+            color: #c27e4a;
+            font-size: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0ede8;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon {
+            width: 32px;
+            height: 32px;
+            background: #fbf9f7;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c27e4a;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #aa9a88;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2b241e;
+            word-break: break-word;
+        }
+
+        .note-text {
+            background: #fbf9f7;
+            padding: 14px;
+            border-radius: 18px;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 1.45;
+            color: #5e4e3c;
+            border-left: 3px solid #c27e4a;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 16px;
+            background: #fbf9f7;
+            color: #2b241e;
+            text-decoration: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.2s;
+            border: 1px solid #e8e0d7;
+            margin-top: 12px;
+        }
+
+        .btn-primary {
+            background: #c27e4a;
+            color: white;
+            border: none;
+            box-shadow: 0 2px 8px rgba(194,126,74,0.2);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+            background: #a66c3d;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn i {
+            font-size: 18px;
+        }
+
+        .btn-primary i {
+            color: white;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            right: 0;
+            background: #ffffff;
+            border-top: 1px solid #efe5dc;
+            display: flex;
+            height: 65px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.04);
+        }
+
+        .bottom-nav a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #aa9a88;
+            font-size: 11px;
+            font-weight: 600;
+            gap: 4px;
+            transition: color 0.2s;
+        }
+
+        .bottom-nav a i {
+            font-size: 22px;
+        }
+
+        .bottom-nav a.active {
+            color: #c27e4a;
+        }
+
+        .bottom-nav a:active {
+            background: #faf8f5;
+        }
+
+        /* Empty state or misc */
+        .empty-note {
+            color: #cbbcaa;
+            font-style: italic;
+            font-size: 13px;
+            padding: 8px 0;
+        }
+
+        .welcome-badge {
+            display: inline-block;
+            background: #f0ede8;
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #c27e4a;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        {% if settings.logo_link %}
+            <img src="{{ settings.logo_link }}" class="logo" alt="Store logo">
+        {% else %}
+            <div class="logo" style="background: #f7f3ef; display: flex; align-items: center; justify-content: center;">
+                <i class="ti ti-building-store" style="font-size: 40px; color: #c27e4a;"></i>
+            </div>
+        {% endif %}
+        <h2>{{ settings.heading|default:"Bakery Store" }}</h2>
+        <p>{{ settings.tagline|default:"Fresh baked goods daily" }}</p>
+        <div class="welcome-badge">
+            <i class="ti ti-crown"></i> Owner Dashboard
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Stats Row -->
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">{{ category_count|default:"0" }}</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">{{ product_count|default:"0" }}</div>
+                <div class="stat-label">Products</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="card">
+            <h3>
+                <i class="ti ti-bolt"></i>
+                Quick Actions
+            </h3>
+            <a href="/products/add/" class="btn btn-primary">
+                <i class="ti ti-plus"></i>
+                Add New Product
+            </a>
+            <a href="/categories/manage/" class="btn">
+                <i class="ti ti-category"></i>
+                Manage Categories
+            </a>
+            <a href="/products/" class="btn">
+                <i class="ti ti-list"></i>
+                View All Products
+            </a>
+        </div>
+
+        <!-- Store Information Card -->
+        <div class="card">
+            <h3>
+                <i class="ti ti-info-circle"></i>
+                Store Information
+            </h3>
+            <div class="info-row">
+                <div class="info-icon">
+                    <i class="ti ti-brand-whatsapp"></i>
+                </div>
+                <div class="info-content">
+                    <div class="info-label">WhatsApp Business</div>
+                    <div class="info-value">{{ settings.whatsapp_number|default:"Not set" }}</div>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-icon">
+                    <i class="ti ti-search"></i>
+                </div>
+                <div class="info-content">
+                    <div class="info-label">Search Prompt</div>
+                    <div class="info-value">{{ settings.search_bar_tagline|default:"Search your favorite treats..." }}</div>
+                </div>
+            </div>
+            {% if settings.logo_link %}
+            <div class="info-row">
+                <div class="info-icon">
+                    <i class="ti ti-link"></i>
+                </div>
+                <div class="info-content">
+                    <div class="info-label">Logo URL</div>
+                    <div class="info-value" style="font-size: 12px; word-break: break-all;">{{ settings.logo_link|truncatechars:40 }}</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Notes Section -->
+        <div class="card">
+            <h3>
+                <i class="ti ti-notes"></i>
+                Store Notes
+            </h3>
+            {% if settings.note %}
+            <div class="note-text">
+                <i class="ti ti-message" style="margin-right: 8px; color: #c27e4a;"></i>
+                {{ settings.note }}
+            </div>
+            {% else %}
+            <div class="empty-note">No main note added yet</div>
+            {% endif %}
+
+            {% if settings.sub_note %}
+            <div class="note-text" style="margin-top: 12px; background: #ffffff; border-left-color: #d4c5b8;">
+                <i class="ti ti-file-description" style="margin-right: 8px; color: #aa9a88;"></i>
+                {{ settings.sub_note }}
+            </div>
+            {% endif %}
+
+            {% if settings.other_note %}
+            <div class="note-text" style="margin-top: 12px; background: #fefaf7;">
+                <i class="ti ti-clipboard" style="margin-right: 8px; color: #c27e4a;"></i>
+                {{ settings.other_note }}
+            </div>
+            {% endif %}
+
+            {% if settings.other_subnote %}
+            <div class="note-text" style="margin-top: 12px; background: #fbf9f7; border-left-color: #bb8b64;">
+                <i class="ti ti-message-circle"></i> {{ settings.other_subnote }}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Preview Storefront Card (optional) -->
+        <div class="card">
+            <h3>
+                <i class="ti ti-eye"></i>
+                Preview Storefront
+            </h3>
+            <a href="/store/{{ store_slug }}/" class="btn" style="background: #f0ede8;">
+                <i class="ti ti-building-store"></i>
+                View your live store
+            </a>
+            <p style="font-size: 12px; color: #aa9a88; margin-top: 12px; text-align: center;">
+                <i class="ti ti-device-mobile"></i> Customers see this layout
+            </p>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="/dashboard/" class="active">
+            <i class="ti ti-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/products/">
+            <i class="ti ti-pizza"></i>
+            <span>Products</span>
+        </a>
+        <a href="/categories/">
+            <i class="ti ti-category"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/profile/">
+            <i class="ti ti-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+
+    <script>
+        // Simple active state for bottom nav based on current path (optional)
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.bottom-nav a');
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && currentPath.startsWith(href) && href !== '/dashboard/') {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                } else if (currentPath === '/dashboard/' && href === '/dashboard/') {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            });
+            
+            // Add touch feedback for buttons
+            const btns = document.querySelectorAll('.btn, .stat-box');
+            btns.forEach(btn => {
+                btn.addEventListener('touchstart', function() {
+                    this.style.opacity = '0.7';
+                }, { passive: true });
+                btn.addEventListener('touchend', function() {
+                    this.style.opacity = '1';
+                });
+                btn.addEventListener('touchcancel', function() {
+                    this.style.opacity = '1';
+                });
+            });
+            
+            console.log('Dashboard ready — {{ settings.heading }}');
+        });
+    </script>
+  
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Add Category — {{ settings.heading|default:"Bakery" }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1e1b18;
+            padding: 0 0 20px 0;
+        }
+
+        /* Header */
+        .page-header {
+            background: #ffffff;
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid #efe5dc;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.96);
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            background: #f0ede8;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #5e4e3c;
+            transition: all 0.2s;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: #e8e2dc;
+        }
+
+        .header-row h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            flex: 1;
+        }
+
+        /* Main container */
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: #ffffff;
+            border-radius: 28px;
+            border: 1px solid #efe5dc;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .form-section {
+            padding: 24px 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2b241e;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #c27e4a;
+            font-size: 22px;
+        }
+
+        .input-group {
+            background: #fbf9f7;
+            border-radius: 20px;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
+        }
+
+        .input-group:focus-within {
+            border-color: #c27e4a;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(194, 126, 74, 0.08);
+        }
+
+        .input-field {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+        }
+
+        .input-field i {
+            font-size: 20px;
+            color: #bb8b64;
+            width: 22px;
+            margin-top: 2px;
+        }
+
+        .input-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-content label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #5e4e3c;
+            letter-spacing: -0.2px;
+        }
+
+        .input-content input,
+        .input-content textarea {
+            border: none;
+            background: transparent;
+            font-family: 'Inter', monospace;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2b241e;
+            outline: none;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .input-content input::placeholder,
+        .input-content textarea::placeholder {
+            color: #cbbcaa;
+            font-weight: 400;
+        }
+
+        .input-content textarea {
+            min-height: 80px;
+            line-height: 1.4;
+            resize: vertical;
+        }
+
+        .required-star {
+            color: #cd6b6b;
+            margin-left: 4px;
+        }
+
+        .inline-hint {
+            font-size: 11px;
+            color: #aa9a88;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-save {
+            width: 100%;
+            background: #c27e4a;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            margin-top: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(194, 126, 74, 0.2);
+        }
+
+        .btn-save:active {
+            transform: scale(0.97);
+            background: #a66c3d;
+        }
+
+        .btn-save:disabled {
+            opacity: 0.7;
+            transform: none;
+        }
+
+        /* Toast message */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            max-width: 380px;
+            margin: 0 auto;
+            background: #2b241e;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 60px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .toast-message.show {
+            opacity: 1;
+        }
+
+        .toast-message.error {
+            background: #cd6b6b;
+        }
+
+        /* Info box */
+        .info-box {
+            background: #faf8f5;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #8f7e6c;
+        }
+
+        .info-box i {
+            color: #c27e4a;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-header">
+        <div class="header-row">
+            <a href="/categories/" class="back-btn">
+                <i class="ti ti-arrow-left"></i>
+            </a>
+            <h1>Add Category</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <form method="post" id="addCategoryForm" novalidate>
+                {% csrf_token %}
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="ti ti-category"></i>
+                        <span>New Category</span>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-tag"></i>
+                            <div class="input-content">
+                                <label>Category Name <span class="required-star">*</span></label>
+                                <input type="text" name="name" id="categoryName" placeholder="e.g., Cakes, Pastries, Cookies" required autocomplete="off">
+                                <div class="inline-hint"><i class="ti ti-info-circle"></i> This will appear in your menu</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-file-description"></i>
+                            <div class="input-content">
+                                <label>Description <span class="optional-badge" style="font-size: 10px; font-weight: 500; background: #f0ede8; display: inline-block; padding: 2px 8px; border-radius: 30px; color: #8f7e6c; margin-left: 8px;">Optional</span></label>
+                                <textarea name="description" id="categoryDesc" rows="2" placeholder="Describe what goes in this category..."></textarea>
+                                <div class="inline-hint"><i class="ti ti-message"></i> Brief description for store owners</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-save" id="saveBtn">
+                        <i class="ti ti-device-floppy"></i>
+                        Create Category
+                    </button>
+
+                    <div class="info-box">
+                        <i class="ti ti-bulb"></i>
+                        <span>Categories help organize your products. Customers can browse by category.</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toastMsg" class="toast-message">
+        <i class="ti ti-check-circle"></i>
+        <span id="toastText"></span>
+    </div>
+
+    <script>
+        const form = document.getElementById('addCategoryForm');
+        const categoryNameInput = document.getElementById('categoryName');
+        const saveBtn = document.getElementById('saveBtn');
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toastMsg');
+            const toastText = document.getElementById('toastText');
+            toastText.innerText = message;
+            toast.classList.add('show');
+            if (isError) {
+                toast.classList.add('error');
+            } else {
+                toast.classList.remove('error');
+            }
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Auto-clear any error styling when typing
+        categoryNameInput.addEventListener('input', function() {
+            const parentGroup = this.closest('.input-group');
+            if (parentGroup && parentGroup.style.borderColor) {
+                parentGroup.style.borderColor = '';
+            }
+        });
+
+        // Form validation
+        form.addEventListener('submit', (e) => {
+            const categoryName = categoryNameInput.value.trim();
+
+            let errorMsg = null;
+            if (!categoryName) {
+                errorMsg = "Category name is required";
+            } else if (categoryName.length < 2) {
+                errorMsg = "Category name must be at least 2 characters";
+            } else if (categoryName.length > 50) {
+                errorMsg = "Category name must be less than 50 characters";
+            }
+
+            if (errorMsg) {
+                e.preventDefault();
+                showToast(errorMsg, true);
+                // Highlight the input group
+                const parentGroup = categoryNameInput.closest('.input-group');
+                if (parentGroup) {
+                    parentGroup.style.borderColor = '#cd6b6b';
+                    parentGroup.style.backgroundColor = '#fff6f0';
+                }
+                return;
+            }
+
+            // Show loading state
+            const originalHtml = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="ti ti-loader"></i> Creating...';
+            saveBtn.disabled = true;
+
+            setTimeout(() => {
+                if (saveBtn.disabled) {
+                    saveBtn.innerHTML = originalHtml;
+                    saveBtn.disabled = false;
+                }
+            }, 5000);
+        });
+
+        // Display server-side messages
+        window.addEventListener('DOMContentLoaded', () => {
+            {% if success_msg %}
+                showToast("{{ success_msg|escapejs }}", false);
+                // Clear form on success (optional - but server redirects anyway)
+                if (categoryNameInput) {
+                    // Don't clear if server redirects, but just in case
+                }
+            {% endif %}
+            {% if error %}
+                showToast("{{ error|escapejs }}", true);
+            {% endif %}
+            console.log('Add Category page ready');
+        });
+
+        // Auto-focus on category name field
+        if (categoryNameInput) {
+            categoryNameInput.focus();
+        }
+    </script>
+</body>
+</html>

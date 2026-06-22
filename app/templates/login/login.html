@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Login — Bakery Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2ef;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e1b18;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 100%;
+            background: #ffffff;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            padding: 14px 24px 6px 24px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 590;
+            color: #1c1c1e;
+            letter-spacing: 0.2px;
+        }
+
+        .main-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 20px 20px 20px;
+            scrollbar-width: thin;
+        }
+
+        .main-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .main-scroll::-webkit-scrollbar-track {
+            background: #f0eeeb;
+            border-radius: 10px;
+        }
+
+        .main-scroll::-webkit-scrollbar-thumb {
+            background: #d4c5b8;
+            border-radius: 10px;
+        }
+
+        .hero-section {
+            padding: 40px 0 32px 0;
+            text-align: center;
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: #f7f3ef;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .icon-wrapper i {
+            font-size: 44px;
+            color: #c27e4a;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2b221a, #aa6f42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .subhead {
+            font-size: 14px;
+            color: #8f7e6c;
+            font-weight: 500;
+        }
+
+        .form-card {
+            background: #ffffff;
+            border-radius: 28px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            background: #fbf9f7;
+            border-radius: 20px;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .input-group:focus-within {
+            border-color: #c27e4a;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(194, 126, 74, 0.08);
+        }
+
+        .input-field {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 16px;
+            height: 56px;
+        }
+
+        .input-field i {
+            font-size: 20px;
+            color: #bb8b64;
+            width: 22px;
+        }
+
+        .input-field input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: 'Inter', monospace;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2b241e;
+            outline: none;
+        }
+
+        .input-field input::placeholder {
+            color: #cbbcaa;
+            font-weight: 400;
+        }
+
+        .eye-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border-radius: 30px;
+            color: #9a8774;
+            transition: color 0.2s;
+        }
+
+        .eye-btn:hover {
+            color: #c27e4a;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: #c27e4a;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            margin-top: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(194, 126, 74, 0.2);
+        }
+
+        .btn-login:active {
+            transform: scale(0.97);
+            background: #a66c3d;
+        }
+
+        .message-container {
+            margin-bottom: 16px;
+        }
+
+        .alert-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff6f0;
+            border-radius: 18px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border-left: 3px solid #cd6b6b;
+            color: #b1624a;
+        }
+
+        .alert-success {
+            border-left-color: #2b7e4a;
+            background: #f0f9f0;
+            color: #235e3a;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 13px;
+            color: #aa9a88;
+            padding: 16px 0 20px 0;
+            border-top: 0.5px solid #efebe6;
+            margin-top: 8px;
+            background: #ffffff;
+        }
+
+        .footer-note a {
+            color: #c27e4a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-note a:active {
+            opacity: 0.7;
+        }
+
+        .home-indicator {
+            width: 130px;
+            height: 5px;
+            background: #dad3cc;
+            border-radius: 100px;
+            margin: 8px auto 12px auto;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0 16px;
+            color: #cbbcaa;
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 0.5px solid #efe5dc;
+        }
+
+        .divider span {
+            margin: 0 12px;
+        }
+
+        .demo-hint {
+            background: #faf8f5;
+            border-radius: 16px;
+            padding: 12px;
+            font-size: 12px;
+            color: #8f7e6c;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .demo-hint i {
+            color: #c27e4a;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:focus {
+            transition: background-color 0s 600000s, color 0s 600000s;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="status-bar">
+        <!-- empty status placeholder -->
+    </div>
+
+    <div class="main-scroll">
+        <div class="hero-section">
+            <div class="icon-wrapper">
+                <i class="ti ti-building-store"></i>
+            </div>
+            <h1>Welcome back</h1>
+            <div class="subhead">Login to manage your bakery store</div>
+        </div>
+
+        <div id="messageContainer" class="message-container"></div>
+
+        <div class="form-card">
+            <form method="post" id="loginForm" novalidate>
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-user"></i>
+                        <input type="text" name="username" id="username" placeholder="Username" autocomplete="username" autocorrect="off" spellcheck="false" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="ti ti-lock"></i>
+                        <input type="password" name="password" id="password" placeholder="Password" autocomplete="current-password" required>
+                        <button type="button" class="eye-btn" onclick="togglePassword()">
+                            <i class="ti ti-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <i class="ti ti-login"></i>
+                    Login
+                </button>
+
+                <div class="divider">
+                    <span>New here?</span>
+                </div>
+
+                <div style="text-align: center;">
+                    <a href="/signup" style="display: inline-flex; align-items: center; gap: 6px; background: #f7f3ef; padding: 10px 20px; border-radius: 40px; text-decoration: none; font-weight: 600; font-size: 14px; color: #c27e4a;">
+                        <i class="ti ti-sparkles"></i>
+                        Create a store
+                    </a>
+                </div>
+            </form>
+
+            <br>
+            <br>
+
+            <div class="demo-hint">
+                <i class="ti ti-info-circle"></i> Demo: use your store credentials from step 1
+            </div>
+
+            <!-- <div class="footer-note">
+                <i class="ti ti-device-mobile" style="font-size: 11px; margin-right: 4px;"></i>
+                Secure access · Manage products & orders
+            </div> -->
+        </div>
+    </div>
+    <div class="home-indicator"></div>
+</div>
+
+<script>
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const messageContainer = document.getElementById('messageContainer');
+    const loginBtn = document.getElementById('loginBtn');
+    let messageTimeout = null;
+
+    // Toggle password visibility
+    function togglePassword() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        const eyeIcon = document.getElementById('eyeIcon');
+        if (type === 'text') {
+            eyeIcon.className = 'ti ti-eye-off';
+        } else {
+            eyeIcon.className = 'ti ti-eye';
+        }
+    }
+    window.togglePassword = togglePassword;
+
+    function clearMessage() {
+        if (messageTimeout) {
+            clearTimeout(messageTimeout);
+            messageTimeout = null;
+        }
+        const existingMsg = messageContainer.querySelector('.alert-message');
+        if (existingMsg) existingMsg.remove();
+    }
+
+    function showMessage(text, isError = true) {
+        clearMessage();
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'alert-message';
+        if (!isError) {
+            msgDiv.classList.add('alert-success');
+        }
+        msgDiv.innerHTML = `<i class="ti ${isError ? 'ti-alert-circle' : 'ti-check-circle'}"></i><span>${text}</span>`;
+        messageContainer.appendChild(msgDiv);
+        messageTimeout = setTimeout(() => {
+            if (msgDiv) msgDiv.remove();
+            messageTimeout = null;
+        }, 4000);
+    }
+
+    // Clear messages on input
+    usernameInput.addEventListener('input', () => clearMessage());
+    passwordInput.addEventListener('input', () => clearMessage());
+
+    // Form validation before submit
+    loginForm.addEventListener('submit', (e) => {
+        clearMessage();
+        
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
+        
+        let errorMsg = null;
+        
+        if (!username) {
+            errorMsg = "Username is required";
+        } else if (username.length < 2) {
+            errorMsg = "Username must be at least 2 characters";
+        } else if (!password) {
+            errorMsg = "Password is required";
+        } else if (password.length < 4) {
+            errorMsg = "Invalid credentials (password too short)";
+        }
+        
+        if (errorMsg) {
+            e.preventDefault();
+            showMessage(errorMsg, true);
+            // scroll to message
+            messageContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            return;
+        }
+        
+        // Show loading state
+        const originalHtml = loginBtn.innerHTML;
+        loginBtn.innerHTML = '<i class="ti ti-loader"></i> Logging in...';
+        loginBtn.disabled = true;
+        
+        // Re-enable after 6 seconds (in case of slow network / form not redirecting)
+        setTimeout(() => {
+            if (loginBtn.disabled) {
+                loginBtn.innerHTML = originalHtml;
+                loginBtn.disabled = false;
+            }
+        }, 6000);
+    });
+
+    // Handle server-side error messages from Django
+    window.addEventListener('DOMContentLoaded', () => {
+        {% if error %}
+            setTimeout(() => {
+                showMessage("{{ error|escapejs }}", true);
+            }, 100);
+        {% endif %}
+        
+        {% if success_msg %}
+            setTimeout(() => {
+                showMessage("{{ success_msg|escapejs }}", false);
+            }, 100);
+        {% endif %}
+        
+        // Auto-focus on username for better UX
+        if (usernameInput && !usernameInput.value) {
+            usernameInput.focus();
+        }
+        
+        console.log('Login page ready — bakery ordering system');
+    });
+    
+    // Prevent double submit on enter key spamming
+    let isSubmitting = false;
+    loginForm.addEventListener('submit', function(e) {
+        if (isSubmitting) {
+            e.preventDefault();
+            return;
+        }
+        isSubmitting = true;
+        setTimeout(() => { isSubmitting = false; }, 2000);
+    });
+    
+    // Optional: add quick demo credentials hint if needed (just for UX)
+    // Not auto-filling but helps user remember
+    const style = document.createElement('style');
+    style.textContent = `
+        .btn-login:disabled {
+            opacity: 0.7;
+            transform: none;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>
