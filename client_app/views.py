@@ -56,106 +56,6 @@ def tenant_test(request):
 
 
 
-def step2(request, client_id):
-
-    client = get_object_or_404(
-        Client,
-        id=client_id
-    )
-
-    if request.method == "POST":
-
-        theme = request.POST.get("theme")
-
-        ClientSettings.objects.update_or_create(
-            client=client,
-            defaults={
-                "theme": theme
-            }
-        )
-
-        return redirect(f"/step3/{client.id}/")
-
-    return render(
-        request,
-        "signup/step2.html",
-        {
-            "client": client
-        }
-    )
-
-
-def step3(request, client_id):
-
-    client = get_object_or_404(
-        Client,
-        id=client_id
-    )
-
-    settings, created = ClientSettings.objects.get_or_create(
-        client=client
-    )
-
-    if request.method == "POST":
-
-        settings.logo_link = request.POST.get("logo_link")
-        settings.heading = request.POST.get("heading")
-        settings.tagline = request.POST.get("tagline")
-        settings.search_bar_tagline = request.POST.get("search_bar_tagline")
-        settings.whatsapp_number = request.POST.get("whatsapp_number")
-        settings.note = request.POST.get("note")
-        settings.sub_note = request.POST.get("sub_note")
-        settings.other_note = request.POST.get("other_note")
-        settings.other_subnote = request.POST.get("other_subnote")
-
-        settings.save()
-
-        return redirect(f"/step4/{client.id}/")
-
-    return render(
-        request,
-        "signup/step3.html",
-        {
-            "client": client,
-            "settings": settings
-        }
-    )
-
-
-def step4(request, client_id):
-
-    client = get_object_or_404(
-        Client,
-        id=client_id
-    )
-
-    if request.method == "POST":
-
-        categories = request.POST.get(
-            "categories",
-            ""
-        )
-
-        for category_name in categories.splitlines():
-
-            category_name = category_name.strip()
-
-            if category_name:
-
-                Category.objects.get_or_create(
-                    name=category_name
-                )
-
-        return redirect("/")
-
-    return render(
-        request,
-        "signup/step4.html",
-        {
-            "client": client
-        }
-    )
-
 from functools import wraps
 import jwt
 from django.conf import settings
@@ -197,6 +97,110 @@ def jwt_required(view_func):
         
         return view_func(request, *args, **kwargs)
     return wrapper
+
+
+
+
+@jwt_required
+def step2(request, client_id):
+
+    client = get_object_or_404(
+        Client,
+        id=client_id
+    )
+
+    if request.method == "POST":
+
+        theme = request.POST.get("theme")
+
+        ClientSettings.objects.update_or_create(
+            client=client,
+            defaults={
+                "theme": theme
+            }
+        )
+
+        return redirect(f"/step3/{client.id}/")
+
+    return render(
+        request,
+        "signup/step2.html",
+        {
+            "client": client
+        }
+    )
+
+@jwt_required
+def step3(request, client_id):
+
+    client = get_object_or_404(
+        Client,
+        id=client_id
+    )
+
+    settings, created = ClientSettings.objects.get_or_create(
+        client=client
+    )
+
+    if request.method == "POST":
+
+        settings.logo_link = request.POST.get("logo_link")
+        settings.heading = request.POST.get("heading")
+        settings.tagline = request.POST.get("tagline")
+        settings.search_bar_tagline = request.POST.get("search_bar_tagline")
+        settings.whatsapp_number = request.POST.get("whatsapp_number")
+        settings.note = request.POST.get("note")
+        settings.sub_note = request.POST.get("sub_note")
+        settings.other_note = request.POST.get("other_note")
+        settings.other_subnote = request.POST.get("other_subnote")
+
+        settings.save()
+
+        return redirect(f"/step4/{client.id}/")
+
+    return render(
+        request,
+        "signup/step3.html",
+        {
+            "client": client,
+            "settings": settings
+        }
+    )
+
+@jwt_required
+def step4(request, client_id):
+
+    client = get_object_or_404(
+        Client,
+        id=client_id
+    )
+
+    if request.method == "POST":
+
+        categories = request.POST.get(
+            "categories",
+            ""
+        )
+
+        for category_name in categories.splitlines():
+
+            category_name = category_name.strip()
+
+            if category_name:
+
+                Category.objects.get_or_create(
+                    name=category_name
+                )
+
+        return redirect("/")
+
+    return render(
+        request,
+        "signup/step4.html",
+        {
+            "client": client
+        }
+    )
 
 
 @jwt_required

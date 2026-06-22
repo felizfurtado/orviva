@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Client, Domain
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.views.decorators.csrf import csrf_exempt
-
+from django.core.management import call_command
 
 
 @csrf_exempt
@@ -12,7 +12,7 @@ def signup(request):
         password = request.POST.get("password")
 
         if Client.objects.filter(username=username).exists():
-            return render(request, "signup.html", {"error": "Username already exists"})
+            return render(request, "signup/signup.html", {"error": "Username already exists"})
 
         tenant = Client(
             username=username,
@@ -22,6 +22,9 @@ def signup(request):
         )
         tenant.save()
 
+        # Auto-migrate tenant schema
+        call_command('migrate_schemas', schema_name=username, interactive=False)
+
         domain = Domain(
             domain=f"{username}.localhost",
             tenant=tenant,
@@ -29,13 +32,12 @@ def signup(request):
         )
         domain.save()
 
-        # Generate JWT tokens
         refresh = RefreshToken.for_user(tenant)
         
-        # Redirect with tokens in URL (or use session)
         return redirect(f"/step2/{tenant.id}/?access={str(refresh.access_token)}&refresh={str(refresh)}")
 
     return render(request, "signup/signup.html")
+
 
 
 @csrf_exempt
