@@ -4,6 +4,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .url_links import *
 
 
+
+def get_port_part():
+    return f":{BASE_PORT}" if BASE_PORT else ""
+
 def signup(request):
 
     if request.method == "POST":
@@ -36,20 +40,18 @@ def signup(request):
         )
 
         domain.save()
+        port_part = get_port_part()
 
         return redirect(
-    f"{BASE_SCHEME}://{tenant.slug}.{BASE_URL}:{BASE_PORT}/step2/{tenant.id}/"
-)
+            f"{BASE_SCHEME}://{tenant.slug}.{BASE_URL}"
+            f"{port_part}/step2/{tenant.id}/"
+        )
 
     return render(request, "signup/signup.html")
 
 
 
 
-
-
-from django.shortcuts import render, redirect
-from app.models import Client
 def login_view(request):
 
     if request.method == "POST":
@@ -79,10 +81,13 @@ def login_view(request):
             access_token = str(refresh.access_token)
             refresh_token = str(refresh)
 
+            port_part = get_port_part()
+
             return redirect(
-    f"{BASE_SCHEME}://{client.slug}.{BASE_URL}:{BASE_PORT}/dashboard/"
-    f"?access={access_token}&refresh={refresh_token}"
-)
+                f"{BASE_SCHEME}://{client.slug}.{BASE_URL}"
+                f"{port_part}/dashboard/"
+                f"?access={access_token}&refresh={refresh_token}"
+            )
 
         except Client.DoesNotExist:
 
