@@ -6,7 +6,10 @@ from .url_links import *
 
 
 def get_port_part():
-    return f":{BASE_PORT}" if BASE_PORT else ""
+    if not BASE_PORT:
+        return ""
+
+    return ":" + str(BASE_PORT).lstrip(":")
 
 def signup(request):
 
@@ -42,10 +45,15 @@ def signup(request):
         domain.save()
         port_part = get_port_part()
 
-        return redirect(
-            f"{BASE_SCHEME}://{tenant.slug}.{BASE_URL}"
-            f"{port_part}/step2/{tenant.id}/"
-        )
+        redirect_url = (
+    f"{BASE_SCHEME}://{tenant.slug}.{BASE_URL}"
+    f"{port_part}/step2/{tenant.id}/"
+)
+
+        print("SIGNUP REDIRECT =", repr(redirect_url))
+
+        return redirect(redirect_url)
+        
 
     return render(request, "signup/signup.html")
 

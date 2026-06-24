@@ -1,4 +1,4 @@
-BASE_URL = "localhost:8000"  
+BASE_URL = "localhost"  
 BASE_SCHEME = "http"
 BASE_PORT = "8000"
 
