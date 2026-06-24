@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from functools import wraps
 import jwt
 
-from app.url_links import BASE_URL, BASE_SCHEME
+from app.url_links import *
 
 
 def tenant_test(request):
@@ -73,8 +73,14 @@ def jwt_required(view_func):
     def wrapper(request, *args, **kwargs):
         token = request.GET.get("access") or request.session.get("access_token")
 
+        # Local: :8000
+        # VPS: empty
+        port_part = f":{BASE_PORT}" if BASE_PORT else ""
+
         if not token:
-            redirect(f"{BASE_SCHEME}://{BASE_URL}/login/")
+            return redirect(
+                f"{BASE_SCHEME}://{BASE_URL}{port_part}/login/"
+            )
 
         try:
             payload = jwt.decode(
@@ -85,7 +91,10 @@ def jwt_required(view_func):
             request.jwt_user = payload
 
         except jwt.ExpiredSignatureError:
-            refresh = request.GET.get("refresh") or request.session.get("refresh_token")
+            refresh = (
+                request.GET.get("refresh")
+                or request.session.get("refresh_token")
+            )
 
             if refresh:
                 try:
@@ -103,15 +112,21 @@ def jwt_required(view_func):
 
                 except Exception:
                     request.session.flush()
-                    return redirect(f"https://{BASE_URL}/login/")
+                    return redirect(
+                        f"{BASE_SCHEME}://{BASE_URL}{port_part}/login/"
+                    )
 
             else:
                 request.session.flush()
-                return redirect(f"https://{BASE_URL}/login/")
+                return redirect(
+                    f"{BASE_SCHEME}://{BASE_URL}{port_part}/login/"
+                )
 
         except jwt.InvalidTokenError:
             request.session.flush()
-            return redirect(f"https://{BASE_URL}/login/")
+            return redirect(
+                f"{BASE_SCHEME}://{BASE_URL}{port_part}/login/"
+            )
 
         return view_func(request, *args, **kwargs)
 
