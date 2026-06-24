@@ -7,6 +7,7 @@ import os
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from pathlib import Path
+from PIL import Image
 
 
 from django.http import JsonResponse
@@ -148,7 +149,6 @@ def step2(request, client_id):
 
 
 def step3(request, client_id):
-
     client = get_object_or_404(
         Client,
         id=client_id
@@ -159,8 +159,6 @@ def step3(request, client_id):
     )
 
     if request.method == "POST":
-
-        settings.logo_link = request.POST.get("logo_link")
         settings.heading = request.POST.get("heading")
         settings.tagline = request.POST.get("tagline")
         settings.search_bar_tagline = request.POST.get("search_bar_tagline")
@@ -169,6 +167,74 @@ def step3(request, client_id):
         settings.sub_note = request.POST.get("sub_note")
         settings.other_note = request.POST.get("other_note")
         settings.other_subnote = request.POST.get("other_subnote")
+
+        logo_file = request.FILES.get("logo")
+
+        if logo_file:
+            tenant = request.tenant.schema_name
+
+            logo_folder = (
+                Path("tenants")
+                / tenant
+                / "logo"
+            )
+
+            logo_folder.mkdir(
+                parents=True,
+                exist_ok=True
+            )
+
+            logo_filename = "logo.jpg"
+            logo_path = logo_folder / logo_filename
+
+            try:
+                img = Image.open(logo_file)
+
+                # JPEG cannot keep transparency, so make transparent logos white.
+                if img.mode in ("RGBA", "LA", "P"):
+                    background = Image.new("RGB", img.size, "white")
+
+                    if img.mode == "P":
+                        img = img.convert("RGBA")
+
+                    if img.mode == "RGBA":
+                        background.paste(img, mask=img.getchannel("A"))
+                    else:
+                        background.paste(img)
+
+                    img = background
+                else:
+                    img = img.convert("RGB")
+
+                # Logos should stay reasonably small but sharp.
+                max_size = 700
+
+                if img.width > max_size or img.height > max_size:
+                    img.thumbnail(
+                        (max_size, max_size),
+                        Image.Resampling.LANCZOS
+                    )
+
+                img.save(
+                    logo_path,
+                    "JPEG",
+                    quality=65,
+                    optimize=True,
+                    progressive=True
+                )
+
+                settings.logo_link = (
+                    f"tenants/{tenant}/logo/{logo_filename}"
+                )
+
+                print(f"Logo saved: {logo_path.resolve()}")
+                print(
+                    f"Logo size: "
+                    f"{logo_path.stat().st_size / 1024:.2f} KB"
+                )
+
+            except Exception as e:
+                print(f"Logo processing error: {e}")
 
         settings.save()
 
@@ -182,6 +248,8 @@ def step3(request, client_id):
             "settings": settings
         }
     )
+
+
 
 def step4(request, client_id):
 
@@ -304,7 +372,7 @@ from PIL import Image
 import io
 
 from django.utils.text import slugify
-from PIL import Image
+
 
 @jwt_required
 def add_product(request):

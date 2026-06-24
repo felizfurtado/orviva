@@ -336,20 +336,65 @@
         <div id="messageContainer" class="message-container"></div>
 
         <div class="form-card">
-            <form method="post" id="profileForm" novalidate>
+            <form method="post" enctype="multipart/form-data" id="profileForm" novalidate>
                 {% csrf_token %}
 
                 <!-- Logo Link -->
-                <div class="input-group">
-                    <div class="input-field">
-                        <i class="ti ti-link"></i>
-                        <div class="input-content">
-                            <label>Logo URL <span class="optional-badge">Optional</span></label>
-                            <input type="url" name="logo_link" id="logo_link" value="{{ settings.logo_link|default:'' }}" placeholder="https://your-bakery.com/logo.png" autocomplete="off">
-                            <div class="inline-hint"><i class="ti ti-info-circle" style="font-size: 10px;"></i> Square image works best</div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Logo Upload -->
+<div class="input-group">
+    <div class="input-field">
+        <i class="ti ti-photo"></i>
+
+        <div class="input-content">
+            <label>
+                Store logo
+                <span class="optional-badge">Optional</span>
+            </label>
+
+            {% if settings.logo_link %}
+                <img
+                    src="/{{ settings.logo_link }}"
+                    alt="Current store logo"
+                    id="logoPreview"
+                    style="
+                        width: 70px;
+                        height: 70px;
+                        object-fit: contain;
+                        border-radius: 12px;
+                        margin: 8px 0;
+                        display: block;
+                    "
+                >
+            {% else %}
+                <img
+                    src=""
+                    alt="Logo preview"
+                    id="logoPreview"
+                    style="
+                        width: 70px;
+                        height: 70px;
+                        object-fit: contain;
+                        border-radius: 12px;
+                        margin: 8px 0;
+                        display: none;
+                    "
+                >
+            {% endif %}
+
+            <input
+                type="file"
+                name="logo"
+                id="logo"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+            <div class="inline-hint">
+                <i class="ti ti-info-circle" style="font-size: 10px;"></i>
+                Upload PNG, JPG, or WebP. Square logo works best.
+            </div>
+        </div>
+    </div>
+</div>
 
                 <!-- Store Name (required) -->
                 <div class="input-group">
@@ -594,6 +639,20 @@
             ta.style.height = 'auto';
             ta.style.height = Math.min(ta.scrollHeight, 150) + 'px';
         }, 10);
+    });
+</script>
+
+<script>
+    const logoInput = document.getElementById("logo");
+    const logoPreview = document.getElementById("logoPreview");
+
+    logoInput?.addEventListener("change", function () {
+        const file = this.files[0];
+
+        if (!file) return;
+
+        logoPreview.src = URL.createObjectURL(file);
+        logoPreview.style.display = "block";
     });
 </script>
 </body>
