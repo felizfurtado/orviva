@@ -347,7 +347,7 @@
 
     <div class="container">
         <div class="form-card">
-            <form method="post" id="profileForm" novalidate>
+            <form method="post" enctype="multipart/form-data" id="profileForm" novalidate>
                 {% csrf_token %}
 
                 <!-- Logo Section -->
@@ -357,33 +357,67 @@
                         <span>Branding</span>
                     </div>
                     
-                    <div id="logoPreviewContainer" class="logo-preview">
-                        {% if settings.logo_link %}
-                            <img src="{{ settings.logo_link }}" class="logo-preview-img" id="logoPreviewImg" alt="Logo preview" onerror="this.onerror=null; this.style.display='none'; document.getElementById('logoPlaceholder').style.display='flex';">
-                            <div id="logoPlaceholder" style="display: none;" class="logo-preview-placeholder">
-                                <i class="ti ti-building-store"></i>
-                            </div>
-                        {% else %}
-                            <div id="logoPlaceholder" class="logo-preview-placeholder">
-                                <i class="ti ti-building-store"></i>
-                            </div>
-                            <img src="" class="logo-preview-img" id="logoPreviewImg" style="display: none;" alt="Logo preview">
-                        {% endif %}
-                        <div class="logo-preview-text">
-                            <i class="ti ti-info-circle"></i> Square image URL works best
-                        </div>
-                    </div>
+                     <div id="logoPreviewContainer" class="logo-preview">
+        {% if settings.logo_link %}
+            <img
+                src="/{{ settings.logo_link }}"
+                class="logo-preview-img"
+                id="logoPreviewImg"
+                alt="Logo preview"
+            >
+            <div
+                id="logoPlaceholder"
+                style="display: none;"
+                class="logo-preview-placeholder"
+            >
+                <i class="ti ti-building-store"></i>
+            </div>
+        {% else %}
+            <div
+                id="logoPlaceholder"
+                class="logo-preview-placeholder"
+            >
+                <i class="ti ti-building-store"></i>
+            </div>
 
-                    <div class="input-group">
-                        <div class="input-field">
-                            <i class="ti ti-link"></i>
-                            <div class="input-content">
-                                <label>Logo URL <span class="optional-badge">Optional</span></label>
-                                <input type="url" name="logo_link" id="logo_link" value="{{ settings.logo_link|default:'' }}" placeholder="https://your-bakery.com/logo.png" autocomplete="off">
-                                <div class="inline-hint"><i class="ti ti-external-link"></i> Paste image link</div>
-                            </div>
-                        </div>
-                    </div>
+            <img
+                src=""
+                class="logo-preview-img"
+                id="logoPreviewImg"
+                style="display: none;"
+                alt="Logo preview"
+            >
+        {% endif %}
+
+        <div class="logo-preview-text">
+            <i class="ti ti-info-circle"></i>
+            Square image works best
+        </div>
+    </div>
+
+    <div class="input-group">
+        <div class="input-field">
+            <i class="ti ti-upload"></i>
+
+            <div class="input-content">
+                <label>
+                    Upload logo
+                    <span class="optional-badge">Optional</span>
+                </label>
+
+                <input
+                    type="file"
+                    name="logo"
+                    id="logo"
+                    accept="image/jpeg,image/png,image/webp"
+                >
+
+                <div class="inline-hint">
+                    <i class="ti ti-photo"></i>
+                    PNG, JPG, or WebP. Your current logo is replaced when you upload a new one.
+                </div>
+            </div>
+        </div>
 
                     <div class="input-group">
                         <div class="input-field">

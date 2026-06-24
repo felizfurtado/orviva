@@ -353,12 +353,9 @@ def categories(request):
 
 @jwt_required
 def profile(request):
-
     settings = ClientSettings.objects.first()
 
     if request.method == "POST":
-
-        settings.logo_link = request.POST.get("logo_link")
         settings.heading = request.POST.get("heading")
         settings.tagline = request.POST.get("tagline")
         settings.search_bar_tagline = request.POST.get("search_bar_tagline")
@@ -367,6 +364,67 @@ def profile(request):
         settings.sub_note = request.POST.get("sub_note")
         settings.other_note = request.POST.get("other_note")
         settings.other_subnote = request.POST.get("other_subnote")
+
+        logo_file = request.FILES.get("logo")
+
+        if logo_file:
+            tenant = request.tenant.schema_name
+
+            logo_folder = (
+                Path("tenants")
+                / tenant
+                / "logo"
+            )
+
+            logo_folder.mkdir(
+                parents=True,
+                exist_ok=True
+            )
+
+            logo_path = logo_folder / "logo.jpg"
+
+            try:
+                img = Image.open(logo_file)
+
+                # Convert transparent PNG/WebP logos to white-background JPEG
+                if img.mode in ("RGBA", "LA", "P"):
+                    if img.mode == "P":
+                        img = img.convert("RGBA")
+
+                    background = Image.new("RGB", img.size, "white")
+
+                    if img.mode == "RGBA":
+                        background.paste(img, mask=img.getchannel("A"))
+                    else:
+                        background.paste(img)
+
+                    img = background
+                else:
+                    img = img.convert("RGB")
+
+                # Resize large logos
+                max_size = 700
+
+                if img.width > max_size or img.height > max_size:
+                    img.thumbnail(
+                        (max_size, max_size),
+                        Image.Resampling.LANCZOS
+                    )
+
+                img.save(
+                    logo_path,
+                    "JPEG",
+                    quality=65,
+                    optimize=True,
+                    progressive=True
+                )
+
+                settings.logo_link = (
+                    f"tenants/{tenant}/logo/logo.jpg"
+                )
+
+            except Exception as e:
+                print(f"Logo processing error: {e}")
 
         settings.save()
 
