@@ -8,9 +8,12 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from pathlib import Path
 
+
 from django.http import JsonResponse
 from functools import wraps
 import jwt
+
+from app.url_links import BASE_URL, BASE_SCHEME
 
 
 def tenant_test(request):
@@ -67,38 +70,51 @@ from rest_framework_simplejwt.tokens import RefreshToken
 def jwt_required(view_func):
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
-        # Check URL first, then session
-        token = request.GET.get('access') or request.session.get('access_token')
-        
+        token = request.GET.get("access") or request.session.get("access_token")
+
         if not token:
-            return redirect('/login/')
-        
+            redirect(f"{BASE_SCHEME}://{BASE_URL}/login/")
+
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            payload = jwt.decode(
+                token,
+                settings.SECRET_KEY,
+                algorithms=["HS256"]
+            )
             request.jwt_user = payload
+
         except jwt.ExpiredSignatureError:
-            refresh = request.GET.get('refresh') or request.session.get('refresh_token')
+            refresh = request.GET.get("refresh") or request.session.get("refresh_token")
+
             if refresh:
                 try:
                     refresh_token = RefreshToken(refresh)
                     new_access = str(refresh_token.access_token)
-                    request.session['access_token'] = new_access
-                    payload = jwt.decode(new_access, settings.SECRET_KEY, algorithms=['HS256'])
+
+                    request.session["access_token"] = new_access
+
+                    payload = jwt.decode(
+                        new_access,
+                        settings.SECRET_KEY,
+                        algorithms=["HS256"]
+                    )
                     request.jwt_user = payload
-                except:
+
+                except Exception:
                     request.session.flush()
-                    return redirect('/login/')
+                    return redirect(f"https://{BASE_URL}/login/")
+
             else:
                 request.session.flush()
-                return redirect('/login/')
+                return redirect(f"https://{BASE_URL}/login/")
+
         except jwt.InvalidTokenError:
             request.session.flush()
-            return redirect('/login/')
-        
+            return redirect(f"https://{BASE_URL}/login/")
+
         return view_func(request, *args, **kwargs)
+
     return wrapper
-
-
 
 
 def step2(request, client_id):

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Client, Domain
-from .url_links import BASE_URL
+from rest_framework_simplejwt.tokens import RefreshToken
+from .url_links import BASE_URL, BASE_SCHEME
 
 
 def signup(request):
@@ -36,7 +37,9 @@ def signup(request):
 
         domain.save()
 
-        return redirect(f"http://{tenant.slug}.{BASE_URL}/step2/{tenant.id}/")
+        return redirect(
+    f"{BASE_SCHEME}://{tenant.slug}.{BASE_URL}/step2/{tenant.id}/"
+)
 
     return render(request, "signup/signup.html")
 
@@ -68,9 +71,18 @@ def login_view(request):
                 password=password
             )
 
+            refresh = RefreshToken()
+            refresh["client_id"] = client.id
+            refresh["username"] = client.username
+            refresh["tenant_schema"] = client.schema_name
+
+            access_token = str(refresh.access_token)
+            refresh_token = str(refresh)
+
             return redirect(
-                f"http://{client.slug}.{BASE_URL}/dashboard/"
-            )
+        f"{BASE_SCHEME}://{client.slug}.{BASE_URL}/dashboard/"
+        f"?access={access_token}&refresh={refresh_token}"
+    )
 
         except Client.DoesNotExist:
 

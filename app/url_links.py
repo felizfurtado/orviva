@@ -1,1 +1,6 @@
-BASE_URL = "localhost:8000"  # Change to "http://72.60.203.148" on VPS
+BASE_URL = "localhost:8000"  
+BASE_SCHEME = "http"
+
+# VPS production:
+# BASE_URL = "orviva.tech"
+# BASE_SCHEME = "https"
