@@ -188,7 +188,6 @@
     }
     .btn-circle:hover { transform: scale(1.08); }
 
-    /* Notification button with badge */
     .notification-btn {
       position: relative;
     }
@@ -666,6 +665,109 @@
     }
     .add-btn:hover { background: var(--chocolate-dark); transform: scale(1.1); }
 
+    /* ── FOOTER NOTES (clean & simple) ── */
+    .footer-notes {
+      margin-top: 32px;
+      padding: 18px 16px 22px;
+      background: #fcf6f0;
+      border-radius: 28px 28px 16px 16px;
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 4px rgba(255,255,255,0.8), 0 4px 12px rgba(47,26,16,0.04);
+    }
+
+    .footer-notes .foot-title {
+      font-family: "Baloo 2", cursive;
+      font-size: 17px;
+      color: var(--chocolate);
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-notes .foot-title i {
+      color: var(--yellow-dark);
+      font-size: 18px;
+    }
+
+    .footer-notes ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-notes ul li {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #4d3a30;
+      padding: 6px 0 6px 28px;
+      position: relative;
+      border-bottom: 1px dashed rgba(224, 206, 190, 0.35);
+      font-weight: 400;
+      font-family: "Poppins", sans-serif;
+    }
+    .footer-notes ul li:last-child {
+      border-bottom: none;
+    }
+
+    .footer-notes ul li i {
+      position: absolute;
+      left: 2px;
+      top: 9px;
+      width: 18px;
+      color: var(--beige-dark);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .footer-notes ul li strong {
+      font-weight: 600;
+      color: var(--chocolate);
+    }
+
+    .footer-notes .payment-row {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 2px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px 12px;
+      font-size: 13px;
+      color: var(--chocolate);
+      font-weight: 500;
+    }
+    .footer-notes .payment-row .gpay-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff3df;
+      padding: 4px 16px 4px 12px;
+      border-radius: 30px;
+      border: 1px solid var(--yellow);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .footer-notes .payment-row .gpay-badge i {
+      color: var(--yellow-dark);
+    }
+    .footer-notes .payment-row .gpay-number {
+      font-family: "Baloo 2", cursive;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      background: white;
+      padding: 2px 14px;
+      border-radius: 30px;
+      border: 1px solid var(--border);
+      color: var(--chocolate-dark);
+    }
+    .footer-notes .payment-row .name-tag {
+      font-weight: 400;
+      color: var(--light-text);
+      font-size: 12px;
+    }
+
     @media (max-width: 420px) {
       .phone { margin: 0; border-radius: 0; width: 100vw; }
     }
@@ -713,7 +815,7 @@
     </div>
   </div>
 
-  <!-- SEARCH BAR (Redesigned, below logo) -->
+  <!-- SEARCH BAR -->
   <div class="search-wrapper">
     <div class="search-container">
       <span class="search-icon-left"><i class="fas fa-search"></i></span>
@@ -761,7 +863,7 @@
       </div>
     </div>
 
-    <!-- COOKIES SECTION -->
+    <!-- COOKIES -->
     <div class="section-label2">🍪 Cookies</div>
     <div class="grid">
       <div class="product-card" onclick="window.location.href='desc.html'">
@@ -808,7 +910,7 @@
       </div>
     </div>
 
-    <!-- CUPCAKES SECTION -->
+    <!-- CUPCAKES -->
     <div class="section-label2">🧁 Cupcakes</div>
     <div class="grid">
       <div class="product-card" onclick="window.location.href='desc.html'">
@@ -860,8 +962,33 @@
       <p style="font-family: 'Baloo 2', cursive; font-size: 14px; color: var(--chocolate);">🌸 <strong>Seasonal Options Available!</strong> 🌸</p>
       <p style="font-size: 11px; color: var(--light-text); margin-top: 4px;">Ask us about our seasonal specials & custom orders</p>
     </div>
+
+    <!-- ===== FOOTER NOTES (simple, clean, all points included) ===== -->
+    <div class="footer-notes">
+      <div class="foot-title">
+        <i class="fas fa-utensils"></i> Order Notes
+      </div>
+      <ul>
+        <li><i class="fas fa-pen-fancy"></i> <strong>Custom design:</strong> making/design charge depends on extra labor &amp; material.</li>
+        <li><i class="fas fa-weight-scale"></i> <strong>Minimum order</strong> for customized cake: <strong>1 kg</strong>.</li>
+        <li><i class="fas fa-hand-holding-usd"></i> <strong>50% advance</strong> payment confirms your order.</li>
+        <li><i class="fas fa-bag-shopping"></i> We do <strong>not</strong> provide carry bags or party supplies.</li>
+        <li><i class="fas fa-car"></i> Place cake on a <strong>level surface</strong> / hold straight &amp; drive slowly.</li>
+        <li><i class="fas fa-snowflake"></i> <strong>Refrigerate</strong> the cake after delivery.</li>
+      </ul>
+      <div class="payment-row">
+        <span><i class="fas fa-credit-card"></i> Payment: Cash / GPay</span>
+        <span class="gpay-badge"><i class="fab fa-google-pay"></i> GPay</span>
+        <span class="gpay-number">9900174077</span>
+        <span class="name-tag">— Sridevi Kiran</span>
+      </div>
+    </div>
+    <!-- end footer-notes -->
+
   </div>
+  <!-- end body-scroll -->
 </div>
+<!-- end phone -->
 
 <script>
   // Preloader
@@ -871,23 +998,20 @@
     }, 1500);
   });
 
-  // Search functionality
+  // Search
   const searchInput = document.getElementById('searchInput');
   const searchSubmitBtn = document.getElementById('searchSubmitBtn');
 
-  // Search submit action
   searchSubmitBtn.addEventListener('click', function() {
     const query = searchInput.value.trim();
     if (query) {
       alert('Searching for: ' + query);
-      // Here you can implement actual search filtering
     } else {
       alert('Please enter a search term.');
       searchInput.focus();
     }
   });
 
-  // Also allow Enter key to search
   searchInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
       searchSubmitBtn.click();

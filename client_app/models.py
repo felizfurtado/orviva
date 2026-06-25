@@ -25,9 +25,24 @@ class ClientSettings(models.Model):
     sub_note = models.TextField(blank=True, null=True)
     other_note = models.TextField(blank=True, null=True)
     other_subnote = models.TextField(blank=True, null=True)
+
+    payment_methods = models.CharField(max_length=255, blank=True, null=True)
+    company_name = models.CharField(max_length=255, blank=True, null=True)
+
+    policy_points = models.JSONField(default=list, blank=True, null=True)
+
+    enable_pickup = models.BooleanField(default=True)
+    pickup_start = models.CharField(max_length=5, default="09:00")
+    pickup_end = models.CharField(max_length=5, default="21:00")
+    
+    enable_delivery = models.BooleanField(default=True)
+    delivery_start = models.CharField(max_length=5, default="10:00")
+    delivery_end = models.CharField(max_length=5, default="19:00")
     
     def __str__(self):
         return self.heading or "Settings"
+
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255)

@@ -266,6 +266,10 @@ def step3(request, client_id):
 
 
 
+
+
+
+
 def step4(request, client_id):
 
     client = get_object_or_404(
@@ -364,6 +368,34 @@ def profile(request):
         settings.sub_note = request.POST.get("sub_note")
         settings.other_note = request.POST.get("other_note")
         settings.other_subnote = request.POST.get("other_subnote")
+        
+        # Payment & Policy
+        settings.payment_methods = request.POST.get("payment_methods")
+        settings.company_name = request.POST.get("company_name")
+        
+        # Handle policy points
+        policy_texts = request.POST.getlist("policy_text[]")
+        policy_statuses = request.POST.getlist("policy_active[]")
+        
+        policy_points = []
+        for i, text in enumerate(policy_texts):
+            if text and text.strip():
+                is_active = i < len(policy_statuses) and policy_statuses[i] == "on"
+                policy_points.append({
+                    "text": text.strip(),
+                    "is_active": is_active
+                })
+        
+        settings.policy_points = policy_points
+        
+        # NEW: Delivery/Pickup Settings
+        settings.enable_pickup = request.POST.get("enable_pickup") == "on"
+        settings.pickup_start = request.POST.get("pickup_start", "09:00")
+        settings.pickup_end = request.POST.get("pickup_end", "21:00")
+        
+        settings.enable_delivery = request.POST.get("enable_delivery") == "on"
+        settings.delivery_start = request.POST.get("delivery_start", "10:00")
+        settings.delivery_end = request.POST.get("delivery_end", "19:00")
 
         logo_file = request.FILES.get("logo")
 
@@ -386,7 +418,6 @@ def profile(request):
             try:
                 img = Image.open(logo_file)
 
-                # Convert transparent PNG/WebP logos to white-background JPEG
                 if img.mode in ("RGBA", "LA", "P"):
                     if img.mode == "P":
                         img = img.convert("RGBA")
@@ -402,7 +433,6 @@ def profile(request):
                 else:
                     img = img.convert("RGB")
 
-                # Resize large logos
                 max_size = 700
 
                 if img.width > max_size or img.height > max_size:
@@ -437,6 +467,7 @@ def profile(request):
             "settings": settings
         }
     )
+
 
 
 

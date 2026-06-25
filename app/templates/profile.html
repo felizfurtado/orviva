@@ -331,6 +331,100 @@
             font-size: 12px;
             color: #8f7e6c;
         }
+
+        /* Policy points styling */
+        .policy-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: #fbf9f7;
+            border-radius: 16px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            border: 1px solid #efe5dc;
+            transition: all 0.2s;
+        }
+
+        .policy-item:hover {
+            border-color: #d4c5b8;
+        }
+
+        .policy-item .policy-text {
+            flex: 1;
+        }
+
+        .policy-item .policy-text input {
+            border: none;
+            background: transparent;
+            font-family: 'Inter', monospace;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2b241e;
+            outline: none;
+            width: 100%;
+            padding: 0;
+        }
+
+        .policy-item .policy-text input::placeholder {
+            color: #cbbcaa;
+            font-weight: 400;
+        }
+
+        .policy-item .policy-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #5e4e3c;
+            white-space: nowrap;
+        }
+
+        .policy-item .policy-status input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #c27e4a;
+            cursor: pointer;
+        }
+
+        .policy-item .policy-remove {
+            background: none;
+            border: none;
+            color: #cd6b6b;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px;
+            transition: transform 0.2s;
+            line-height: 1;
+        }
+
+        .policy-item .policy-remove:hover {
+            transform: scale(1.2);
+        }
+
+        .btn-add-policy {
+            background: #f0ede8;
+            border: 2px dashed #d4c5b8;
+            border-radius: 16px;
+            padding: 12px;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #8f7e6c;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-add-policy:hover {
+            background: #f5f2ef;
+            border-color: #c27e4a;
+            color: #c27e4a;
+        }
     </style>
 </head>
 <body>
@@ -357,67 +451,64 @@
                         <span>Branding</span>
                     </div>
                     
-                     <div id="logoPreviewContainer" class="logo-preview">
-        {% if settings.logo_link %}
-            <img
-                src="/{{ settings.logo_link }}"
-                class="logo-preview-img"
-                id="logoPreviewImg"
-                alt="Logo preview"
-            >
-            <div
-                id="logoPlaceholder"
-                style="display: none;"
-                class="logo-preview-placeholder"
-            >
-                <i class="ti ti-building-store"></i>
-            </div>
-        {% else %}
-            <div
-                id="logoPlaceholder"
-                class="logo-preview-placeholder"
-            >
-                <i class="ti ti-building-store"></i>
-            </div>
+                    <div id="logoPreviewContainer" class="logo-preview">
+                        {% if settings.logo_link %}
+                        <img
+                            src="/{{ settings.logo_link }}"
+                            class="logo-preview-img"
+                            id="logoPreviewImg"
+                            alt="Logo preview"
+                        >
+                        <div
+                            id="logoPlaceholder"
+                            style="display: none;"
+                            class="logo-preview-placeholder"
+                        >
+                            <i class="ti ti-building-store"></i>
+                        </div>
+                        {% else %}
+                        <div
+                            id="logoPlaceholder"
+                            class="logo-preview-placeholder"
+                        >
+                            <i class="ti ti-building-store"></i>
+                        </div>
+                        <img
+                            src=""
+                            class="logo-preview-img"
+                            id="logoPreviewImg"
+                            style="display: none;"
+                            alt="Logo preview"
+                        >
+                        {% endif %}
 
-            <img
-                src=""
-                class="logo-preview-img"
-                id="logoPreviewImg"
-                style="display: none;"
-                alt="Logo preview"
-            >
-        {% endif %}
+                        <div class="logo-preview-text">
+                            <i class="ti ti-info-circle"></i>
+                            Square image works best
+                        </div>
+                    </div>
 
-        <div class="logo-preview-text">
-            <i class="ti ti-info-circle"></i>
-            Square image works best
-        </div>
-    </div>
-
-    <div class="input-group">
-        <div class="input-field">
-            <i class="ti ti-upload"></i>
-
-            <div class="input-content">
-                <label>
-                    Upload logo
-                    <span class="optional-badge">Optional</span>
-                </label>
-
-                <input
-                    type="file"
-                    name="logo"
-                    id="logo"
-                    accept="image/jpeg,image/png,image/webp"
-                >
-
-                <div class="inline-hint">
-                    <i class="ti ti-photo"></i>
-                    PNG, JPG, or WebP. Your current logo is replaced when you upload a new one.
-                </div>
-            </div>
-        </div>
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-upload"></i>
+                            <div class="input-content">
+                                <label>
+                                    Upload logo
+                                    <span class="optional-badge">Optional</span>
+                                </label>
+                                <input
+                                    type="file"
+                                    name="logo"
+                                    id="logo"
+                                    accept="image/jpeg,image/png,image/webp"
+                                >
+                                <div class="inline-hint">
+                                    <i class="ti ti-photo"></i>
+                                    PNG, JPG, or WebP. Your current logo is replaced when you upload a new one.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="input-group">
                         <div class="input-field">
@@ -470,6 +561,154 @@
                     </div>
                 </div>
 
+                <!-- ===== NEW: Payment & Policy Section ===== -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="ti ti-credit-card"></i>
+                        <span>Payment & Policy</span>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-wallet"></i>
+                            <div class="input-content">
+                                <label>Payment Methods</label>
+                                <input type="text" name="payment_methods" id="payment_methods" value="{{ settings.payment_methods|default:'Cash, UPI' }}" placeholder="Cash, UPI, GPay, Credit Card">
+                                <div class="inline-hint"><i class="ti ti-info-circle"></i> Comma separated list</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Name -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="ti ti-building-store"></i>
+                            <div class="input-content">
+                                <label>Company Name <span class="optional-badge">Optional</span></label>
+                                <input type="text" name="company_name" id="company_name" value="{{ settings.company_name|default:'' }}" placeholder="Your company name">
+                                <div class="inline-hint"><i class="ti ti-info-circle"></i> Displayed in policy card</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Policy Points -->
+                    <div class="policy-section">
+                        <label style="font-size: 12px; font-weight: 600; color: #5e4e3c; display: block; margin-bottom: 10px;">
+                            Policy Points
+                            <span class="optional-badge">Optional</span>
+                        </label>
+                        <div id="policyContainer">
+                            {% if settings.policy_points %}
+                                {% for policy in settings.policy_points %}
+                                <div class="policy-item">
+                                    <div class="policy-text">
+                                        <input type="text" name="policy_text[]" value="{{ policy.text }}" placeholder="Enter policy text" />
+                                    </div>
+                                    <div class="policy-status">
+                                        <input type="checkbox" name="policy_active[]" {% if policy.is_active %}checked{% endif %} />
+                                        <span>Active</span>
+                                    </div>
+                                    <button type="button" class="policy-remove" onclick="removePolicy(this)" title="Remove policy">
+                                        <i class="ti ti-x"></i>
+                                    </button>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <!-- Default policies -->
+                                <div class="policy-item">
+                                    <div class="policy-text">
+                                        <input type="text" name="policy_text[]" value="50% advance payment confirms your order" />
+                                    </div>
+                                    <div class="policy-status">
+                                        <input type="checkbox" name="policy_active[]" checked />
+                                        <span>Active</span>
+                                    </div>
+                                    <button type="button" class="policy-remove" onclick="removePolicy(this)" title="Remove policy">
+                                        <i class="ti ti-x"></i>
+                                    </button>
+                                </div>
+                                <div class="policy-item">
+                                    <div class="policy-text">
+                                        <input type="text" name="policy_text[]" value="Minimum 1 kg for custom cakes" />
+                                    </div>
+                                    <div class="policy-status">
+                                        <input type="checkbox" name="policy_active[]" checked />
+                                        <span>Active</span>
+                                    </div>
+                                    <button type="button" class="policy-remove" onclick="removePolicy(this)" title="Remove policy">
+                                        <i class="ti ti-x"></i>
+                                    </button>
+                                </div>
+                                <div class="policy-item">
+                                    <div class="policy-text">
+                                        <input type="text" name="policy_text[]" value="Custom design charges apply (extra labor &amp; material)" />
+                                    </div>
+                                    <div class="policy-status">
+                                        <input type="checkbox" name="policy_active[]" checked />
+                                        <span>Active</span>
+                                    </div>
+                                    <button type="button" class="policy-remove" onclick="removePolicy(this)" title="Remove policy">
+                                        <i class="ti ti-x"></i>
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <button type="button" class="btn-add-policy" onclick="addPolicy()">
+                            <i class="ti ti-plus"></i>
+                            Add Policy Point
+                        </button>
+                    </div>
+                </div>
+                <!-- ===== End Payment & Policy Section ===== -->
+
+
+
+
+                <!-- ===== DELIVERY / PICKUP SETTINGS ===== -->
+<div class="form-section">
+    <div class="section-title">
+        <i class="ti ti-truck-delivery"></i>
+        <span>Pickup & Delivery Settings</span>
+    </div>
+
+    <!-- Pickup -->
+    <div style="margin-bottom: 16px; padding: 12px 16px; background: #fbf9f7; border-radius: 16px; border: 1px solid #efe5dc;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+            <input type="checkbox" name="enable_pickup" id="enable_pickup" {% if settings.enable_pickup %}checked{% endif %} style="width: 18px; height: 18px; accent-color: #c27e4a; cursor: pointer;" />
+            <label for="enable_pickup" style="font-weight: 600; color: #2b241e; cursor: pointer;">📍 Enable Pickup</label>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; padding-left: 30px;">
+            <div style="flex: 1; min-width: 100px;">
+                <label style="font-size: 11px; color: #5e4e3c; font-weight: 600; display: block; margin-bottom: 4px;">Start Time</label>
+                <input type="time" name="pickup_start" value="{{ settings.pickup_start|default:'09:00' }}" style="width: 100%; padding: 8px 12px; border: 1px solid #efe5dc; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; background: white;" />
+            </div>
+            <div style="flex: 1; min-width: 100px;">
+                <label style="font-size: 11px; color: #5e4e3c; font-weight: 600; display: block; margin-bottom: 4px;">End Time</label>
+                <input type="time" name="pickup_end" value="{{ settings.pickup_end|default:'21:00' }}" style="width: 100%; padding: 8px 12px; border: 1px solid #efe5dc; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; background: white;" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivery -->
+    <div style="padding: 12px 16px; background: #fbf9f7; border-radius: 16px; border: 1px solid #efe5dc;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+            <input type="checkbox" name="enable_delivery" id="enable_delivery" {% if settings.enable_delivery %}checked{% endif %} style="width: 18px; height: 18px; accent-color: #c27e4a; cursor: pointer;" />
+            <label for="enable_delivery" style="font-weight: 600; color: #2b241e; cursor: pointer;">🚚 Enable Delivery</label>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; padding-left: 30px;">
+            <div style="flex: 1; min-width: 100px;">
+                <label style="font-size: 11px; color: #5e4e3c; font-weight: 600; display: block; margin-bottom: 4px;">Start Time</label>
+                <input type="time" name="delivery_start" value="{{ settings.delivery_start|default:'10:00' }}" style="width: 100%; padding: 8px 12px; border: 1px solid #efe5dc; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; background: white;" />
+            </div>
+            <div style="flex: 1; min-width: 100px;">
+                <label style="font-size: 11px; color: #5e4e3c; font-weight: 600; display: block; margin-bottom: 4px;">End Time</label>
+                <input type="time" name="delivery_end" value="{{ settings.delivery_end|default:'19:00' }}" style="width: 100%; padding: 8px 12px; border: 1px solid #efe5dc; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 14px; background: white;" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===== END DELIVERY / PICKUP SETTINGS ===== -->
                 <!-- Notes Section -->
                 <div class="form-section">
                     <div class="section-title">
@@ -555,14 +794,41 @@
     </div>
 
     <script>
-        const profileForm = document.getElementById('profileForm');
-        const headingInput = document.getElementById('heading');
-        const whatsappInput = document.getElementById('whatsapp_number');
-        const logoLinkInput = document.getElementById('logo_link');
-        const logoPreviewImg = document.getElementById('logoPreviewImg');
-        const logoPlaceholder = document.getElementById('logoPlaceholder');
-        const saveBtn = document.getElementById('saveBtn');
-        
+        // ============================================================
+        // POLICY FUNCTIONS
+        // ============================================================
+        function addPolicy() {
+            const container = document.getElementById('policyContainer');
+            const div = document.createElement('div');
+            div.className = 'policy-item';
+            div.innerHTML = `
+                <div class="policy-text">
+                    <input type="text" name="policy_text[]" placeholder="Enter policy text" />
+                </div>
+                <div class="policy-status">
+                    <input type="checkbox" name="policy_active[]" checked />
+                    <span>Active</span>
+                </div>
+                <button type="button" class="policy-remove" onclick="removePolicy(this)" title="Remove policy">
+                    <i class="ti ti-x"></i>
+                </button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removePolicy(btn) {
+            const container = document.getElementById('policyContainer');
+            const items = container.querySelectorAll('.policy-item');
+            if (items.length <= 1) {
+                showToast('You must have at least one policy point.', true);
+                return;
+            }
+            btn.closest('.policy-item').remove();
+        }
+
+        // ============================================================
+        // TOAST / NOTIFICATION
+        // ============================================================
         function showToast(message, isError = false) {
             const toast = document.getElementById('toastMsg');
             const toastText = document.getElementById('toastText');
@@ -577,46 +843,22 @@
                 toast.classList.remove('show');
             }, 3000);
         }
-        
-        // Logo preview on URL change
-        function updateLogoPreview() {
-            const url = logoLinkInput.value.trim();
-            if (url) {
-                logoPreviewImg.src = url;
-                logoPreviewImg.style.display = 'block';
-                logoPlaceholder.style.display = 'none';
-                logoPreviewImg.onerror = function() {
-                    logoPreviewImg.style.display = 'none';
-                    logoPlaceholder.style.display = 'flex';
-                };
-            } else {
-                logoPreviewImg.style.display = 'none';
-                logoPlaceholder.style.display = 'flex';
-            }
-        }
-        
-        logoLinkInput.addEventListener('input', updateLogoPreview);
-        updateLogoPreview();
-        
-        // Validate WhatsApp number
+
+        // ============================================================
+        // FORM VALIDATION
+        // ============================================================
+        const profileForm = document.getElementById('profileForm');
+        const headingInput = document.getElementById('heading');
+        const whatsappInput = document.getElementById('whatsapp_number');
+        const saveBtn = document.getElementById('saveBtn');
+
         function validateWhatsApp(number) {
             const cleaned = number.replace(/\s/g, '');
             if (cleaned === '') return false;
             const digits = cleaned.replace(/[^0-9]/g, '');
             return digits.length >= 5;
         }
-        
-        // Auto clear messages on input
-        function attachClearListeners() {
-            const inputs = profileForm.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('focus', () => {
-                    // remove any visual error border if needed
-                });
-            });
-        }
-        
-        // Form submit with validation
+
         profileForm.addEventListener('submit', (e) => {
             const storeName = headingInput?.value.trim();
             const whatsapp = whatsappInput?.value.trim();
@@ -643,7 +885,6 @@
             saveBtn.innerHTML = '<i class="ti ti-loader"></i> Saving...';
             saveBtn.disabled = true;
             
-            // Re-enable after 5 seconds (in case of slow network)
             setTimeout(() => {
                 if (saveBtn.disabled) {
                     saveBtn.innerHTML = originalHtml;
@@ -651,10 +892,30 @@
                 }
             }, 6000);
         });
-        
-        attachClearListeners();
-        
-        // Auto-resize textareas
+
+        // ============================================================
+        // LOGO PREVIEW
+        // ============================================================
+        document.getElementById('logo')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const previewImg = document.getElementById('logoPreviewImg');
+                    const placeholder = document.getElementById('logoPlaceholder');
+                    if (previewImg) {
+                        previewImg.src = event.target.result;
+                        previewImg.style.display = 'block';
+                        if (placeholder) placeholder.style.display = 'none';
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // ============================================================
+        // AUTO-RESIZE TEXTAREAS
+        // ============================================================
         const textareas = document.querySelectorAll('textarea');
         textareas.forEach(ta => {
             ta.addEventListener('input', function() {
@@ -666,23 +927,10 @@
                 ta.style.height = Math.min(ta.scrollHeight, 150) + 'px';
             }, 10);
         });
-        
-        // Display server-side messages
-        window.addEventListener('DOMContentLoaded', () => {
-            {% if success_msg %}
-                showToast("{{ success_msg|escapejs }}", false);
-            {% endif %}
-            {% if error %}
-                showToast("{{ error|escapejs }}", true);
-            {% endif %}
-            console.log('Profile page ready — bakery ordering system');
-        });
-        
-        // Touch feedback for buttons
-        saveBtn.addEventListener('touchstart', function() { this.style.opacity = '0.8'; });
-        saveBtn.addEventListener('touchend', function() { this.style.opacity = '1'; });
-        
-        // Optional: mark required fields visually
+
+        // ============================================================
+        // MARK REQUIRED FIELDS
+        // ============================================================
         const requiredFields = ['heading', 'whatsapp_number'];
         requiredFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
@@ -697,6 +945,22 @@
                 });
             }
         });
+
+        // ============================================================
+        // SERVER MESSAGES
+        // ============================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            {% if success_msg %}
+                showToast("{{ success_msg|escapejs }}", false);
+            {% endif %}
+            {% if error %}
+                showToast("{{ error|escapejs }}", true);
+            {% endif %}
+        });
+
+        // Touch feedback for buttons
+        saveBtn?.addEventListener('touchstart', function() { this.style.opacity = '0.8'; });
+        saveBtn?.addEventListener('touchend', function() { this.style.opacity = '1'; });
     </script>
 </body>
 </html>

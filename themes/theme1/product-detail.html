@@ -102,8 +102,6 @@
       border-radius: 10px;
     }
 
-  
-
     .top-nav {
       position: absolute;
       top: 0;
@@ -290,6 +288,193 @@
       margin-top: 3px;
     }
 
+    /* ── PICKUP / DELIVERY SELECTOR ── */
+    .delivery-options {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .delivery-option {
+      flex: 1;
+      padding: 14px 12px;
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.25s;
+      font-family: "Poppins", sans-serif;
+    }
+    .delivery-option:hover {
+      border-color: var(--yellow);
+      background: #fffdf7;
+    }
+    .delivery-option.active {
+      border-color: var(--yellow-dark);
+      background: #fff3df;
+    }
+    .delivery-option .delivery-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--chocolate);
+    }
+    .delivery-option .delivery-time {
+      font-size: 10px;
+      color: var(--light-text);
+      margin-top: 3px;
+    }
+
+    /* ── DATE & TIME PICKER ── */
+    .datetime-picker {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .datetime-picker input[type="date"],
+    .datetime-picker input[type="time"] {
+      flex: 1;
+      min-width: 130px;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      font-family: "Poppins", sans-serif;
+      font-size: 13px;
+      color: var(--chocolate);
+      background: var(--white);
+      transition: all 0.25s;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .datetime-picker input[type="date"]:focus,
+    .datetime-picker input[type="time"]:focus {
+      border-color: var(--yellow-dark);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(246, 197, 74, 0.25);
+    }
+
+    .datetime-picker input[type="date"]::-webkit-calendar-picker-indicator,
+    .datetime-picker input[type="time"]::-webkit-calendar-picker-indicator {
+      opacity: 0.6;
+      cursor: pointer;
+    }
+
+    .datetime-note {
+      font-size: 11px;
+      color: var(--light-text);
+      margin-top: 6px;
+      font-weight: 400;
+      padding-left: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .datetime-note i {
+      color: var(--yellow-dark);
+      margin-right: 4px;
+    }
+
+    .datetime-note.warning {
+      color: #ff6b35;
+      font-weight: 600;
+    }
+
+    /* ── POLICY CARD ── */
+    .policy-card {
+      background: #fcf6f0;
+      border-radius: 20px;
+      padding: 18px 20px;
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 4px rgba(255,255,255,0.8);
+    }
+    .policy-card .policy-title {
+      font-family: "Baloo 2", cursive;
+      font-size: 16px;
+      color: var(--chocolate);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .policy-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .policy-list li {
+      font-size: 12.5px;
+      color: #4d3a30;
+      padding: 5px 0 5px 16px;
+      position: relative;
+      line-height: 1.6;
+      font-weight: 400;
+      border-bottom: 1px dashed rgba(224, 206, 190, 0.3);
+    }
+    .policy-list li:last-child {
+      border-bottom: none;
+    }
+    .policy-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 5px;
+      color: var(--yellow-dark);
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .policy-list li strong {
+      font-weight: 600;
+      color: var(--chocolate);
+    }
+    .policy-payment {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1.5px dashed var(--border);
+      font-size: 12px;
+      color: var(--chocolate);
+      font-weight: 500;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px 10px;
+    }
+    .policy-payment .payment-label {
+      font-weight: 400;
+      color: var(--light-text);
+    }
+    .policy-payment .gpay-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #fff3df;
+      padding: 3px 14px 3px 10px;
+      border-radius: 30px;
+      border: 1px solid var(--yellow);
+      font-weight: 600;
+      font-size: 12px;
+    }
+    .policy-payment .gpay-badge i {
+      color: var(--yellow-dark);
+    }
+    .policy-payment .gpay-number {
+      font-family: "Baloo 2", cursive;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      background: white;
+      padding: 1px 12px;
+      border-radius: 30px;
+      border: 1px solid var(--border);
+      color: var(--chocolate-dark);
+    }
+    .policy-payment .name-tag {
+      font-weight: 400;
+      color: var(--light-text);
+      font-size: 11px;
+    }
+
     .addon-options {
       display: flex;
       flex-direction: column;
@@ -421,6 +606,10 @@
         width: calc(100vw - 40px);
         bottom: 20px;
       }
+      .datetime-picker input[type="date"],
+      .datetime-picker input[type="time"] {
+        min-width: 100px;
+      }
     }
   </style>
 </head>
@@ -447,9 +636,7 @@
           </button>
         </div>
       </div>
-      
 
-      
       <div class="gallery-dots">
         <div class="gallery-dot active" onclick="changeImage(0)"></div>
         <div class="gallery-dot" onclick="changeImage(1)"></div>
@@ -463,8 +650,6 @@
       <div class="cake-subtitle">
         <span>{{ product.tagline }}</span>
       </div>
-
-
 
       <div class="price-row">
         {% if product.options %}
@@ -503,6 +688,55 @@
       <div class="section-title">Ingredients</div>
       <div class="ingredient-tags" id="ingredientTags"></div>
       {% endif %}
+
+      <!-- ===== PICKUP / DELIVERY SECTION ===== -->
+<div class="section-title">Pickup or Delivery</div>
+<div class="delivery-options" id="deliveryOptions">
+    {% if settings.enable_pickup %}
+    <div class="delivery-option active" onclick="selectDelivery(this, 'Pickup')">
+        <div class="delivery-name">📍 Pickup</div>
+        <div class="delivery-time">{{ settings.pickup_start|default:"09:00"|slice:":5" }} — {{ settings.pickup_end|default:"21:00"|slice:":5" }}</div>
+    </div>
+    {% endif %}
+    {% if settings.enable_delivery %}
+    <div class="delivery-option" onclick="selectDelivery(this, 'Delivery')" {% if not settings.enable_pickup %}class="delivery-option active"{% endif %}>
+        <div class="delivery-name">🚚 Delivery</div>
+        <div class="delivery-time">{{ settings.delivery_start|default:"10:00"|slice:":5" }} — {{ settings.delivery_end|default:"19:00"|slice:":5" }}</div>
+    </div>
+    {% endif %}
+</div>
+
+      <div class="datetime-picker">
+        <input type="date" id="orderDate" />
+        <input type="time" id="orderTime" step="1800" />
+      </div>
+      <div class="datetime-note" id="datetimeNote">
+        <i class="fas fa-clock"></i> Minimum 24 hours advance order required
+      </div>
+
+      <!-- ===== POLICY CARD (DYNAMIC FROM SETTINGS - NO DEFAULTS) ===== -->
+      <div class="policy-card" id="policyCard">
+        <div class="policy-title">Before You Order</div>
+        <ul class="policy-list" id="policyList">
+          {% if settings.policy_points %}
+            {% for policy in settings.policy_points %}
+              {% if policy.is_active %}
+              <li>{{ policy.text|safe }}</li>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </ul>
+        <div class="policy-payment">
+          <span><span class="payment-label">Payment:</span> {{ settings.payment_methods|default:"Cash / UPI" }}</span>
+          {% if settings.company_name %}
+          <span class="name-tag">— {{ settings.company_name }}</span>
+          {% endif %}
+        </div>
+      </div>
+      <!-- end policy-card -->
+
+
+      
 
       {% if product.add_on_options %}
       <div class="section-title">Add-ons</div>
@@ -550,6 +784,175 @@
     })();
     {% endif %}
 
+    // ============================================================
+    // DELIVERY / PICKUP SELECTION
+    // ============================================================
+    // ============================================================
+// DELIVERY / PICKUP SELECTION (with dynamic times)
+// ============================================================
+let selectedDelivery = "Pickup";
+
+// Get times from settings (passed from Django)
+const pickupStart = "{{ settings.pickup_start|default:'09:00' }}";
+const pickupEnd = "{{ settings.pickup_end|default:'21:00' }}";
+const deliveryStart = "{{ settings.delivery_start|default:'10:00' }}";
+const deliveryEnd = "{{ settings.delivery_end|default:'19:00' }}";
+
+function selectDelivery(el, type) {
+    document.querySelectorAll(".delivery-option").forEach(opt => opt.classList.remove("active"));
+    el.classList.add("active");
+    selectedDelivery = type;
+    
+    const timeInput = document.getElementById("orderTime");
+    if (timeInput) {
+        if (type === "Pickup") {
+            timeInput.min = pickupStart;
+            timeInput.max = pickupEnd;
+        } else {
+            timeInput.min = deliveryStart;
+            timeInput.max = deliveryEnd;
+        }
+    }
+    
+    enforceTimeRestrictions();
+}
+
+
+
+    // ============================================================
+    // STRICT TIME VALIDATION
+    // ============================================================
+    function enforceTimeRestrictions() {
+      const timeInput = document.getElementById("orderTime");
+      if (!timeInput || !timeInput.value) return;
+      
+      const selectedTime = timeInput.value;
+      let minTime, maxTime, typeName;
+      
+      if (selectedDelivery === "Pickup") {
+        minTime = "09:00";
+        maxTime = "21:00";
+        typeName = "Pickup";
+      } else {
+        minTime = "10:00";
+        maxTime = "19:00";
+        typeName = "Delivery";
+      }
+      
+      if (selectedTime < minTime) {
+        timeInput.value = minTime;
+        showTimeWarning(`${typeName} timing is ${formatTime(minTime)} — ${formatTime(maxTime)}. Please select a time within this range.`);
+      } else if (selectedTime > maxTime) {
+        timeInput.value = maxTime;
+        showTimeWarning(`${typeName} timing is ${formatTime(minTime)} — ${formatTime(maxTime)}. Please select a time within this range.`);
+      }
+    }
+
+    function formatTime(timeStr) {
+      if (!timeStr) return timeStr;
+      const parts = timeStr.split(':');
+      const hour = parseInt(parts[0]);
+      const min = parts[1] || '00';
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const hour12 = hour % 12 || 12;
+      return `${hour12}:${min} ${ampm}`;
+    }
+
+    function showTimeWarning(message) {
+      const note = document.getElementById('datetimeNote');
+      if (note) {
+        note.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: #ff6b35;"></i> ${message}`;
+        note.className = 'datetime-note warning';
+        
+        clearTimeout(note._timeout);
+        note._timeout = setTimeout(() => {
+          note.innerHTML = `<i class="fas fa-clock"></i> Minimum 24 hours advance order required`;
+          note.className = 'datetime-note';
+        }, 5000);
+      }
+    }
+
+    // ============================================================
+    // DATE & TIME VALIDATION (24-hour advance)
+    // ============================================================
+    function setMinDateTime() {
+      const now = new Date();
+      const minDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      
+      const dateInput = document.getElementById("orderDate");
+      const timeInput = document.getElementById("orderTime");
+      
+      if (dateInput) {
+        const year = minDate.getFullYear();
+        const month = String(minDate.getMonth() + 1).padStart(2, '0');
+        const day = String(minDate.getDate()).padStart(2, '0');
+        dateInput.min = `${year}-${month}-${day}`;
+        
+        if (!dateInput.value) {
+          dateInput.value = dateInput.min;
+        }
+        
+        const maxDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+        const maxYear = maxDate.getFullYear();
+        const maxMonth = String(maxDate.getMonth() + 1).padStart(2, '0');
+        const maxDay = String(maxDate.getDate()).padStart(2, '0');
+        dateInput.max = `${maxYear}-${maxMonth}-${maxDay}`;
+      }
+      
+      if (timeInput) {
+        if (selectedDelivery === "Pickup") {
+          timeInput.min = "09:00";
+          timeInput.max = "21:00";
+        } else {
+          timeInput.min = "10:00";
+          timeInput.max = "19:00";
+        }
+        
+        if (!timeInput.value) {
+          const currentHour = now.getHours();
+          let hour = currentHour + 1;
+          if (hour >= 24) hour = 0;
+          const timeStr = String(hour).padStart(2, '0') + ":00";
+          
+          if (timeStr >= timeInput.min && timeStr <= timeInput.max) {
+            timeInput.value = timeStr;
+          } else {
+            timeInput.value = timeInput.min;
+          }
+        }
+      }
+    }
+
+    function validateDateTime() {
+      const dateInput = document.getElementById("orderDate");
+      const timeInput = document.getElementById("orderTime");
+      
+      if (!dateInput || !timeInput) return;
+      
+      const selectedDate = new Date(dateInput.value + "T" + (timeInput.value || "00:00"));
+      const now = new Date();
+      const minDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      
+      if (selectedDate < minDate) {
+        const year = minDate.getFullYear();
+        const month = String(minDate.getMonth() + 1).padStart(2, '0');
+        const day = String(minDate.getDate()).padStart(2, '0');
+        dateInput.value = `${year}-${month}-${day}`;
+        
+        const note = document.getElementById('datetimeNote');
+        if (note) {
+          note.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: #ff6b35;"></i> Orders require 24 hours advance notice. Date has been updated.`;
+          note.className = 'datetime-note warning';
+          setTimeout(() => {
+            note.innerHTML = `<i class="fas fa-clock"></i> Minimum 24 hours advance order required`;
+            note.className = 'datetime-note';
+          }, 4000);
+        }
+      }
+      
+      enforceTimeRestrictions();
+    }
+
     // Set initial values
     let selectedSize = "Standard";
     let selectedPrice = "₹0";
@@ -563,6 +966,9 @@
           basePrice = {{ price }};
         {% endif %}
       {% endfor %}
+    {% else %}
+      basePrice = {{ product.id|default:0 }};
+      selectedPrice = "₹" + basePrice;
     {% endif %}
 
     // Image gallery
@@ -615,7 +1021,6 @@
     function updateTotalPrice() {
       let total = basePrice;
       
-      // Add selected add-on prices
       document.querySelectorAll(".addon-option.selected").forEach(addon => {
         const priceEl = addon.querySelector(".addon-price");
         if (priceEl) {
@@ -624,7 +1029,6 @@
         }
       });
       
-      // Update display
       const priceEl = document.getElementById("currentPrice");
       if (priceEl) {
         priceEl.textContent = "₹" + total;
@@ -653,29 +1057,89 @@
       numEl.textContent = val;
     }
 
-    function orderOnWhatsApp() {
-      const qty = document.getElementById("qtyNum")?.textContent || "1";
-      const cakeName = "{{ product.heading|escapejs }}";
-      const totalPrice = getTotalPrice();
-      const finalPrice = totalPrice * parseInt(qty);
-      
-      const selectedAddons = [];
-      document.querySelectorAll(".addon-option.selected").forEach(addon => {
+function orderOnWhatsApp() {
+    const qty = document.getElementById("qtyNum")?.textContent || "1";
+    const cakeName = "{{ product.heading|escapejs }}";
+    const totalPrice = getTotalPrice();
+    const finalPrice = totalPrice * parseInt(qty);
+    
+    // Get date & time
+    const dateInput = document.getElementById("orderDate");
+    const timeInput = document.getElementById("orderTime");
+    const orderDate = dateInput ? dateInput.value : "Not selected";
+    const orderTime = timeInput ? timeInput.value : "Not selected";
+    
+    // Format date nicely
+    let formattedDate = orderDate;
+    if (orderDate !== "Not selected") {
+        const parts = orderDate.split('-');
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        formattedDate = `${parts[2]} ${months[parseInt(parts[1])-1]} ${parts[0]}`;
+    }
+    
+    // Get selected addons
+    const selectedAddons = [];
+    document.querySelectorAll(".addon-option.selected").forEach(addon => {
         const name = addon.querySelector(".addon-name")?.textContent?.trim() || "";
         const price = addon.querySelector(".addon-price")?.textContent?.trim() || "";
-        if (name) selectedAddons.push(name + " (" + price + ")");
-      });
-      
-      const addonsText = selectedAddons.length > 0 ? "%0AAdd-ons:%0A" + selectedAddons.join("%0A") : "";
-      
-      const message = "✨ New Order! ✨%0A%0A🍰 Item: " + cakeName + "%0A📦 Size: " + selectedSize + "%0A💰 Unit Price: " + selectedPrice + "%0A🔢 Quantity: " + qty + "%0A💵 Total: ₹" + finalPrice + addonsText + "%0A%0A🧁 From: {{ settings.heading|escapejs }}%0A%0APlease confirm my order! 😊";
-      
-      let phoneNumber = "{{ settings.whatsapp_number|default:'918762529770' }}";
-      phoneNumber = phoneNumber.replace(/^\+/, '');
-      if (!phoneNumber.startsWith("91")) phoneNumber = "91" + phoneNumber;
-      
-      window.open("https://wa.me/" + phoneNumber + "?text=" + message, "_blank");
+        if (name) selectedAddons.push("  - " + name + " (" + price + ")");
+    });
+    
+    // Build the clean enquiry message
+    let message = "";
+    message += "NEW ORDER ENQUIRY\n";
+    message += "----------------------------------------\n\n";
+    message += "Item: " + cakeName + "\n";
+    message += "Size: " + selectedSize + "\n";
+    message += "Quantity: " + qty + "\n";
+    message += "Unit Price: " + selectedPrice + "\n\n";
+    message += "----------------------------------------\n";
+    message += "Order Details\n";
+    message += "----------------------------------------\n";
+    message += "Type: " + (selectedDelivery === "Pickup" ? "Pickup" : "Delivery") + "\n";
+    message += "Date: " + formattedDate + "\n";
+    message += "Time: " + orderTime + "\n";
+    
+    if (selectedAddons.length > 0) {
+        message += "\n----------------------------------------\n";
+        message += "Add-ons\n";
+        message += "----------------------------------------\n";
+        message += selectedAddons.join("\n") + "\n";
     }
+    
+    message += "\n----------------------------------------\n";
+    message += "TOTAL: Rs." + finalPrice + "\n";
+    message += "----------------------------------------\n\n";
+    message += "Can you please confirm if this order is available?\n";
+    message += "Thank you!";
+    
+    let phoneNumber = "{{ settings.whatsapp_number|default:'918762529770' }}";
+    phoneNumber = phoneNumber.replace(/^\+/, '');
+    if (!phoneNumber.startsWith("91")) phoneNumber = "91" + phoneNumber;
+    
+    window.open("https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(message), "_blank");
+}
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      setMinDateTime();
+      
+      const dateInput = document.getElementById("orderDate");
+      const timeInput = document.getElementById("orderTime");
+      
+      if (dateInput) {
+        dateInput.addEventListener('change', validateDateTime);
+      }
+      if (timeInput) {
+        timeInput.addEventListener('change', function() {
+          enforceTimeRestrictions();
+          validateDateTime();
+        });
+        timeInput.addEventListener('blur', enforceTimeRestrictions);
+      }
+    });
 </script>
 </body>
 </html>
