@@ -84,17 +84,33 @@
       pointer-events: none;
     }
     .preloader-logo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-bottom: 20px;
-      animation: preloaderBounce 1s ease-in-out infinite;
-      background: #f5d6a9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    animation: preloaderBounce 1s ease-in-out infinite;
+    background: #f5d6a9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.preloader-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.preloader-logo i {
+    font-size: 40px;
+    color: var(--chocolate);
+}
+
+
     @keyframes preloaderBounce {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.1); }
@@ -547,10 +563,7 @@
   <div class="hero">
     <div class="hero-glow"></div>
     <div class="hero-top">
-      <button class="btn-circle notification-btn" onclick="alert('You have new offers! 🎂')">
-        <i class="fas fa-bell"></i>
-        <span class="notification-badge">3</span>
-      </button>
+
     </div>
     <div class="hero-logo">
       <div class="logo-icon-wrapper">
@@ -622,9 +635,7 @@
           {% elif forloop.counter == 4 %}
             <div class="ribbon ribbon-new">NEW</div>
           {% endif %}
-          <button class="fav-btn {% if forloop.counter == 1 or forloop.counter == 3 %}liked{% endif %}" onclick="event.stopPropagation(); toggleFav(this);">
-            <i class="{% if forloop.counter == 1 or forloop.counter == 3 %}fas{% else %}far{% endif %} fa-heart"></i>
-          </button>
+         
           <div class="product-img">
             {% if product.image1 %}
   <img src="/{{ product.image1 }}" alt="{{ product.heading }}">
@@ -664,6 +675,154 @@
   </div>
 </div>
 
+
+<style>
+  /* Store Closed Overlay */
+.store-closed-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.store-closed-overlay.show {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.store-closed-modal {
+    background: #fff8f3;
+    border-radius: 32px;
+    max-width: 380px;
+    width: 100%;
+    padding: 40px 32px 32px;
+    text-align: center;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.store-closed-modal .closed-icon {
+    font-size: 56px;
+    color: #c62828;
+    margin-bottom: 16px;
+}
+
+.store-closed-modal .closed-icon i {
+    background: #fbe9e7;
+    padding: 20px;
+    border-radius: 50%;
+}
+
+.store-closed-modal h2 {
+    font-family: "Baloo 2", cursive;
+    font-size: 28px;
+    color: #2f1a10;
+    margin-bottom: 8px;
+}
+
+.store-closed-modal p {
+    font-size: 14px;
+    color: #6b5a48;
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+
+.store-closed-modal .store-hours {
+    background: #fbf9f7;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: 16px 0 20px;
+    text-align: left;
+    border: 1px solid #efe5dc;
+}
+
+.store-closed-modal .store-hours .hour-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 13px;
+}
+
+.store-closed-modal .store-hours .hour-row .day {
+    font-weight: 600;
+    color: #2f1a10;
+}
+
+.store-closed-modal .store-hours .hour-row .time {
+    color: #6b5a48;
+}
+
+.store-closed-modal .btn-close-overlay {
+    background: #c27e4a;
+    border: none;
+    color: white;
+    padding: 14px 32px;
+    border-radius: 60px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.store-closed-modal .btn-close-overlay:active {
+    transform: scale(0.97);
+    background: #a66c3d;
+}
+
+.store-closed-modal .btn-close-overlay i {
+    margin-right: 8px;
+}
+</style>
+
+<!-- Store Closed Overlay -->
+<div class="store-closed-overlay" id="storeClosedOverlay">
+    <div class="store-closed-modal">
+        <div class="closed-icon">
+            <i class="fas fa-store-alt-slash"></i>
+        </div>
+        <h2>Store is Closed</h2>
+        <p>We're not taking orders right now.</p>
+        <p style="font-size: 13px; color: #aa9a88;">Please check back during our opening hours.</p>
+        
+        <div class="store-hours">
+            <div class="hour-row">
+                <span class="day">📍 Pickup</span>
+                <span class="time">{{ settings.pickup_start|default:"09:00" }} — {{ settings.pickup_end|default:"21:00" }}</span>
+            </div>
+            <div class="hour-row">
+                <span class="day">🚚 Delivery</span>
+                <span class="time">{{ settings.delivery_start|default:"10:00" }} — {{ settings.delivery_end|default:"19:00" }}</span>
+            </div>
+        </div>
+        
+        <button class="btn-close-overlay" onclick="closeStoreOverlay()">
+            <i class="fas fa-check"></i> Got it
+        </button>
+    </div>
+</div>
+
 <script>
   // Preloader
   window.addEventListener("load", function () {
@@ -672,6 +831,49 @@
     }, 1500);
   });
 
+  // ============================================================
+  // STORE CLOSED OVERLAY
+  // ============================================================
+  function showStoreClosedOverlay() {
+    const overlay = document.getElementById('storeClosedOverlay');
+    if (overlay) {
+      overlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeStoreOverlay() {
+    const overlay = document.getElementById('storeClosedOverlay');
+    if (overlay) {
+      overlay.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  }
+
+  function checkStoreStatus() {
+    // Safer way to check store status
+    {% if settings.is_store_open == False %}
+      var isStoreOpen = false;
+    {% else %}
+      var isStoreOpen = true;
+    {% endif %}
+    
+    if (!isStoreOpen) {
+      setTimeout(function() {
+        showStoreClosedOverlay();
+      }, 1800);
+    }
+  }
+
+  // Check after preloader
+  setTimeout(function() {
+    checkStoreStatus();
+  }, 1600);
+
+  // ============================================================
+  // EXISTING FUNCTIONS
+  // ============================================================
+  
   let activeCategoryId = "all";
 
   function filterByCategory(categoryElement) {
@@ -708,7 +910,6 @@
       noProductsMsg.remove();
     }
     
-    // Reset search when changing category
     document.getElementById("searchInput").value = "";
     resetSearch();
   }

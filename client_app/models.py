@@ -30,6 +30,7 @@ class ClientSettings(models.Model):
     company_name = models.CharField(max_length=255, blank=True, null=True)
 
     policy_points = models.JSONField(default=list, blank=True, null=True)
+    is_store_open = models.BooleanField(default=True)
 
     enable_pickup = models.BooleanField(default=True)
     pickup_start = models.CharField(max_length=5, default="09:00")

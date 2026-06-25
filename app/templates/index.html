@@ -56,6 +56,43 @@
             font-weight: 500;
         }
 
+        /* Store Status Badge */
+        .store-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .store-status.open {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .store-status.closed {
+            background: #fbe9e7;
+            color: #c62828;
+        }
+
+        .store-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .store-status.open .dot {
+            background: #2e7d32;
+        }
+
+        .store-status.closed .dot {
+            background: #c62828;
+        }
+
         /* Container */
         .container {
             padding: 20px;
@@ -79,6 +116,10 @@
             border: 1px solid #efe5dc;
             transition: all 0.2s ease;
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .stat-box:active {
@@ -128,6 +169,101 @@
             font-size: 20px;
         }
 
+        /* Store Toggle Button */
+        .store-toggle {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: #fbf9f7;
+            border-radius: 18px;
+            border: 1px solid #efe5dc;
+            margin-bottom: 4px;
+        }
+
+        .store-toggle .toggle-label {
+            flex: 1;
+        }
+
+        .store-toggle .toggle-label .label-main {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2b241e;
+        }
+
+        .store-toggle .toggle-label .label-sub {
+            font-size: 12px;
+            color: #aa9a88;
+            margin-top: 2px;
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #cd6b6b;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background: white;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+
+        .switch input:checked + .slider {
+            background: #2e7d32;
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* When store is closed - show warning on products */
+        .store-closed-warning {
+            background: #fbe9e7;
+            border: 1px solid #ef9a9a;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #c62828;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .store-closed-warning i {
+            font-size: 20px;
+        }
+
+        /* Other styles */
         .info-row {
             display: flex;
             align-items: center;
@@ -197,6 +333,7 @@
             transition: all 0.2s;
             border: 1px solid #e8e0d7;
             margin-top: 12px;
+            cursor: pointer;
         }
 
         .btn-primary {
@@ -266,7 +403,6 @@
             background: #faf8f5;
         }
 
-        /* Empty state or misc */
         .empty-note {
             color: #cbbcaa;
             font-style: italic;
@@ -284,20 +420,65 @@
             color: #c27e4a;
             margin-top: 8px;
         }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2b241e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #2e7d32;
+        }
+
+        .toast.error {
+            background: #c62828;
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
         {% if settings.logo_link %}
-            <img src="{{ settings.logo_link }}" class="logo" alt="Store logo">
+            <img src="/{{ settings.logo_link }}" class="logo" alt="Store logo">
         {% else %}
-            <div class="logo" style="background: #f7f3ef; display: flex; align-items: center; justify-content: center;">
+            <div class="logo" style="background: #f7f3ef; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
                 <i class="ti ti-building-store" style="font-size: 40px; color: #c27e4a;"></i>
             </div>
         {% endif %}
         <h2>{{ settings.heading|default:"Bakery Store" }}</h2>
         <p>{{ settings.tagline|default:"Fresh baked goods daily" }}</p>
+        
+        <!-- Store Status Badge -->
+        {% if settings.is_store_open %}
+        <div class="store-status open">
+            <span class="dot"></span>
+            Store is Open
+        </div>
+        {% else %}
+        <div class="store-status closed">
+            <span class="dot"></span>
+            Store is Closed
+        </div>
+        {% endif %}
+        
         <div class="welcome-badge">
             <i class="ti ti-crown"></i> Owner Dashboard
         </div>
@@ -306,14 +487,52 @@
     <div class="container">
         <!-- Stats Row -->
         <div class="stats">
-            <div class="stat-box">
+            <a href="/categories/" class="stat-box">
                 <div class="stat-number">{{ category_count|default:"0" }}</div>
                 <div class="stat-label">Categories</div>
-            </div>
-            <div class="stat-box">
+            </a>
+            <a href="/products/" class="stat-box">
                 <div class="stat-number">{{ product_count|default:"0" }}</div>
                 <div class="stat-label">Products</div>
+            </a>
+        </div>
+
+        <!-- Store Status Toggle Card -->
+        <div class="card">
+            <h3>
+                <i class="ti ti-store"></i>
+                Store Status
+            </h3>
+            
+            <div class="store-toggle">
+                <div class="toggle-label">
+                    <div class="label-main">
+                        {% if settings.is_store_open %}
+                            🟢 Store is Active
+                        {% else %}
+                            🔴 Store is Closed
+                        {% endif %}
+                    </div>
+                    <div class="label-sub">
+                        {% if settings.is_store_open %}
+                            Customers can place orders
+                        {% else %}
+                            Customers cannot place orders
+                        {% endif %}
+                    </div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="storeToggle" {% if settings.is_store_open %}checked{% endif %}>
+                    <span class="slider"></span>
+                </label>
             </div>
+
+            {% if not settings.is_store_open %}
+            <div class="store-closed-warning">
+                <i class="ti ti-alert-triangle"></i>
+                Store is currently closed. Customers will see a "Closed" message on your storefront.
+            </div>
+            {% endif %}
         </div>
 
         <!-- Quick Actions Card -->
@@ -322,11 +541,15 @@
                 <i class="ti ti-bolt"></i>
                 Quick Actions
             </h3>
-            <a href="/products/add/" class="btn btn-primary">
+            <a href="/add-product/" class="btn btn-primary">
                 <i class="ti ti-plus"></i>
                 Add New Product
             </a>
-            <a href="/categories/manage/" class="btn">
+            <a href="/add-category/" class="btn btn-primary" style="background: #8f7e6c;">
+                <i class="ti ti-folder-plus"></i>
+                Add New Category
+            </a>
+            <a href="/categories/" class="btn">
                 <i class="ti ti-category"></i>
                 Manage Categories
             </a>
@@ -360,17 +583,73 @@
                     <div class="info-value">{{ settings.search_bar_tagline|default:"Search your favorite treats..." }}</div>
                 </div>
             </div>
-            {% if settings.logo_link %}
             <div class="info-row">
                 <div class="info-icon">
-                    <i class="ti ti-link"></i>
+                    <i class="ti ti-credit-card"></i>
                 </div>
                 <div class="info-content">
-                    <div class="info-label">Logo URL</div>
-                    <div class="info-value" style="font-size: 12px; word-break: break-all;">{{ settings.logo_link|truncatechars:40 }}</div>
+                    <div class="info-label">Payment Methods</div>
+                    <div class="info-value">{{ settings.payment_methods|default:"Cash / UPI" }}</div>
+                </div>
+            </div>
+            {% if settings.company_name %}
+            <div class="info-row">
+                <div class="info-icon">
+                    <i class="ti ti-building"></i>
+                </div>
+                <div class="info-content">
+                    <div class="info-label">Company Name</div>
+                    <div class="info-value">{{ settings.company_name }}</div>
                 </div>
             </div>
             {% endif %}
+            <div class="info-row">
+                <div class="info-icon">
+                    <i class="ti ti-palette"></i>
+                </div>
+                <div class="info-content">
+                    <div class="info-label">Theme</div>
+                    <div class="info-value">{{ settings.theme|default:"Default"|title }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery/Pickup Settings -->
+        <div class="card">
+            <h3>
+                <i class="ti ti-truck-delivery"></i>
+                Delivery & Pickup
+            </h3>
+            <div class="info-row">
+                <div class="info-icon">
+                    <i class="ti ti-map-pin"></i>
+                </div>
+                <div class="info-content">
+                    <div class="info-label">Pickup</div>
+                    <div class="info-value">
+                        {% if settings.enable_pickup %}
+                            {{ settings.pickup_start|default:"09:00" }} — {{ settings.pickup_end|default:"21:00" }}
+                        {% else %}
+                            <span style="color: #cd6b6b;">Disabled</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-icon">
+                    <i class="ti ti-truck"></i>
+                </div>
+                <div class="info-content">
+                    <div class="info-label">Delivery</div>
+                    <div class="info-value">
+                        {% if settings.enable_delivery %}
+                            {{ settings.delivery_start|default:"10:00" }} — {{ settings.delivery_end|default:"19:00" }}
+                        {% else %}
+                            <span style="color: #cd6b6b;">Disabled</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Notes Section -->
@@ -409,13 +688,13 @@
             {% endif %}
         </div>
 
-        <!-- Preview Storefront Card (optional) -->
+        <!-- Preview Storefront Card -->
         <div class="card">
             <h3>
                 <i class="ti ti-eye"></i>
                 Preview Storefront
             </h3>
-            <a href="/store/{{ store_slug }}/" class="btn" style="background: #f0ede8;">
+            <a href="/" class="btn" style="background: #f0ede8;">
                 <i class="ti ti-building-store"></i>
                 View your live store
             </a>
@@ -424,6 +703,9 @@
             </p>
         </div>
     </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
@@ -446,8 +728,8 @@
     </div>
 
     <script>
-        // Simple active state for bottom nav based on current path (optional)
         document.addEventListener('DOMContentLoaded', function() {
+            // Bottom nav active state
             const currentPath = window.location.pathname;
             const navLinks = document.querySelectorAll('.bottom-nav a');
             navLinks.forEach(link => {
@@ -460,8 +742,8 @@
                     link.classList.add('active');
                 }
             });
-            
-            // Add touch feedback for buttons
+
+            // Touch feedback
             const btns = document.querySelectorAll('.btn, .stat-box');
             btns.forEach(btn => {
                 btn.addEventListener('touchstart', function() {
@@ -474,6 +756,87 @@
                     this.style.opacity = '1';
                 });
             });
+
+            // ============================================================
+            // STORE TOGGLE FUNCTIONALITY
+            // ============================================================
+            const toggle = document.getElementById('storeToggle');
+            const toast = document.getElementById('toast');
+            let toastTimeout;
+
+            function showToast(message, type = '') {
+                toast.textContent = message;
+                toast.className = 'toast ' + type;
+                // Force reflow
+                void toast.offsetWidth;
+                toast.classList.add('show');
+                
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            toggle.addEventListener('change', function() {
+                const isOpen = this.checked;
+                const statusText = isOpen ? 'open' : 'closed';
+                
+                // Send AJAX request to update store status
+                fetch('/store-status/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({
+                        is_open: isOpen
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update UI
+                        const badge = document.querySelector('.store-status');
+                        const labelMain = document.querySelector('.toggle-label .label-main');
+                        const labelSub = document.querySelector('.toggle-label .label-sub');
+                        const warning = document.querySelector('.store-closed-warning');
+                        
+                        if (isOpen) {
+                            badge.className = 'store-status open';
+                            badge.innerHTML = '<span class="dot"></span> Store is Open';
+                            labelMain.textContent = '🟢 Store is Open';
+                            labelSub.textContent = 'Customers can place orders';
+                            if (warning) warning.style.display = 'none';
+                            showToast('✅ Store is now OPEN!', 'success');
+                        } else {
+                            badge.className = 'store-status closed';
+                            badge.innerHTML = '<span class="dot"></span> Store is Closed';
+                            labelMain.textContent = '🔴 Store is Closed';
+                            labelSub.textContent = 'Customers cannot place orders';
+                            if (warning) warning.style.display = 'flex';
+                            showToast('🔴 Store is now CLOSED', 'error');
+                        }
+                    } else {
+                        // Revert toggle if API failed
+                        toggle.checked = !isOpen;
+                        showToast('❌ Failed to update store status', 'error');
+                    }
+                })
+                .catch(error => {
+                    // Revert toggle on error
+                    toggle.checked = !isOpen;
+                    showToast('❌ Network error. Please try again.', 'error');
+                    console.error('Error:', error);
+                });
+            });
+
+            // Helper to get CSRF token
+            function getCsrfToken() {
+                const cookieValue = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('csrftoken='));
+                return cookieValue ? cookieValue.split('=')[1] : '';
+            }
             
             console.log('Dashboard ready — {{ settings.heading }}');
         });

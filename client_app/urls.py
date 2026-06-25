@@ -22,6 +22,7 @@ urlpatterns = [
     path("delete-category/<int:category_id>/", delete_category, name="delete_category"),
     path("edit-product/<int:product_id>/",edit_product,name="edit_products"),
     path("delete-product/<int:product_id>/",delete_product,name="delete_product"),
+    path('store-status/', toggle_store_status, name='toggle_store_status'),
 
 #livestore
     path("",store_home,name="store_home"),

@@ -16,6 +16,9 @@ import jwt
 
 from app.url_links import *
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 def tenant_test(request):
 
@@ -321,6 +324,23 @@ def dashboard(request):
     }
     return render(request, "index.html", context)
 
+
+
+import json
+@require_POST
+@csrf_exempt  
+def toggle_store_status(request):
+    try:
+        data = json.loads(request.body)
+        is_open = data.get('is_open', True)
+        
+        settings = ClientSettings.objects.first()
+        settings.is_store_open = is_open
+        settings.save()
+        
+        return JsonResponse({'success': True, 'is_open': is_open})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
 
 
 

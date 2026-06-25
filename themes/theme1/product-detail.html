@@ -767,6 +767,87 @@
     </div>
   </div>
 
+
+
+<style>
+/* Disabled state for bottom bar - SIMPLE FIX */
+.bottom-bar.disabled {
+    opacity: 0.6;
+}
+
+.bottom-bar.disabled .whatsapp-btn {
+    background: #b0a090;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.bottom-bar.disabled .qty-btn {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.bottom-bar.disabled .qty-selector {
+    opacity: 0.5;
+}
+</style>
+
+
+
+
+<script>
+  // ============================================================
+// CHECK STORE STATUS ON PRODUCT PAGE
+// ============================================================
+function checkProductPageStoreStatus() {
+    {% if settings.is_store_open == False %}
+        var isStoreOpen = false;
+    {% else %}
+        var isStoreOpen = true;
+    {% endif %}
+    
+    const bottomBar = document.querySelector('.bottom-bar');
+    const storeClosedMsg = document.getElementById('storeClosedProductMsg');
+    const whatsappBtn = document.querySelector('.whatsapp-btn');
+    
+    if (!isStoreOpen) {
+        // Disable bottom bar
+        if (bottomBar) {
+            bottomBar.classList.add('disabled');
+        }
+        
+        // Show closed message
+        if (storeClosedMsg) {
+            storeClosedMsg.classList.add('show');
+        }
+        
+        // Change WhatsApp button behavior
+        if (whatsappBtn) {
+            whatsappBtn.href = '#';
+            whatsappBtn.onclick = function(e) {
+                e.preventDefault();
+                alert('Store is currently closed. Please come back during opening hours.');
+                return false;
+            };
+        }
+    } else {
+        // Enable everything
+        if (bottomBar) {
+            bottomBar.classList.remove('disabled');
+        }
+        if (storeClosedMsg) {
+            storeClosedMsg.classList.remove('show');
+        }
+    }
+}
+
+// Call this when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Existing initialization code...
+    checkProductPageStoreStatus();
+});
+</script>
+
+
 <script>
     // Parse ingredients
     {% if product.ingredients %}
@@ -784,6 +865,8 @@
     })();
     {% endif %}
 
+
+   
     // ============================================================
     // DELIVERY / PICKUP SELECTION
     // ============================================================
