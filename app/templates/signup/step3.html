@@ -381,12 +381,37 @@
                 >
             {% endif %}
 
+
+            <style>
+                .logo-error {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fff1f1;
+    color: #c43d3d;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.upload-help {
+    display: block;
+    margin-top: 7px;
+    color: #8f7e6c;
+    font-size: 12px;
+}
+            </style>
+
             <input
                 type="file"
                 name="logo"
                 id="logo"
                 accept="image/jpeg,image/png,image/webp"
             >
+            <small class="upload-help">
+    Upload JPG, PNG or WebP · Maximum 2 MB
+</small>
+
+<div id="logoError" class="logo-error" style="display:none;"></div>
 
             <div class="inline-hint">
                 <i class="ti ti-info-circle" style="font-size: 10px;"></i>
@@ -395,6 +420,66 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    const logoInput = document.getElementById("logoInput");
+    const logoError = document.getElementById("logoError");
+    const form = document.querySelector("form");
+
+    const MAX_LOGO_SIZE = 2 * 1024 * 1024; // 2 MB
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+    function showLogoError(message) {
+        logoError.textContent = message;
+        logoError.style.display = "block";
+    }
+
+    function clearLogoError() {
+        logoError.textContent = "";
+        logoError.style.display = "none";
+    }
+
+    function validateLogo() {
+        clearLogoError();
+
+        const file = logoInput.files[0];
+
+        if (!file) {
+            return true;
+        }
+
+        if (!allowedTypes.includes(file.type)) {
+            showLogoError(
+                "Please upload a JPG, PNG, or WebP image."
+            );
+            logoInput.value = "";
+            return false;
+        }
+
+        if (file.size > MAX_LOGO_SIZE) {
+            showLogoError(
+                "Logo is too large. Please upload an image under 2 MB."
+            );
+            logoInput.value = "";
+            return false;
+        }
+
+        return true;
+    }
+
+    logoInput.addEventListener("change", validateLogo);
+
+    form.addEventListener("submit", function (event) {
+        if (!validateLogo()) {
+            event.preventDefault();
+        }
+    });
+</script>
 
                 <!-- Store Name (required) -->
                 <div class="input-group">
