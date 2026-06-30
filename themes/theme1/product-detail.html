@@ -615,34 +615,35 @@
 </head>
 <body>
   <div class="phone">
-    <!-- IMAGE GALLERY -->
-    <div class="image-gallery">
-      {% if product.image1 %}
-      <img class="main-image" src="/{{ product.image1 }}" alt="{{ product.heading }}" id="mainImage" />
-      {% else %}
-      <img class="main-image" src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=500&h=400&fit=crop&auto=format" alt="{{ product.heading }}" id="mainImage" />
-      {% endif %}
-      
-      <div class="top-nav">
-        <a href="/" class="back-btn">
-          <i class="fas fa-arrow-left"></i>
-        </a>
-        <div class="nav-actions">
-          <button class="nav-action-btn" id="favBtn" onclick="toggleFav()">
-            <i class="far fa-heart"></i>
-          </button>
-          <button class="nav-action-btn" onclick="shareProduct()">
-            <i class="fas fa-share-alt"></i>
-          </button>
-        </div>
-      </div>
-
-      <div class="gallery-dots">
-        <div class="gallery-dot active" onclick="changeImage(0)"></div>
-        <div class="gallery-dot" onclick="changeImage(1)"></div>
-        <div class="gallery-dot" onclick="changeImage(2)"></div>
-      </div>
+    <!-- IMAGE GALLERY - Add your real images here -->
+<div class="image-gallery">
+  {% if product.image1 %}
+    <img class="main-image" src="/{{ product.image1 }}" alt="{{ product.heading }}" id="mainImage" />
+  {% else %}
+    <!-- Add your default/placeholder image here -->
+    <img class="main-image" src="https://heavenlydelightshop.com/wp-content/uploads/2023/09/headvenlydelight-coming-soon.jpg" alt="{{ product.heading }}" id="mainImage" />
+  {% endif %}
+  
+  <div class="top-nav">
+    <a href="/" class="back-btn">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <div class="nav-actions">
+      <button class="nav-action-btn" id="favBtn" onclick="toggleFav()">
+        <i class="far fa-heart"></i>
+      </button>
+      <button class="nav-action-btn" onclick="shareProduct()">
+        <i class="fas fa-share-alt"></i>
+      </button>
     </div>
+  </div>
+
+  <div class="gallery-dots">
+    <div class="gallery-dot active" onclick="changeImage(0)"></div>
+    <div class="gallery-dot" onclick="changeImage(1)"></div>
+    <div class="gallery-dot" onclick="changeImage(2)"></div>
+  </div>
+</div>
 
     <!-- CONTENT -->
     <div class="content">
@@ -1056,16 +1057,20 @@ function selectDelivery(el, type) {
 
     // Image gallery
     const images = [
-      "{% if product.image1 %}/{{ product.image1 }}{% else %}https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=500&h=400&fit=crop&auto=format{% endif %}",
-      "{% if product.image2 %}/{{ product.image2 }}{% else %}https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&h=400&fit=crop&auto=format{% endif %}",
-      "{% if product.image3 %}/{{ product.image3 }}{% else %}https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=500&h=400&fit=crop&auto=format{% endif %}"
-    ];
+  "{% if product.image1 %}/{{ product.image1 }}{% else %}your-image-1.jpg{% endif %}",
+  "{% if product.image2 %}/{{ product.image2 }}{% else %}your-image-2.jpg{% endif %}",
+  "{% if product.image3 %}/{{ product.image3 }}{% else %}your-image-3.jpg{% endif %}"
+];
 
     function changeImage(index) {
-      const mainImg = document.getElementById("mainImage");
-      if (mainImg && images[index]) mainImg.src = images[index];
-      document.querySelectorAll(".gallery-dot").forEach((dot, i) => dot.classList.toggle("active", i === index));
-    }
+  const mainImg = document.getElementById("mainImage");
+  if (mainImg && images[index]) {
+    mainImg.src = images[index];
+  }
+  document.querySelectorAll(".gallery-dot").forEach((dot, i) => {
+    dot.classList.toggle("active", i === index);
+  });
+}
 
     function toggleFav() {
       const btn = document.getElementById("favBtn");
