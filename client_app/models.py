@@ -67,6 +67,7 @@ class Product(models.Model):
         blank=True,
         null=True
     )
+    cake_inscription = models.CharField(max_length=200, blank=True, null=True)
 
     image1 = models.CharField(max_length=500, blank=True, null=True)
     image2 = models.CharField(max_length=500, blank=True, null=True)

@@ -715,6 +715,51 @@
         <i class="fas fa-clock"></i> Minimum 24 hours advance order required
       </div>
 
+
+            <style>
+        /* ── MESSAGE FIELD ── */
+.message-field {
+  margin-top: 8px;
+}
+
+.message-field textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: var(--chocolate);
+  background: var(--white);
+  resize: vertical;
+  min-height: 80px;
+  max-height: 150px;
+  transition: all 0.25s;
+  outline: none;
+}
+
+.message-field textarea:focus {
+  border-color: var(--yellow-dark);
+  box-shadow: 0 0 0 3px rgba(246, 197, 74, 0.25);
+}
+
+.message-field textarea::placeholder {
+  color: var(--light-text);
+  font-weight: 400;
+}
+      </style>
+
+
+      <!-- ===== MESSAGE / SPECIAL INSTRUCTIONS ===== -->
+<div class="section-title">Cake Inscription</div>
+<div class="message-field">
+  <textarea 
+    id="orderMessage" 
+    placeholder="Any special requests? (e.g., extra frosting, no nuts, delivery notes...)" 
+    rows="3"
+  >{{ product.cake_inscription|default:'' }}</textarea>
+</div>
+
       <!-- ===== POLICY CARD (DYNAMIC FROM SETTINGS - NO DEFAULTS) ===== -->
       <div class="policy-card" id="policyCard">
         <div class="policy-title">Before You Order</div>
@@ -1157,6 +1202,10 @@ function orderOnWhatsApp() {
     const orderDate = dateInput ? dateInput.value : "Not selected";
     const orderTime = timeInput ? timeInput.value : "Not selected";
     
+    // Get cake inscription message
+    const messageInput = document.getElementById("orderMessage");
+    const inscription = messageInput ? messageInput.value.trim() : "";
+    
     // Format date nicely
     let formattedDate = orderDate;
     if (orderDate !== "Not selected") {
@@ -1180,8 +1229,14 @@ function orderOnWhatsApp() {
     message += "Item: " + cakeName + "\n";
     message += "Size: " + selectedSize + "\n";
     message += "Quantity: " + qty + "\n";
-    message += "Unit Price: " + selectedPrice + "\n\n";
-    message += "----------------------------------------\n";
+    message += "Unit Price: " + selectedPrice + "\n";
+    
+    // Add inscription if present
+    if (inscription) {
+        message += "\n📝 Cake Inscription: " + inscription + "\n";
+    }
+    
+    message += "\n----------------------------------------\n";
     message += "Order Details\n";
     message += "----------------------------------------\n";
     message += "Type: " + (selectedDelivery === "Pickup" ? "Pickup" : "Delivery") + "\n";
@@ -1207,7 +1262,6 @@ function orderOnWhatsApp() {
     
     window.open("https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(message), "_blank");
 }
-
     // ============================================================
     // INITIALIZATION
     // ============================================================
