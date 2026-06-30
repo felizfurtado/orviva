@@ -615,13 +615,10 @@
 </head>
 <body>
   <div class="phone">
-    <!-- IMAGE GALLERY - Add your real images here -->
+
 <div class="image-gallery">
   {% if product.image1 %}
     <img class="main-image" src="/{{ product.image1 }}" alt="{{ product.heading }}" id="mainImage" />
-  {% else %}
-    <!-- Add your default/placeholder image here -->
-    <img class="main-image" src="https://heavenlydelightshop.com/wp-content/uploads/2023/09/headvenlydelight-coming-soon.jpg" alt="{{ product.heading }}" id="mainImage" />
   {% endif %}
   
   <div class="top-nav">
@@ -638,11 +635,14 @@
     </div>
   </div>
 
+  <!-- Only show dots if there are images -->
+  {% if product.image1 or product.image2 or product.image3 %}
   <div class="gallery-dots">
-    <div class="gallery-dot active" onclick="changeImage(0)"></div>
-    <div class="gallery-dot" onclick="changeImage(1)"></div>
-    <div class="gallery-dot" onclick="changeImage(2)"></div>
+    {% if product.image1 %}<div class="gallery-dot active" onclick="changeImage(0)"></div>{% endif %}
+    {% if product.image2 %}<div class="gallery-dot" onclick="changeImage(1)"></div>{% endif %}
+    {% if product.image3 %}<div class="gallery-dot" onclick="changeImage(2)"></div>{% endif %}
   </div>
+  {% endif %}
 </div>
 
     <!-- CONTENT -->
@@ -1057,10 +1057,10 @@ function selectDelivery(el, type) {
 
     // Image gallery
     const images = [
-  "{% if product.image1 %}/{{ product.image1 }}{% else %}your-image-1.jpg{% endif %}",
-  "{% if product.image2 %}/{{ product.image2 }}{% else %}your-image-2.jpg{% endif %}",
-  "{% if product.image3 %}/{{ product.image3 }}{% else %}your-image-3.jpg{% endif %}"
-];
+  {% if product.image1 %}"{{ product.image1 }}"{% endif %},
+  {% if product.image2 %}"{{ product.image2 }}"{% endif %},
+  {% if product.image3 %}"{{ product.image3 }}"{% endif %}
+].filter(Boolean);
 
     function changeImage(index) {
   const mainImg = document.getElementById("mainImage");
