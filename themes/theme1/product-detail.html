@@ -751,14 +751,16 @@
 
 
       <!-- ===== MESSAGE / SPECIAL INSTRUCTIONS ===== -->
+{% if product.category.name|lower == "cake" or product.category.name|lower == "cakes" %}
 <div class="section-title">Cake Inscription</div>
 <div class="message-field">
   <textarea 
     id="orderMessage" 
-    placeholder="Any special requests? (e.g., extra frosting, no nuts, delivery notes...)" 
+    placeholder="What would you like written on the cake? (e.g., 'Happy Birthday Sarah')" 
     rows="3"
-  >{{ product.cake_inscription|default:'' }}</textarea>
+  ></textarea>
 </div>
+{% endif %}
 
       <!-- ===== POLICY CARD (DYNAMIC FROM SETTINGS - NO DEFAULTS) ===== -->
       <div class="policy-card" id="policyCard">
